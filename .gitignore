@@ -1,0 +1,16 @@
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+*.aux
+*.log
+*.bbl
+*.bcf
+*.blg
+*.run.xml
+*.synctex.gz
+.DS_Store
+.venv/
+Data/
+FilledTimePrice.csv
+TimePrice.csv
+Levy PDF.xlsx

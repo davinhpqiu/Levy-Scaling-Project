@@ -1,0 +1,714 @@
+\documentclass[12pt,a4paper]{article}
+
+% ─── Packages ─────────────────────────────────────────────────────────────────
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{microtype}
+\usepackage{setspace}
+\usepackage{parskip}
+\usepackage[hidelinks,
+            pdftitle={Literature Review: Lévy Scaling of Futures Price Increments},
+            pdfauthor={}]{hyperref}
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric, arrows.meta, positioning, calc}
+\usepackage[style=authoryear,
+            backend=biber,
+            maxbibnames=99,
+            maxcitenames=2,
+            uniquelist=false,
+            giveninits=true,
+            doi=true,
+            url=false]{biblatex}
+\addbibresource{references.bib}
+
+\onehalfspacing
+
+% ─── Title ────────────────────────────────────────────────────────────────────
+\title{\textbf{Literature Review}\\[0.4em]
+       \large Lévy Scaling of Short-Term Futures Price Increments:\\
+       Heavy Tails, Variance Ratios, and Bias Correction}
+\date{\today}
+
+\begin{document}
+\maketitle
+\tableofcontents
+\newpage
+
+% ══════════════════════════════════════════════════════════════════════════════
+\section{Introduction}
+% ══════════════════════════════════════════════════════════════════════════════
+
+This review surveys the literature most directly relevant to a study of the
+probability density function (PDF) of futures price increments, with four
+principal aims: (i)~estimating the Lévy stability exponent $\alpha$ from
+peak-scaling regressions and PDF collapses; (ii)~testing the robustness of
+$\hat\alpha$ to methodological choices including de-seasonalization and
+estimator selection; (iii)~examining the asymmetry of the empirical increment
+distribution; and (iv)~deriving and validating a bias correction for the
+peak-scaling estimator under short-term mean reversion.
+
+The literature is organized into six thematic areas: the foundational theory
+of Lévy-stable distributions and their financial motivation
+(Section~\ref{sec:stable}); the seminal empirical evidence for heavy-tailed
+and Lévy-like scaling in financial markets (Section~\ref{sec:empirical});
+the estimation of tail and scaling exponents, including finite-sample cautions
+(Section~\ref{sec:estimation}); the variance-ratio literature on short-term
+dependence (Section~\ref{sec:vr}); intraday volatility seasonality and its
+removal (Section~\ref{sec:seasonality}); and structure-function and
+multifractal extensions of simple Lévy scaling (Section~\ref{sec:structure}).
+A brief concluding section positions the present study relative to each thread
+(Section~\ref{sec:position}).
+
+Figure~\ref{fig:pipeline} gives a schematic overview of the analytical
+pipeline, showing how the six sections of the empirical analysis relate to
+one another.
+
+% ── Pipeline figure ───────────────────────────────────────────────────────────
+\begin{figure}[htbp]
+\centering
+% Scale to text width so the figure always fits regardless of margin settings
+\resizebox{\textwidth}{!}{%
+\begin{tikzpicture}[
+  % Default box style; colour supplied per node as box=<colour>
+  box/.style={
+    rectangle, rounded corners=4pt,
+    draw=black!50, semithick,
+    fill=#1,
+    text width=3.4cm, align=center,
+    inner sep=8pt, minimum height=1.4cm,
+    font=\small
+  },
+  arr/.style={-{Stealth[length=6pt,width=5pt]}, black!55, semithick},
+]
+
+%% ── Row 0: data input ──────────────────────────────────────────────────────
+\node[box=blue!16] (data) at (0,0) {
+  \textbf{Data and Setup}\\[4pt]
+  \scriptsize
+  1-min OHLCV $\cdot$ 8 markets\\
+  integer-scale $\cdot$ LOCF fill\\
+  log-spaced $\tau$-grid
+};
+
+%% ── Row 1: shared intermediate ────────────────────────────────────────────
+\node[box=gray!20] (pdfs) at (0,-2.8) {
+  \textbf{Empirical PDFs}\\[4pt]
+  \scriptsize $\hat{P}(x,\tau)$ for all $\tau$
+};
+
+%% ── Row 2: four parallel analyses ─────────────────────────────────────────
+%  Centres spaced 4.4 cm apart; boxes are ~3.9 cm wide → ~0.5 cm gap each side
+\node[box=green!20] (s1) at (-6.6,-6.2) {
+  \textbf{I.\ Baseline}\\[4pt]
+  \scriptsize
+  OLS: $\log\hat{P}(0,\tau)\!\sim\!\log\tau$\\[2pt]
+  $\hat{\alpha}_{\mathrm{tip}}$; collapse plot
+};
+
+\node[box=orange!25] (s2) at (-2.2,-6.2) {
+  \textbf{II.\ Seasonality}\\[4pt]
+  \scriptsize
+  estimate $\hat{\sigma}_m$; normalise\\[2pt]
+  re-run I $\;\Rightarrow\; \Delta\hat{\alpha}$
+};
+
+\node[box=orange!25] (s3) at (2.2,-6.2) {
+  \textbf{III.\ Three estimators}\\[4pt]
+  \scriptsize
+  tip $\cdot$ struct.\ fns $\cdot$ collapse\\[2pt]
+  $\hat{\alpha}_{\mathrm{sf}},\;\hat{\alpha}_{\mathrm{collapse}}$
+};
+
+\node[box=purple!14] (s5) at (6.6,-6.2) {
+  \textbf{V.\ Asymmetry}\\[4pt]
+  \scriptsize
+  $A(x,\tau)$ pointwise\\[2pt]
+  raw vs.\ sym.\ collapse
+};
+
+%% ── Row 3: outputs ────────────────────────────────────────────────────────
+%  VI sits under I; IV sits under II+III (centre of their span = −2.2+2.2)/2 = 0)
+\node[box=blue!16] (s6) at (-6.6,-9.8) {
+  \textbf{VI.\ Bias correction}\\[4pt]
+  \scriptsize
+  $\hat{\rho}(k)\!\to\!\widehat{VR}(\tau)\!\to\!b(\tau)$\\[2pt]
+  corrected OLS $\;\to\;\hat{\alpha}_{\mathrm{corr}}$
+};
+
+\node[box=red!13] (s4) at (0,-9.8) {
+  \textbf{IV.\ Robustness matrix}\\[4pt]
+  \scriptsize
+  all $(\varepsilon,\,N_\tau,\,\mathrm{prep},\,\mathrm{est.})$\\[2pt]
+  variance decomp.\ by factor
+};
+
+%% ── Arrows ────────────────────────────────────────────────────────────────
+\draw[arr] (data) -- (pdfs);
+\draw[arr] (pdfs) -- (s1);
+\draw[arr] (pdfs) -- (s2);
+\draw[arr] (pdfs) -- (s3);
+\draw[arr] (pdfs) -- (s5);
+\draw[arr] (s1)   -- (s4);
+\draw[arr] (s2)   -- (s4);
+\draw[arr] (s3)   -- (s4);
+\draw[arr] (s1)   -- (s6);
+
+\end{tikzpicture}%
+}% end resizebox
+\caption{Analytical pipeline. All six sections operate on the same empirical
+PDF table constructed in the data-and-setup phase. Sections~II-V are parallel
+tests of the Section~I baseline under different perturbations (preprocessing,
+estimator choice, model-assumption validity). Section~IV aggregates the
+sensitivity results from Sections~I-III into a single variance decomposition.
+Section~VI corrects the Section~I tip estimator for the upward bias induced by
+short-term autocorrelation.}
+\label{fig:pipeline}
+\end{figure}
+% ─────────────────────────────────────────────────────────────────────────────
+
+Throughout this review, ``Lévy stable'' refers to the class of stable
+distributions with characteristic exponent $\alpha \in (0,2]$, $\alpha = 2$
+being the Gaussian special case. We follow the sign convention of
+\textcite{SamorodTaqqu1994}, under which the characteristic function of a
+symmetric stable variable $X \sim S_\alpha(\gamma,0,0)$ is
+$\mathbb{E}[e^{iqX}] = \exp(-\gamma|q|^\alpha)$.
+
+
+% ══════════════════════════════════════════════════════════════════════════════
+\section{Lévy-Stable Distributions: Theory and Financial Motivation}
+\label{sec:stable}
+% ══════════════════════════════════════════════════════════════════════════════
+
+\subsection{The stable class and the generalized central limit theorem}
+
+The Gaussian distribution occupies a privileged role in probability theory as
+the unique non-degenerate limit law of normalized sums of independent,
+identically distributed (i.i.d.) random variables with finite variance,
+a result known as the classical central limit theorem (CLT). The natural generalization, due to
+Lévy and Khintchine, establishes that the class of \textit{stable
+distributions} is the complete set of non-trivial distributional limits of
+normalized partial sums of i.i.d.\ sequences
+\parencite{SamorodTaqqu1994,GnedenkoKolmogorov1954}. A distribution
+$F_\alpha$ is stable if and only if, for all $n \geq 1$, the sum of $n$
+independent copies of $X \sim F_\alpha$ can be written as $n^{1/\alpha} X +
+d_n$ for some centering constant $d_n$. This self-similarity under
+convolution is the defining algebraic property of the stable family.
+
+For $\alpha < 2$, stable distributions possess algebraically heavy tails:
+$P(|X| > u) \sim C_\alpha u^{-\alpha}$ as $u \to \infty$, so that all moments
+of order $\geq \alpha$ are infinite. Comprehensive treatments of the
+mathematical theory are provided by \textcite{SamorodTaqqu1994} and
+\textcite{Zolotarev1986}; the monograph of \textcite{Uchaikin2003} covers
+applications in physics and finance.
+
+\subsection{Mandelbrot's stable hypothesis for asset prices}
+
+\textcite{Mandelbrot1963} was the first to propose stable distributions as a
+model for asset-price changes, studying daily cotton prices and finding that
+the observed heavy tails and lack of a finite-variance diffusion limit were
+inconsistent with the Gaussian random-walk model of \textcite{Bachelier1900}.
+Mandelbrot argued that the empirical stability exponent $\alpha$ was
+approximately $1.7$, well inside the heavy-tailed regime, and that this was
+consistent with the self-similar aggregation property: the distribution of
+weekly price changes is a rescaled version of the distribution of daily
+changes. This long-range self-similarity is the central empirical prediction
+of the symmetric Lévy model tested in our study.
+
+The hypothesis was further developed by \textcite{Fama1965}, who examined
+daily returns on Dow Jones components and found that stable distributions with
+$\alpha < 2$ provided a better fit than the Gaussian. These early findings were
+subsequently contested on the grounds that the estimated $\alpha$ often exceeds
+2 when computed from the Hill or regression estimators on finite samples
+\parencite{Weron2001}, a point we return to in Section~\ref{sec:estimation}.
+
+\subsection{Self-similarity and the scaling form}
+
+The self-similar structure of a symmetric $\alpha$-stable law implies that the
+density $P_{\alpha,\gamma}(x,\tau)$ of the $\tau$-step sum of i.i.d.\ stable
+increments satisfies
+\begin{equation}
+  P_{\alpha,\gamma}(x,\tau)
+  = (\gamma\tau)^{-1/\alpha}
+    F_\alpha\!\left(\frac{x}{(\gamma\tau)^{1/\alpha}}\right),
+  \label{eq:scaling}
+\end{equation}
+where $F_\alpha$ is the standardized stable density and $\gamma$ is the scale
+parameter \parencite{SamorodTaqqu1994}. Setting $x = 0$ and using
+$F_\alpha(0) = \Gamma(1/\alpha)/(\pi\alpha)$ yields the \textit{peak-scaling
+formula}
+\begin{equation}
+  P(0,\tau) = \frac{\Gamma(1/\alpha)}{\pi\alpha}\,(\gamma\tau)^{-1/\alpha},
+  \label{eq:peak}
+\end{equation}
+which gives a direct route to estimating $\alpha$ from the log-log regression
+of the empirical PDF at the origin against the lag $\tau$.
+
+\subsection{The truncated Lévy flight}
+
+The idealized $\alpha$-stable model ($\alpha < 2$) has infinite variance, which
+creates a tension with the finite empirical moments of any finite price dataset.
+\textcite{MantegnaStanley1994} introduced the \textit{truncated Lévy flight}
+(TLF) as a resolution: the distribution follows the stable power law over
+intermediate scales but is exponentially cut off in the far tail, producing a
+finite variance while preserving Lévy-like body scaling over the observable
+range. The TLF framework has become standard in empirical Lévy finance
+\parencite{BouchaudPotters2003,Cont2001,Mantegna1991}, because it allows
+finite-variance dependence tools (variance ratios, autocorrelations) to be
+applied to the same data for which the Lévy body is claimed, a hybrid
+strategy that underpins the bias-correction analysis of this paper.
+
+A brief controversy arose when \textcite{CopsonSmith1995} and
+\textcite{Mantegna1995reply} debated whether the S\&P 500 data in
+\textcite{MantegnaStanley1995} were truly consistent with a stable law;
+the consensus view \parencite[Ch.~6]{BouchaudPotters2003} is that the TLF
+provides an adequate phenomenological description for the lag ranges relevant to
+intraday and short-horizon trading.
+
+
+% ══════════════════════════════════════════════════════════════════════════════
+\section{Empirical Evidence for Heavy-Tailed Scaling in Financial Markets}
+\label{sec:empirical}
+% ══════════════════════════════════════════════════════════════════════════════
+
+\subsection{Mantegna and Stanley: intraday S\&P 500 scaling}
+
+The first systematic empirical study of Lévy-type scaling in intraday data is
+\textcite{MantegnaStanley1994,MantegnaStanley1995}. Using high-frequency
+S\&P 500 index data, they showed that the central body of the return
+distribution follows a symmetric Lévy law with $\alpha \approx 1.4$ for time
+scales spanning three orders of magnitude (1 minute to 1000 minutes), while the
+far tails fall off faster than any power law, consistent with the TLF.
+\textcite{MantegnaStanley1995} demonstrated that the PDF collapses onto a
+universal curve under the rescaling of Equation~\eqref{eq:scaling}, providing
+the first clean empirical illustration of the procedure central to this paper.
+
+\subsection{Cross-market universality: the inverse cubic and the 1.7 regime}
+
+\textcite{Gopikrishnan1998} and \textcite{Gopikrishnan1999} extended the
+analysis to individual US stocks using 40 million intraday transactions. They
+found a power-law tail $P(|r| > u) \sim u^{-\zeta}$ with $\zeta \approx 3$
+(the ``inverse cubic law''), beyond the Lévy-stable regime ($\zeta < 2$ would
+be required for stability). \textcite{Weron2001} showed, however, that a
+true Lévy-stable distribution with $\alpha \approx 1.7$-$1.8$ would produce
+apparent Hill-estimator values of $\zeta \approx 3$ on samples of realistic
+size, owing to finite-sample bias. This reconciliation between the Lévy and
+inverse-cubic pictures motivates the multi-estimator approach in our paper and
+the conservative interpretation of $\hat\alpha$ as a body-scaling parameter
+rather than a tail-index claim.
+
+\textcite{Plerou1999} showed that the scaling exponent is consistent across
+a large cross-section of US equities, supporting the universality picture.
+\textcite{Gabaix2003} provided a theoretical foundation for the inverse-cubic
+law based on the trading of large institutions.
+
+More recently, \textcite{Kadioglu2021} applied return-distribution analysis to
+a broad cross-section of equity indices and showed that the tail behavior of
+intraday returns continues to be well-characterized by power-law decay, with
+evidence for the Lévy-stable regime surviving in the central body even on
+data from 2010-2019. \textcite{Masoliver2021} provided an updated analysis of
+financial return distributions over the period 2017-2020, confirming that the
+inverse-cubic power law remains an appropriate global reference for tails at
+intraday horizons, even as the distribution of returns has become heavier-tailed
+in the post-crisis period. \textcite{Jiang2019} found similar scaling behavior
+in Chinese equity markets.
+
+\subsection{Futures markets specifically}
+
+While most of the econophysics literature focuses on equity index or FX
+returns, several studies have examined Lévy-type scaling in futures.
+\textcite{Bouchaud2002} documented heavy-tailed and approximately stable
+distributions for stock-index futures, bond futures, and commodity futures,
+finding exponents consistent with $\alpha \in (1.5, 2)$ across markets.
+\textcite{Cont2001} surveyed stylized facts across equity, FX, and futures
+instruments, noting that heavy tails and volatility clustering are robust
+across all asset classes. The recent survey \textcite{ContMiami2023}
+verified that Cont's 2001 stylized facts, including heavy tails and the
+absence of significant linear autocorrelation in returns, continue to hold
+for intraday equity data from 2018-2019.
+
+\subsection{Stability of the scaling picture under market evolution}
+
+A natural concern is whether the Lévy-scaling picture documented in the 1990s
+and early 2000s remains valid as market microstructure has evolved, driven by
+algorithmic and high-frequency trading. \textcite{Masoliver2021} addressed this
+directly, finding that the central-body scaling is persistent, although the
+cross-over to the cut-off tail occurs at smaller multiples of the standard
+deviation than in earlier data. \textcite{ContMiami2023} confirmed the
+stability of heavy-tail and autocorrelation stylized facts in 2018-2019 Dow
+Jones constituent data. These findings justify applying the Lévy peak-scaling
+framework to contemporary futures data.
+
+
+% ══════════════════════════════════════════════════════════════════════════════
+\section{Estimation of the Scaling and Tail Exponent}
+\label{sec:estimation}
+% ══════════════════════════════════════════════════════════════════════════════
+
+\subsection{Log-log regression (peak-scaling) estimator}
+
+The peak-scaling estimator, which regresses $\log\widehat{P}(0,\tau)$ on
+$\log\tau$ and infers $\hat\alpha = -1/\hat\beta$, was introduced by
+\textcite{MantegnaStanley1994}. It has the advantage of being entirely
+nonparametric with respect to the stable density shape, depending only on the
+$\tau^{-1/\alpha}$ scaling of the central value. However, because it uses only
+the information at $x = 0$, it discards information in the body and tails,
+making it less efficient than maximum-likelihood or characteristic-function
+estimators.
+
+\textcite{Weron2001} documented that log-log regression systematically
+overestimates $\alpha$ for stable distributions with $\alpha$ near 2 on finite
+samples, because the asymptotic tail has not yet emerged. This paper takes this
+caution seriously by (i)~reporting $R^2$ as a diagnostic for the linearity
+assumption, (ii)~comparing three independent estimators, and (iii)~providing
+the bias-correction formula for mean reversion derived in Extension~3.
+
+\subsection{Collapse-quality estimator}
+
+The PDF collapse estimator, which chooses $\alpha$ to minimize the spread of the
+rescaled empirical curves $\tau^{1/\alpha}\widehat{P}(\tau^{1/\alpha}\tilde{x},\tau)$
+around a common function, was proposed as a data-driven alternative to
+regression-based methods by \textcite{Drozdz2003}. A closely related
+``curve collapse'' approach has been used extensively in condensed-matter and
+statistical physics to identify critical exponents \parencite{Houdayer2004}.
+In the financial context, the collapse minimizes a mean-squared log-deviation
+score, which weights the central body and the tails more evenly than a
+pure-origin regression. The method is described and applied by
+\textcite{BouchaudPotters2003} (Ch.~2) as a consistency check on the
+peak-scaling estimate.
+
+\subsection{Fractional-order structure functions}
+
+Structure functions $S_q(\tau) = \mathbb{E}[|\Delta P_\tau|^q]$ were introduced
+to finance by \textcite{Mandelbrot1997} and \textcite{MuzyBacry1993} in the
+context of testing for multifractal scaling. Under exact Lévy scaling,
+$S_q(\tau) \propto \tau^{q/\alpha}$ for $q < \alpha$; the implied $\alpha$
+estimates from different values of $q$ should agree. Departures from linearity
+in the scaling exponent $\zeta(q) = q/\alpha$ signal multifractal or
+slowly-varying corrections. \textcite{BouchaudPotters2003} (Ch.~8) provides a
+comprehensive treatment. For the fractional moment orders $q < 1$ used in this
+paper, the estimator is particularly robust to outliers and converges reliably
+on samples of moderate size \parencite{Uchaikin2003}.
+
+\textcite{Barunik2010} provided Monte-Carlo evidence comparing Hill, Pickands,
+and moment-based estimators, confirming that for stable-distributed data with
+$\alpha \in [1.5,2)$, log-log moment-based estimators (including fractional
+structure functions) have lower bias than the Hill estimator.
+
+\subsection{Maximum-likelihood and characteristic-function estimators}
+
+For comparison, we note that maximum-likelihood estimators (MLE) for stable
+distributions are available \parencite{Nolan2001} and have been shown to be
+asymptotically efficient \parencite{DuMoutierde1983}. Characteristic-function
+(CF) based estimators, including those of \textcite{Feuerverger1981} and
+\textcite{Press1972}, exploit the analytic form of the CF. Both families are
+computationally more demanding than the log-log regression and require a fully
+parametric specification of the stable family, losing the model-free character
+of the peak-scaling approach. The present study intentionally uses
+semi-parametric methods (tip scaling, collapse, and structure functions) to
+reduce sensitivity to misspecification of the tail shape.
+
+\subsection{The finite-variance debate and the Hill estimator}
+
+A persistent question in the empirical literature is whether stock and futures
+returns have $\alpha < 2$ (infinite variance) or $\alpha > 2$ (finite variance,
+power-law but non-stable tails). The Hill estimator consistently reports
+$\hat\alpha \approx 3$ for large cross-sections of equities
+\parencite{Gopikrishnan1999}, which would place the tail exponent outside the
+Lévy-stable regime. \textcite{Weron2001} showed definitively that the Hill
+estimator and log-log regression both overestimate $\alpha$ for stable
+distributions near $\alpha = 2$: samples of $10^6$ or more are required before
+the true tail emerges, while practical financial datasets rarely exceed $10^4$
+to $10^5$ observations at intraday frequency.
+
+The reconciliation proposed by \textcite{Weron2001} and adopted here is that
+the body of the empirical distribution (where the bulk of the sample mass lies)
+is consistent with a Lévy-stable law with $\alpha \approx 1.7$-$1.8$, while
+the far tail appears steeper due to the truncation of real-world distributions.
+The peak-scaling and collapse estimators are sensitive primarily to the central
+body and are therefore appropriate tools for testing the TLF picture, even
+though they would not reliably recover the true tail index of a pure stable law
+on these sample sizes.
+
+
+% ══════════════════════════════════════════════════════════════════════════════
+\section{Short-Term Dependence and the Variance-Ratio Framework}
+\label{sec:vr}
+% ══════════════════════════════════════════════════════════════════════════════
+
+\subsection{The random-walk hypothesis and the variance-ratio test}
+
+The random-walk hypothesis (RWH) asserts that successive price increments are
+independent, so the variance of the $\tau$-step change scales linearly with
+$\tau$: $\mathrm{Var}(\Delta P_\tau) = \tau\,\mathrm{Var}(\delta_1)$.
+\textcite{LoMacKinlay1988} introduced the variance-ratio test
+\begin{equation}
+  VR(\tau) = \frac{\mathrm{Var}(\Delta P_\tau)}{\tau\,\mathrm{Var}(\delta_1)},
+  \label{eq:vr}
+\end{equation}
+which equals 1 under the RWH and deviates from 1 under mean reversion
+($VR < 1$) or momentum ($VR > 1$). They derived asymptotically valid
+$z$-statistics for both homoscedastic and heteroscedastic increments and
+applied the test to weekly US stock returns, finding $VR > 1$ (positive serial
+correlation) at short horizons. The comprehensive treatment of the test
+appears in \textcite{CampbellLoMacKinlay1997}, Chapter~2.
+
+The exact relationship between the variance ratio and the autocorrelation
+function is
+\begin{equation}
+  VR(\tau)
+  = 1 + 2\sum_{k=1}^{\tau-1}\!\left(1 - \frac{k}{\tau}\right)\rho(k),
+  \label{eq:vr_rho}
+\end{equation}
+where $\rho(k) = \mathrm{Corr}(\delta_t, \delta_{t+k})$. This identity is the
+basis for both of the variance-ratio estimators implemented in our code.
+
+\subsection{Mean reversion at short horizons in equity and futures markets}
+
+At the intraday and short-horizon frequencies relevant to this paper,
+the dominant finding is \textit{negative} serial correlation (mean reversion)
+in futures and equity returns, not the positive correlation found at weekly
+horizons by \textcite{LoMacKinlay1988}. Several mechanisms have been proposed:
+
+\textbf{Bid-ask bounce.} \textcite{Roll1984} showed that even in the absence
+of true serial correlation, transactions alternating between bid and ask prices
+generate spurious negative first-order autocorrelation. The magnitude is
+$\hat\rho(1) \approx -s^2/4$ where $s$ is the effective bid-ask spread. The
+bid-ask bounce contributes a mechanically-induced mean reversion at the 1-minute
+frequency used in this paper.
+
+\textbf{Order-book pressure and price reversion.} \textcite{Bouchaud2004}
+and \textcite{Farmer2006} documented that large market orders move prices, but
+this impact partially reverts as the order book replenishes. At 1-minute
+resolution, this ``impact reversion'' contributes to the negative
+autocorrelation of price changes.
+
+\textbf{Empirical magnitude.} The most relevant evidence for futures markets
+comes from \textcite{LoMacKinlay1990}, who found stronger mean reversion in
+small-capitalization stocks. For index futures specifically,
+\textcite{BouchaudPotters2003} (Ch.~6) report first-order autocorrelations
+$\hat\rho(1) \approx -0.1$ to $-0.2$ at 1-minute frequency across major equity
+index contracts, consistent with the values found in this paper.
+
+\subsection{Implications for peak-scaling estimation}
+
+The tension between the i.i.d.\ assumption of the Lévy scaling law and the
+empirically documented mean reversion motivates the bias-correction analysis
+of Extension~3 in this paper. Under weak dependence, the effective Lévy scale
+parameter at lag $\tau$ is modified by the variance ratio:
+$\gamma_{\mathrm{eff}}(\tau) = \gamma\tau \cdot VR(\tau)^{\alpha/2}$
+(derived from the Fourier-inversion formula of Equation~\eqref{eq:peak} and
+the second-cumulant correction of \textcite{BouchaudPotters2003}, Ch.~6).
+For a mean-reverting process $VR(\tau) < 1$, so the effective scale is smaller
+than the i.i.d.\ prediction, causing the raw peak-scaling regression to
+overestimate $\alpha$ (bias toward the Gaussian boundary).
+
+To our knowledge, this precise bias-correction formula for the peak-scaling
+estimator under a truncated-Lévy body with mean-reversion has not been derived
+and empirically validated in the prior literature. \textcite{BouchaudPotters2003}
+discuss the qualitative direction of the effect, and
+\textcite{SamorodTaqqu1994} (Section~7.2) derive the exact scale modification
+for stable ARMA models, but the specific OLS-bias formula and its cross-market
+validation are original contributions of the present study.
+
+\subsection{Extensions and alternatives to the variance-ratio test}
+
+\textcite{ChowDenning1993} extended the \textcite{LoMacKinlay1988} test to a
+joint test over multiple lags using the studentized maximum modulus distribution.
+\textcite{Wright2000} proposed rank and sign-based variance-ratio tests with
+better finite-sample size. \textcite{Richardson1991} derived the exact
+distribution of the variance-ratio statistic. These extensions are relevant for
+inference on the variance ratio; in our context we use the variance ratio as an
+input to a correction formula rather than as a test statistic, so we rely on
+the point-estimator interpretation of \textcite{CampbellLoMacKinlay1997}.
+
+
+% ══════════════════════════════════════════════════════════════════════════════
+\section{Intraday Volatility Seasonality and De-Seasonalization}
+\label{sec:seasonality}
+% ══════════════════════════════════════════════════════════════════════════════
+
+\subsection{The U-shaped intraday volatility pattern}
+
+It is a well-documented stylized fact that intraday price volatility follows a
+deterministic pattern across the trading session. For most equity and futures
+markets, volatility is elevated near the open (driven by overnight information
+arrival and the unwinding of market-open imbalances), depressed at midday, and
+rises again near the close (driven by end-of-day portfolio rebalancing and
+hedging). This ``U-shape'' was documented early by \textcite{WoodMcInishOrd1985}
+for NYSE equities and has since been replicated across asset classes and
+geographies.
+
+\subsection{Andersen and Bollerslev's decomposition model}
+
+The systematic econometric treatment of intraday periodicity is due to
+\textcite{AndersenBollerslev1997,AndersenBollerslev1998}, who showed that the
+dominant intraday volatility patterns in FX and equity markets can be factored
+as a deterministic time-of-day component multiplied by a stochastic process:
+$\sigma_t = \hat\sigma_{m(t)} \cdot \tilde\sigma_t$, where $m(t)$ is the
+minute-of-session. Removing the deterministic component by normalizing
+$\tilde\delta_t = \delta_t / \hat\sigma_{m(t)}$ substantially improves the fit
+of GARCH-type models for the residual stochastic volatility.
+
+\textcite{AndersenBollerslev1998} applied this decomposition to Deutsche
+Mark-Dollar FX returns and showed that the periodicity-adjusted series has
+substantially more stable autocorrelation properties. For equity index futures
+specifically, \textcite{Ederington1993} documented U-shaped volatility patterns
+in S\&P 500 futures and \textcite{Lee1994} showed that de-seasonalization is
+important for accurate volatility forecasting.
+
+\subsection{Effects on tail and scaling estimates}
+
+The interaction between intraday seasonality and tail exponent estimation has
+received less attention in the literature. If the intraday volatility profile
+is not removed, the estimated $\tau$-step increment distribution mixes
+low-volatility midday increments with high-volatility open and close increments.
+At short lags (small $\tau$), this mixture does not break self-similarity
+because the scaling formula is applied at fixed $\tau$; however, the effective
+scale parameter $\gamma$ in Equation~\eqref{eq:scaling} is biased by the time
+of day at which increments are drawn, potentially distorting the peak-scaling
+regression across lags.
+
+\textcite{BouchaudPotters2003} (Ch.~6) discuss the de-seasonalization step as
+standard practice before applying scaling analyses to intraday data. The
+question of whether de-seasonalization materially shifts $\hat\alpha$
+or improves collapse quality is examined across all eight markets in our
+study. This constitutes, to our knowledge, the most systematic multi-market
+test of the effect of de-seasonalization on Lévy peak-scaling estimates in the
+futures context.
+
+\subsection{Recent evidence on intraday patterns}
+
+\textcite{Kadioglu2023} applied recurrence quantification analysis to intraday
+data and confirmed the persistence of U-shaped volatility patterns in modern
+equity markets, noting their stability across market regimes. The volatility
+forecasting literature continues to treat de-seasonalization as a prerequisite
+for high-frequency modeling \parencite{ParkEomKim2022,LiangWan2023}.
+
+
+% ══════════════════════════════════════════════════════════════════════════════
+\section{Structure Functions, Multifractality, and Scaling Robustness}
+\label{sec:structure}
+% ══════════════════════════════════════════════════════════════════════════════
+
+\subsection{Structure functions in turbulence and finance}
+
+Fractional-order structure functions $S_q(\tau) = \mathbb{E}[|\Delta P_\tau|^q]$
+originated in Kolmogorov's theory of turbulence as a tool for characterizing
+the intermittency of velocity increments \parencite{Kolmogorov1941}. The same
+framework was imported into finance by \textcite{MuzyBacry1993,MuzyBacry1994}
+and \textcite{Mandelbrot1997} to test for simple versus multifractal scaling.
+Under a pure $\alpha$-stable law, the scaling exponent function $\zeta(q) =
+q/\alpha$ is linear in $q$ (monofractal scaling); any systematic concavity of
+$\hat\zeta(q)$ as a function of $q$ signals multifractality, i.e.\ the
+presence of multiple scaling exponents.
+
+\subsection{Evidence for and against multifractality in financial data}
+
+\textcite{Calvet1997} and \textcite{Mandelbrot1997} provided early evidence
+for multifractal scaling in FX data, and the multifractal random walk model of
+\textcite{BacryMuzy2003} has become influential in the volatility-modeling
+literature. However, the evidence is contested: \textcite{Cont2001} notes that
+apparent multifractality can arise from volatility clustering (GARCH effects)
+in finite samples, and \textcite{Eisler2004} showed that multifractal estimates
+from individual stocks are sensitive to the choice of $q$ values and sample length.
+
+More recently, \textcite{Saadaoui2024} applied multifractal detrended
+fluctuation analysis to cryptocurrency returns and found structured multifractal
+scaling, though with substantial sensitivity to the estimation window.
+\textcite{Morales2012} provided a detailed comparison of scaling exponent
+estimators for financial time series and found that the structure-function
+approach is reliable for $q \in (0,1)$ but sensitive to outliers for $q > 1$.
+
+The structure-function analysis in our paper uses $q \in \{0.25, 0.5, 0.75,
+1.0, 1.25, 1.5\}$, spanning both the sub-linear and super-linear regimes, and
+examines linearity of $\hat\zeta(q)$ as a consistency check on the Lévy
+scaling picture rather than a test for multifractality per se.
+
+\subsection{Asymmetry of return distributions}
+
+The symmetric Lévy model assumes that the increment distribution is symmetric
+around zero. A growing body of evidence suggests that this symmetry is
+approximate but not exact in equity and futures markets. Negative skewness
+(``leverage effect'') has been documented at daily and longer horizons
+\parencite{Cont2001,Bouchaud2001}. At intraday horizons the direction of
+asymmetry is less settled, but \textcite{Ait-Sahalia2002} found statistically
+significant skewness in high-frequency equity returns, while
+\textcite{BouchaudPotters2003} (Ch.~3) argue that the skewness at 1-minute
+frequency is small enough that the symmetric Lévy approximation is adequate as
+a first-order description.
+
+The asymmetry analysis in Extension~2 of our paper addresses this question
+directly: we test whether the positive and negative sides of the empirical PDF
+are significantly different and whether symmetrization materially improves
+collapse quality. This complements the theoretical asymmetric stable-distribution
+literature \parencite{Zolotarev1986,Nolan2001}.
+
+\subsection{Robustness analysis and sensitivity to methodological choices}
+
+The question of how sensitive estimated scaling exponents are to modeling
+and methodological choices has received growing attention. \textcite{Cont2001}
+emphasized that different estimators can give qualitatively different answers
+for the same dataset. \textcite{Weron2001} provided Monte Carlo evidence on the
+bias and variance of common estimators. \textcite{Barunik2010} compared
+tail-index estimators systematically and showed that Hill-based methods
+are unreliable for $\alpha$ near 2.
+
+Our robustness matrix (Extension~1) provides a systematic multi-estimator,
+multi-preprocessing, multi-market sensitivity table in the spirit of
+\textcite{Sala-i-Martin1997}'s sensitivity analysis methodology. To our
+knowledge, no prior study has reported such a comprehensive sensitivity analysis
+specifically for the Lévy peak-scaling estimate across a cross-section of
+futures markets.
+
+
+% ══════════════════════════════════════════════════════════════════════════════
+\section{Positioning of the Present Study}
+\label{sec:position}
+% ══════════════════════════════════════════════════════════════════════════════
+
+This paper contributes to each of the six literatures reviewed above.
+
+\textbf{Relative to the stable-distribution literature.} We apply the
+TLF framework of \textcite{MantegnaStanley1994,MantegnaStanley1995} to a
+cross-section of eight futures markets, extending the single-instrument analyses
+of the foundational econophysics literature to a broader empirical base.
+
+\textbf{Relative to the empirical scaling literature.} Whereas most
+studies focus on equity indices or individual stocks, we apply the Lévy
+peak-scaling and PDF collapse approach directly to liquid futures markets
+(equity index, fixed income, and commodity), testing the universality of
+the scaling exponent $\alpha \approx 1.7$-$1.8$ reported in the literature.
+
+\textbf{Relative to the estimation literature.} We compare three
+independent estimators (tip scaling, collapse quality, fractional structure
+functions) and construct a robustness matrix across all estimator-by-preprocessing
+combinations. The comparison addresses the cautions of \textcite{Weron2001}
+and \textcite{Barunik2010} about relying on a single estimator.
+
+\textbf{Relative to the variance-ratio literature.} We use the
+Campbell-Lo-MacKinlay variance ratio not as a test statistic but as a
+correction factor in a peak-scaling bias formula, a novel application that
+connects the dependence literature to the scaling literature. The resulting
+corrected estimator $\hat\alpha_{\mathrm{corr}}$ is, to our knowledge, the
+first closed-form bias correction for the Lévy peak-scaling estimator under
+short-term mean reversion.
+
+\textbf{Relative to the seasonality literature.} We provide the most
+systematic multi-market test of the effect of de-seasonalization on Lévy
+peak-scaling estimates, complementing the single-market studies of the
+intraday volatility literature.
+
+\textbf{Relative to the structure-function literature.} Our fractional
+structure-function analysis serves as a cross-check on the Lévy
+self-similarity assumption rather than a test for multifractality, consistent
+with the interpretation in \textcite{BouchaudPotters2003}.
+
+
+% ══════════════════════════════════════════════════════════════════════════════
+\printbibliography[heading=bibintoc,title={References}]
+% ══════════════════════════════════════════════════════════════════════════════
+
+\end{document}
