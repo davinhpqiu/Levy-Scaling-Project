@@ -1,6 +1,10 @@
+# Python
 __pycache__/
 *.pyc
 .ipynb_checkpoints/
+.venv/
+
+# LaTeX build artifacts
 *.aux
 *.log
 *.bbl
@@ -8,9 +12,14 @@ __pycache__/
 *.blg
 *.run.xml
 *.synctex.gz
+*.fls
+*.fdb_latexmk
+
+# macOS
 .DS_Store
-.venv/
+
+# Large data files (kept locally only)
 Data/
 FilledTimePrice.csv
 TimePrice.csv
-Levy PDF.xlsx
+"Levy PDF.xlsx"
