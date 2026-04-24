@@ -20,6 +20,6 @@ __pycache__/
 
 # Large data files (kept locally only)
 Data/
-FilledTimePrice.csv
-TimePrice.csv
-"Levy PDF.xlsx"
+
+# Course materials (local only)
+course_materials/
