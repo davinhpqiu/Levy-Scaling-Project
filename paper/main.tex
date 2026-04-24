@@ -1,0 +1,223 @@
+\documentclass[12pt,a4paper]{article}
+\input{preamble}
+\addbibresource{references.bib}
+
+\onehalfspacing
+
+% ── Title block ───────────────────────────────────────────────────────────────
+\title{\textbf{Lévy Scaling of Short-Horizon Futures Price Increments}\\[0.4em]
+       \large Estimation, Robustness, and Bias Correction}
+\author{Davin Hao-Ping Chiu}
+\date{\today}
+
+% ══════════════════════════════════════════════════════════════════════════════
+\begin{document}
+% ══════════════════════════════════════════════════════════════════════════════
+
+\maketitle
+
+% ── Abstract ──────────────────────────────────────────────────────────────────
+\begin{abstract}
+% TODO: write last (~150 words)
+% Cover: question, data (8 futures markets, 1-min OHLCV), methods
+% (peak-scaling, collapse, structure functions), key findings
+% (alpha ~ 1.7-1.8, robust across markets and estimators, bias correction
+% shifts alpha downward by ~0.02-0.05), conclusion.
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+% ══════════════════════════════════════════════════════════════════════════════
+\section{Introduction}
+\label{sec:intro}
+% ══════════════════════════════════════════════════════════════════════════════
+
+% TODO: ~2 pages
+% Motivate: why Lévy scaling in futures? what is the central question?
+% State the gap: no systematic multi-market, multi-estimator study with
+%   explicit bias correction for short-term mean reversion.
+% State contributions clearly (one paragraph, numbered or bulleted):
+%   (i)   baseline peak-scaling across 8 markets
+%   (ii)  effect of intraday seasonality removal on alpha-hat
+%   (iii) comparison of three independent estimators
+%   (iv)  robustness matrix across preprocessing and estimator choices
+%   (v)   asymmetry test of the symmetric Lévy assumption
+%   (vi)  closed-form bias correction under short-term mean reversion
+% Close with paper outline (one paragraph).
+
+
+% ══════════════════════════════════════════════════════════════════════════════
+\section{Background}
+\label{sec:background}
+% ══════════════════════════════════════════════════════════════════════════════
+
+% TODO: condensed from literature_review.tex (~4 pages)
+% Keep only what is directly needed to understand the methodology and results.
+% Suggested subsections:
+
+\subsection{Lévy-stable distributions and the peak-scaling formula}
+\label{sec:background:levy}
+
+% Stable class, self-similarity, Equation~\eqref{eq:scaling} and
+% Equation~\eqref{eq:peak}. Truncated Lévy flight as the working model.
+
+\subsection{Estimation of the scaling exponent}
+\label{sec:background:estimation}
+
+% Peak-scaling OLS, collapse-quality minimisation, fractional structure
+% functions. Finite-sample cautions (Weron 2001).
+
+\subsection{Short-term dependence and the variance-ratio bias}
+\label{sec:background:vr}
+
+% VR identity (Equation~\eqref{eq:vr_rho}), mean reversion at 1-minute
+% frequency, and how it biases the peak-scaling estimator upward.
+
+
+% ══════════════════════════════════════════════════════════════════════════════
+\section{Data}
+\label{sec:data}
+% ══════════════════════════════════════════════════════════════════════════════
+
+% TODO: ~1.5 pages
+% Subsections:
+
+\subsection{Markets and sample}
+\label{sec:data:markets}
+
+% Table: 8 futures contracts (YM, NQ, ER, ES, PT, FT, DA, CF),
+% asset class, exchange, tick size, multiplier, session hours,
+% sample period, number of observations.
+
+\subsection{Preprocessing}
+\label{sec:data:preprocessing}
+
+% Integer-scale price conversion (multiply by 1/tick).
+% LOCF gap-fill for missing minutes within session.
+% Log-spaced tau-grid construction.
+% No de-meaning or de-trending applied.
+
+
+% ══════════════════════════════════════════════════════════════════════════════
+\section{Methodology}
+\label{sec:methodology}
+% ══════════════════════════════════════════════════════════════════════════════
+
+\subsection{Empirical PDF estimation}
+\label{sec:methodology:pdf}
+
+% Histogram construction: bin width epsilon, range, normalisation.
+% Peak value P-hat(0, tau) extraction.
+% Reference Algorithm 1 (notebook).
+
+\subsection{Baseline peak-scaling estimator}
+\label{sec:methodology:tip}
+
+% OLS of log P-hat(0,tau) on log tau.
+% Slope = -1/alpha, intercept absorbs log(gamma).
+% R^2 as diagnostic for linearity.
+
+\subsection{Collapse-quality estimator}
+\label{sec:methodology:collapse}
+
+% Grid search over alpha in [1.2, 2.8].
+% Score(alpha) = mean sq. log deviation of rescaled curves.
+% Reference Algorithm 2 (notebook).
+
+\subsection{Structure-function estimator}
+\label{sec:methodology:sf}
+
+% S_q(tau) = E[|Delta P_tau|^q] for q in {0.25, 0.5, ..., 1.5}.
+% OLS of log S_q on log tau, slope = q/alpha.
+% Median over q -> alpha-hat_sf.
+
+\subsection{Intraday seasonality correction}
+\label{sec:methodology:seasonality}
+
+% Multiplicative model: delta_k = sigma_m(k) * delta-tilde_k.
+% sigma-hat_m estimated as cross-day mean absolute increment at minute m.
+% Normalised series cumsum -> de-seasonalised price series.
+% Re-run Section~\ref{sec:methodology:tip} on corrected series.
+
+\subsection{Robustness analysis}
+\label{sec:methodology:robustness}
+
+% Full factorial: epsilon in {...}, N_tau in {20, 37},
+% preprocessing in {raw, de-seasonalised},
+% estimator in {tip, collapse, sf}.
+% Variance decomposition by factor.
+
+\subsection{Bias correction}
+\label{sec:methodology:bias}
+
+% Autocorrelation rho-hat(k) estimated from 1-minute increments.
+% VR-hat(tau) from Equation~\eqref{eq:vr_rho}.
+% Correction term b(tau) = -0.5 log VR-hat(tau).
+% Corrected OLS: log P-hat(0,tau) - b(tau) ~ log tau -> alpha-hat_corr.
+% Reference Algorithm 3 (notebook).
+
+
+% ══════════════════════════════════════════════════════════════════════════════
+\section{Results}
+\label{sec:results}
+% ══════════════════════════════════════════════════════════════════════════════
+
+\subsection{Baseline scaling}
+\label{sec:results:baseline}
+
+% Report alpha-hat_tip and R^2 for all 8 markets.
+% Collapse plots (Figure~\ref{fig:collapse}).
+% Main finding: alpha ~ 1.7-1.8 with high R^2 across markets.
+
+\subsection{Effect of intraday seasonality}
+\label{sec:results:seasonality}
+
+% Delta alpha-hat after de-seasonalisation, by market.
+% Main finding: modest shift, direction varies by market.
+
+\subsection{Estimator comparison}
+\label{sec:results:estimators}
+
+% Table: alpha-hat_tip, alpha-hat_collapse, alpha-hat_sf by market.
+% Main finding: three estimators agree to within ~0.1.
+
+\subsection{Robustness}
+\label{sec:results:robustness}
+
+% Variance decomposition table.
+% Main finding: estimator choice dominates epsilon and N_tau.
+
+\subsection{Asymmetry}
+\label{sec:results:asymmetry}
+
+% A(x,tau) pointwise, mean |A| per lag.
+% Effect of symmetrisation on collapse quality.
+% Main finding: asymmetry is small; symmetric Lévy is adequate.
+
+\subsection{Bias correction}
+\label{sec:results:bias}
+
+% rho-hat(1) and VR-hat by market.
+% Delta alpha-hat = alpha-hat_tip - alpha-hat_corr.
+% Main finding: correction is systematic downward, magnitude ~0.02-0.05.
+
+
+% ══════════════════════════════════════════════════════════════════════════════
+\section{Conclusion}
+\label{sec:conclusion}
+% ══════════════════════════════════════════════════════════════════════════════
+
+% TODO: ~1 page
+% Summarise the six findings.
+% State limitations: single asset class (futures), body-scaling not
+%   tail-index, i.i.d. increments assumed within lags.
+% Suggest extensions: longer sample, intraday tau extension, GARCH
+%   residuals, cross-market correlation of alpha.
+
+
+% ══════════════════════════════════════════════════════════════════════════════
+\printbibliography[heading=bibintoc,title={References}]
+% ══════════════════════════════════════════════════════════════════════════════
+
+\end{document}

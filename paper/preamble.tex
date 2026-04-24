@@ -1,0 +1,48 @@
+% ── Encoding and fonts ────────────────────────────────────────────────────────
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+
+% ── Page layout ───────────────────────────────────────────────────────────────
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{setspace}
+\usepackage{parskip}
+
+% ── Mathematics ───────────────────────────────────────────────────────────────
+\usepackage{amsmath,amssymb,amsthm}
+
+% ── Typography ────────────────────────────────────────────────────────────────
+\usepackage{microtype}
+
+% ── Figures ───────────────────────────────────────────────────────────────────
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{subcaption}
+
+% ── Tables ────────────────────────────────────────────────────────────────────
+\usepackage{booktabs}
+\usepackage{array}
+
+% ── TikZ ──────────────────────────────────────────────────────────────────────
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric,arrows.meta,positioning,calc}
+
+% ── Bibliography ──────────────────────────────────────────────────────────────
+\usepackage[style=authoryear,
+            backend=biber,
+            maxbibnames=99,
+            maxcitenames=2,
+            uniquelist=false,
+            giveninits=true,
+            doi=true,
+            url=false]{biblatex}
+
+% ── Hyperlinks (load last) ─────────────────────────────────────────────────────
+\usepackage[hidelinks]{hyperref}
+
+% ── Custom notation ───────────────────────────────────────────────────────────
+\newcommand{\alphah}{\hat{\alpha}}          % estimated alpha
+\newcommand{\Ph}{\hat{P}}                   % empirical PDF
+\newcommand{\rhoh}{\hat{\rho}}              % estimated autocorrelation
+\newcommand{\VRh}{\widehat{VR}}             % estimated variance ratio
+\newcommand{\Etau}{\mathbb{E}}              % expectation
