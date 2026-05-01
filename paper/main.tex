@@ -80,23 +80,108 @@
 \label{sec:data}
 % ══════════════════════════════════════════════════════════════════════════════
 
-% TODO: ~1.5 pages
-% Subsections:
-
 \subsection{Markets and sample}
 \label{sec:data:markets}
 
-% Table: 8 futures contracts (YM, NQ, ER, ES, PT, FT, DA, CF),
-% asset class, exchange, tick size, multiplier, session hours,
-% sample period, number of observations.
+The dataset consists of 1-minute resolution day-session price histories for
+eight equity-index futures contracts spanning four geographical regions. The
+data were sourced from OneTick via TickData and cover each contract from its
+exchange inception through 14 January 2026. Table~\ref{tab:markets} provides
+a full description of each contract.
+
+\begin{table}[htbp]
+\centering
+\caption{Futures contracts in the sample. Session times are local exchange
+times. History runs from contract inception to 14 January 2026.}
+\label{tab:markets}
+\small
+\begin{tabular}{llllll}
+\toprule
+Symbol & Name & Region & Exchange & History start & Session \\
+\midrule
+YM & Dow Jones E-mini      & Americas & CBOT/CME           & May 2002    & 08:30--15:15 \\
+NQ & NASDAQ 100 E-mini     & Americas & CME                & Jul 1999    & 08:30--15:15 \\
+ER & Russell 2000 E-mini   & Americas & CBOT/CME           & Jan 2002    & 08:30--15:15 \\
+ES & S\&P 500 E-mini       & Americas & CME                & Sep 1997    & 08:30--15:15 \\
+PT & S\&P Canada 60        & Americas & Montreal SE        & Oct 1999    & 09:30--16:15 \\
+FT & FTSE 100              & Europe   & ICE Futures        & Jul 1998    & 08:00--16:30 \\
+DA & DAX                   & Europe   & EUREX              & Jan 1997    & 09:00--17:30 \\
+CF & CAC-40                & Europe   & Euronext           & May 2000    & 09:00--17:30 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The eight contracts were selected to provide broad coverage across asset
+classes and geographies rather than on the basis of any statistical
+pre-screening. Three North American equity-index contracts (YM, NQ, ER, ES)
+trade on CME Group venues; one Canadian contract (PT) trades on the Montreal
+Stock Exchange; and three European contracts (FT, DA, CF) cover the major
+continental and UK equity benchmarks.
+
+The raw files are stored in ``skip'' format: minutes with no transactions are
+omitted from the file rather than recorded as zero-volume observations. This
+is addressed in preprocessing (Section~\ref{sec:data:preprocessing}).
+
+To justify the use of 1-minute price changes as the elementary increment,
+Table~\ref{tab:sigma} reports the standard deviation of 1-minute price
+changes $\sigma_1$ and the average bid-ask spread $\Delta$ for each market.
+A necessary condition for 1-minute returns to carry genuine price information
+is $\sigma_1 / \Delta > 1$; otherwise a substantial fraction of observed
+changes reflects the bid-ask bounce rather than true price movement
+\parencite{Roll1984}. As the ratio $\sigma_1/\Delta$ exceeds 1 for all eight
+markets, the 1-minute frequency is appropriate.
+
+\begin{table}[htbp]
+\centering
+\caption{Standard deviation of 1-minute price changes $\sigma_1$, average
+bid-ask spread $\Delta$, and their ratio. All quantities are in integer-scaled
+price units (tick $= 1$).}
+\label{tab:sigma}
+\small
+\begin{tabular}{lrrr}
+\toprule
+Market & $\sigma_1$ & $\Delta$ (bid-ask) & $\sigma_1 / \Delta$ \\
+\midrule
+YM & 6.15 & 1.30 & 4.73 \\
+NQ & 2.33 & 0.48 & 4.90 \\
+ER & 0.51 & 0.22 & 2.32 \\
+ES & 0.68 & 0.25 & 2.71 \\
+PT & 2.78 & 2.50 & 1.11 \\
+FT & 3.48 & 1.20 & 2.90 \\
+DA & 2.61 & 2.00 & 1.31 \\
+CF & 0.46 & 0.22 & 2.09 \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 \subsection{Preprocessing}
 \label{sec:data:preprocessing}
 
-% Integer-scale price conversion (multiply by 1/tick).
-% LOCF gap-fill for missing minutes within session.
-% Log-spaced tau-grid construction.
-% No de-meaning or de-trending applied.
+Three preprocessing steps are applied uniformly across all markets before any
+statistical analysis.
+
+\textbf{Integer-scale conversion.} Raw prices are quoted in their native tick
+units. To work in integer arithmetic and avoid floating-point accumulation
+errors, each price series is multiplied by the contract-specific scaling
+factor $1/\Delta$ and rounded to the nearest integer, so that one tick
+corresponds to one integer unit. All subsequent price differences are
+therefore integer-valued.
+
+\textbf{Gap-filling.} The raw files omit minutes with no transactions. Missing
+minutes within a trading session are filled by carrying forward the last
+observed price (last-observation-carried-forward, LOCF). This preserves the
+equal-spacing of the 1-minute grid required for the lag-$\tau$ increment
+construction while recording zero price change during illiquid periods, which
+is consistent with the true mid-price behavior in the absence of transactions.
+
+\textbf{Lag grid construction.} Price increments $\delta_\tau(t) = P(t) -
+P(t-\tau)$ are formed for each lag $\tau$ on two log-spaced grids. The coarse
+grid ($N_\tau = 20$) spans $\tau \in \{1, 2, 3, 6, \ldots, 56{,}234\}$
+minutes; the fine grid ($N_\tau = 37$) spans the same range with higher
+density. The maximum lag of 56,234 minutes corresponds to approximately six
+months of trading for a 405-minute session, well beyond the scale at which
+convergence to Gaussian behavior is expected. Both grids are used in all
+estimations to assess the sensitivity of $\alphah$ to the choice of $N_\tau$.
 
 
 % ══════════════════════════════════════════════════════════════════════════════
