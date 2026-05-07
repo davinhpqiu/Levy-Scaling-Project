@@ -33,18 +33,77 @@
 \label{sec:intro}
 % ══════════════════════════════════════════════════════════════════════════════
 
-% TODO: ~2 pages
-% Motivate: why Lévy scaling in futures? what is the central question?
-% State the gap: no systematic multi-market, multi-estimator study with
-%   explicit bias correction for short-term mean reversion.
-% State contributions clearly (one paragraph, numbered or bulleted):
-%   (i)   baseline peak-scaling across 8 markets
-%   (ii)  effect of intraday seasonality removal on alpha-hat
-%   (iii) comparison of three independent estimators
-%   (iv)  robustness matrix across preprocessing and estimator choices
-%   (v)   asymmetry test of the symmetric Lévy assumption
-%   (vi)  closed-form bias correction under short-term mean reversion
-% Close with paper outline (one paragraph).
+The distributional properties of short-horizon price changes have been a
+central concern of financial economics and econophysics since at least
+\textcite{Bachelier1900}. The Gaussian random-walk model, which predicts
+normally distributed increments and variance scaling linearly with the holding
+period, is a natural first approximation but a poor empirical description of
+intraday returns. High-frequency data reveal distributions with heavy tails,
+excess kurtosis, and a central body that is far more peaked than the Gaussian.
+These features, documented across equities, foreign exchange, and derivatives
+markets, motivate the use of Lévy-stable distributions as a richer
+distributional model \parencite{Mandelbrot1963,MantegnaStanley1994,Cont2001}.
+
+The central prediction of the symmetric $\alpha$-stable model is
+\textit{self-similarity}: the distribution of $\tau$-step price increments is
+a rescaled version of the one-step distribution, with the scale factor growing
+as $\tau^{1/\alpha}$ for a characteristic exponent $\alpha\in(1,2)$. This
+implies, in particular, that the peak of the empirical probability density
+decays as $P(0,\tau)\propto\tau^{-1/\alpha}$, a relation that can be estimated
+by ordinary least squares on a log-log plot and that forms the basis of the
+\textit{peak-scaling} approach of \textcite{MantegnaStanley1994,MantegnaStanley1995}.
+The same self-similarity predicts that empirical PDFs at different lags, when
+rescaled by $\tau^{1/\alpha}$, should collapse onto a common curve, providing
+a qualitative visual test of the Lévy hypothesis. Both the regression and the
+collapse have been applied extensively in the econophysics literature, with
+estimated exponents consistently falling in the range $\alpha\approx 1.5$--$1.9$
+\parencite{Gopikrishnan1999,Weron2001,BouchaudPotters2003}.
+
+Despite this activity, three important gaps remain. First, most existing
+studies focus on a single market or a narrow class of instruments, typically
+US equity indices or individual stocks, and it is unclear how far the
+$\alpha\approx 1.7$--$1.8$ consensus extends to a broader cross-section of
+liquid futures contracts across different geographies and regulatory
+environments. Second, the sensitivity of $\alphah$ to methodological
+choices including histogram resolution, lag grid density, intraday
+seasonality removal, and estimator selection has not been systematically
+quantified in a single study; different choices can shift estimates by
+amounts that matter for practical inference. Third, and most substantively,
+the peak-scaling estimator is derived under the assumption of independent
+increments, yet 1-minute futures returns exhibit well-documented short-term
+mean reversion driven by the bid-ask bounce and order-book dynamics
+\parencite{Roll1984,Bouchaud2004}. The direction of the resulting bias is
+known qualitatively \parencite{BouchaudPotters2003}, but no closed-form
+correction has been derived and validated empirically.
+
+This paper addresses all three gaps. Using 1-minute OHLCV data for eight
+equity-index futures contracts spanning North America and Europe, sourced from
+OneTick via TickData and covering each contract from exchange inception through
+January 2026, we make six contributions. (i)~We establish a baseline
+peak-scaling survey across all eight markets, reporting $\alphah_{\mathrm{tip}}$
+and collapse diagnostics for each. (ii)~We test the effect of intraday
+seasonality removal on $\alphah$, running the full PDF analysis on both raw
+and de-seasonalized price series and comparing the resulting estimates.
+(iii)~We compare three independent estimators, tip-scaling OLS, collapse-quality
+minimization, and fractional-order structure functions, across all markets to
+assess their mutual consistency. (iv)~We construct a full-factorial robustness
+matrix spanning all combinations of histogram resolution, lag grid density,
+preprocessing choice, and estimator, and decompose the variance of $\alphah$
+across these factors to identify which choices matter most. (v)~We test the
+symmetry assumption of the Lévy model by computing the pointwise asymmetry of
+the empirical PDFs and examining whether symmetrization improves collapse
+quality. (vi)~We derive a closed-form bias correction for the peak-scaling
+estimator under short-term mean reversion, express it in terms of the
+Campbell-Lo-MacKinlay variance ratio, and validate the correction across all
+eight markets.
+
+The paper is organized as follows. Section~\ref{sec:background} provides
+the theoretical background on Lévy-stable distributions, peak-scaling
+estimation, and the variance-ratio framework. Section~\ref{sec:data} describes
+the data and preprocessing steps. Section~\ref{sec:methodology} develops the
+six analytical methods in detail. Section~\ref{sec:results} presents the
+results for each contribution. Section~\ref{sec:conclusion} summarizes the
+findings, discusses limitations, and suggests extensions.
 
 
 % ══════════════════════════════════════════════════════════════════════════════
