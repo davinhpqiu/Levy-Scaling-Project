@@ -52,27 +52,158 @@
 \label{sec:background}
 % ══════════════════════════════════════════════════════════════════════════════
 
-% TODO: condensed from literature_review.tex (~4 pages)
-% Keep only what is directly needed to understand the methodology and results.
-% Suggested subsections:
-
 \subsection{Lévy-stable distributions and the peak-scaling formula}
 \label{sec:background:levy}
 
-% Stable class, self-similarity, Equation~\eqref{eq:scaling} and
-% Equation~\eqref{eq:peak}. Truncated Lévy flight as the working model.
+The Lévy-Khintchine theorem establishes that the class of stable distributions
+is the complete set of non-trivial distributional limits of normalized sums of
+i.i.d.\ random variables \parencite{SamorodTaqqu1994,GnedenkoKolmogorov1954}.
+A symmetric $\alpha$-stable variable $X \sim S_\alpha(\gamma,0,0)$ has
+characteristic function
+\begin{equation}
+  \Etau\!\left[e^{iqX}\right] = \exp\!\left(-\gamma|q|^\alpha\right),
+  \quad \gamma > 0,\quad \alpha \in (0,2].
+  \label{eq:cf}
+\end{equation}
+The Gaussian ($\alpha = 2$) is the unique finite-variance special case; for
+$\alpha < 2$ the tails decay algebraically as $P(|X|>u)\sim C_\alpha u^{-\alpha}$,
+so all moments of order $\geq\alpha$ are infinite.
+
+For i.i.d.\ increments drawn from $S_\alpha(\gamma_1,0,0)$, the $\tau$-step sum
+has scale $\gamma = \gamma_1^\alpha\tau$, yielding the self-similarity property
+\begin{equation}
+  P_{\alpha,\gamma}(x,\tau)
+  = (\gamma\tau)^{-1/\alpha}
+    F_\alpha\!\left(\frac{x}{(\gamma\tau)^{1/\alpha}}\right),
+  \label{eq:scaling}
+\end{equation}
+where $F_\alpha$ is the standardized stable density. This scaling form is the
+central prediction of the Lévy model: the shape of the increment distribution
+is identical at every lag, up to a scale factor growing as $\tau^{1/\alpha}$.
+Setting $x=0$ and using $F_\alpha(0) = \Gamma(1/\alpha)/(\pi\alpha)$ gives the
+\textit{peak-scaling formula}
+\begin{equation}
+  P(0,\tau)
+  = \frac{\Gamma(1/\alpha)}{\pi\alpha}\,(\gamma\tau)^{-1/\alpha}.
+  \label{eq:peak}
+\end{equation}
+The log-log regression of $\Ph(0,\tau)$ on $\tau$ therefore has slope
+$-1/\alpha$, independent of the scale parameter $\gamma$.
+
+\textcite{Mandelbrot1963} first proposed that asset-price increments lie in
+the domain of attraction of a stable law with $\alpha\in(1,2)$.
+\textcite{MantegnaStanley1994,MantegnaStanley1995} provided the first
+systematic intraday evidence using S\&P 500 data, finding $\alpha\approx 1.4$
+over three orders of magnitude in lag and demonstrating clean PDF collapse.
+The truncated Lévy flight (TLF) resolves the tension between
+infinite-variance stable laws and finite empirical moments: the distribution
+follows the stable power law over intermediate scales but is exponentially
+cut off in the far tail, producing finite variance while preserving
+Lévy-like body scaling over the observable range
+\parencite{MantegnaStanley1994,BouchaudPotters2003}. \textcite{Weron2001}
+showed that samples of $10^6$ or more are required before the true stable tail
+emerges, far beyond the practical size of intraday datasets, so empirical
+$\alphah$ estimates are best interpreted as body-scaling parameters rather
+than tail-index claims.
+
+\textcite{Gopikrishnan1999} extended the analysis to individual US stocks and
+found power-law tails with exponent $\zeta\approx 3$, outside the Lévy-stable
+regime in the strict sense. \textcite{Weron2001} showed this apparent
+discrepancy is a finite-sample artifact: a Lévy-stable distribution with
+$\alpha\approx 1.7$-$1.8$ produces Hill-estimator values of $\zeta\approx 3$
+on samples of realistic size. This reconciliation motivates the
+multi-estimator approach of the present paper and the conservative
+interpretation of $\alphah$ as a central-body parameter. More recent work by
+\textcite{Masoliver2021} and \textcite{ContMiami2023} confirms that the
+central-body Lévy-scaling picture is stable through the 2010s, justifying its
+application to contemporary futures data.
 
 \subsection{Estimation of the scaling exponent}
 \label{sec:background:estimation}
 
-% Peak-scaling OLS, collapse-quality minimisation, fractional structure
-% functions. Finite-sample cautions (Weron 2001).
+Three estimation strategies are used in this paper.
+
+The \textit{peak-scaling OLS} estimator, introduced by
+\textcite{MantegnaStanley1994}, regresses $\log\Ph(0,\tau)$ on $\log\tau$ and
+recovers $\alphah_{\mathrm{tip}} = -1/\hat{m}$ from the slope $\hat{m}$.
+The estimator is semi-parametric: it uses only the value of the distribution
+at the origin and makes no assumption about the shape elsewhere.
+
+The \textit{collapse-quality} estimator \parencite{Drozdz2003} chooses
+$\alpha$ to minimize the spread of the rescaled empirical curves
+$\tau^{1/\alpha}\Ph(\tau^{1/\alpha}\tilde{x},\tau)$ around a common function.
+A mean-squared log-deviation score weights the central body and the tails
+more evenly than a pure-origin regression, providing an independent route to
+$\alphah$ that does not rely on a single histogram bin.
+
+The \textit{fractional structure function} estimator
+\parencite{MuzyBacry1993,BouchaudPotters2003} exploits the prediction
+$S_q(\tau) = \Etau[|\Delta P_\tau|^q] \propto \tau^{q/\alpha}$ for $q <
+\alpha$. A log-log regression of $\hat{S}_q(\tau)$ on $\tau$ yields
+slope $q/\alphah_q$; the median across moment orders
+$q\in\{0.25,0.5,0.75,1.0,1.25,1.5\}$ gives $\alphah_{\mathrm{sf}}$.
+Fractional orders $q\in(0,1)$ downweight outliers and converge reliably on
+moderate samples \parencite{Uchaikin2003}, while $q\in(1,\alpha)$ are
+sensitive to the tail. Systematic concavity of the empirical scaling exponent
+$\hat\zeta(q) = q/\alphah_q$ would signal multifractal corrections beyond
+simple Lévy scaling \parencite{Mandelbrot1997,MuzyBacry1993}.
+
+\textcite{Weron2001} and \textcite{Barunik2010} document that all three of
+these semi-parametric methods outperform the Hill estimator for $\alpha$ near
+2 on finite samples. The comparison of the three estimators across all eight
+markets is central to the robustness analysis of this paper.
 
 \subsection{Short-term dependence and the variance-ratio bias}
 \label{sec:background:vr}
 
-% VR identity (Equation~\eqref{eq:vr_rho}), mean reversion at 1-minute
-% frequency, and how it biases the peak-scaling estimator upward.
+\textcite{LoMacKinlay1988} introduced the variance ratio
+\begin{equation}
+  VR(\tau) = \frac{\mathrm{Var}(\Delta P_\tau)}{\tau\,\mathrm{Var}(\delta_1)},
+  \label{eq:vr}
+\end{equation}
+which equals 1 under i.i.d.\ increments, exceeds 1 under positive serial
+correlation, and falls below 1 under mean reversion. The exact relationship
+to the autocorrelation function is
+\begin{equation}
+  VR(\tau)
+  = 1 + 2\sum_{k=1}^{\tau-1}\!\left(1-\frac{k}{\tau}\right)\rho(k),
+  \label{eq:vr_rho}
+\end{equation}
+which forms the basis for both variance-ratio estimators implemented in the
+notebook.
+
+At 1-minute frequency the dominant effect is mean reversion, not the positive
+correlation found at weekly horizons by \textcite{LoMacKinlay1988}. Two
+mechanisms contribute. \textcite{Roll1984} showed that bid-ask bounce
+generates spurious first-order autocorrelation $\rhoh(1)\approx -s^2/4$ for
+effective spread $s$, a purely mechanical effect. \textcite{Bouchaud2004} and
+\textcite{Farmer2006} documented that large market orders move prices but
+this impact partially reverts as the order book replenishes, adding genuine
+mean reversion at short horizons. \textcite{BouchaudPotters2003} (Ch.~6)
+report $\rhoh(1)\approx -0.1$ to $-0.2$ at 1-minute frequency in major
+equity index futures, consistent with the values found in this paper.
+
+The canonical peak formula~\eqref{eq:peak} is derived under strictly
+independent increments. When $VR(\tau)\neq 1$, the effective Lévy scale at
+lag $\tau$ becomes $\gamma\tau\cdot VR(\tau)^{\alpha/2}$, so the corrected
+log-peak regression reads
+\begin{equation}
+  \log P(0,\tau)
+  = -\frac{1}{\alpha}\log\tau
+    - \frac{1}{2}\log VR(\tau)
+    + \mathrm{const}.
+  \label{eq:corrected_peak}
+\end{equation}
+For a mean-reverting process ($VR(\tau)<1$) the omission of the second term
+causes the raw OLS slope to underestimate $-1/\alpha$ in magnitude, biasing
+$\alphah_{\mathrm{tip}}$ upward toward the Gaussian boundary. The correction
+procedure is developed in Section~\ref{sec:methodology:bias}. To our
+knowledge, this closed-form bias formula for the Lévy peak-scaling estimator
+under short-term mean reversion has not been previously derived and validated
+across a cross-section of futures markets; \textcite{BouchaudPotters2003}
+(Ch.~6) discuss the qualitative direction of the effect, but the specific OLS
+bias formula and cross-market validation are original contributions of the
+present study.
 
 
 % ══════════════════════════════════════════════════════════════════════════════
@@ -189,55 +320,148 @@ estimations to assess the sensitivity of $\alphah$ to the choice of $N_\tau$.
 \subsection{Empirical PDF estimation}
 \label{sec:methodology:pdf}
 
-% Histogram construction: bin width epsilon, range, normalisation.
-% Peak value P-hat(0, tau) extraction.
-% Reference Algorithm 1 (notebook).
+For each market and lag $\tau$ on the grid, price increments
+$\Delta P_\tau(t) = P(t) - P(t-\tau)$ are formed from the gap-filled
+integer-scaled price series. The histogram bin width is $\Delta x = \varepsilon
+\cdot \Delta$, where $\Delta$ is the bid-ask spread in tick units and
+$\varepsilon$ is a dimensionless resolution parameter. The normalised histogram
+density is
+\begin{equation}
+  \Ph(x_j,\tau)
+  = \frac{\#\{i: \Delta P_\tau(t_i)\in\text{bin }j\}}{N_\tau\cdot\Delta x},
+  \label{eq:pdf_hat}
+\end{equation}
+where $N_\tau$ is the number of available increments. The bin half-width
+$x_{\max}$ is set to cover the bulk of the distribution while maintaining
+$N_x = 2{,}000$ bins. The empirical peak $\Ph(0,\tau)$ is the density of the
+bin whose centre is nearest $x = 0$.
+
+The resolution parameter $\varepsilon$ is treated as a sensitivity dimension:
+all analyses are run at $\varepsilon\in\{0.1,0.2,0.3,0.4,0.5\}$ and the
+sensitivity of $\alphah$ to this choice is quantified in the robustness matrix
+(Section~\ref{sec:methodology:robustness}).
 
 \subsection{Baseline peak-scaling estimator}
 \label{sec:methodology:tip}
 
-% OLS of log P-hat(0,tau) on log tau.
-% Slope = -1/alpha, intercept absorbs log(gamma).
-% R^2 as diagnostic for linearity.
+Taking logs of Equation~\eqref{eq:peak} gives the tip regression
+\begin{equation}
+  \log\Ph(0,\tau)
+  = -\frac{1}{\alpha}\log\tau + c + u_\tau,
+  \label{eq:tip_ols}
+\end{equation}
+where $c = \log[\Gamma(1/\alpha)/(\pi\alpha)] - \log(\gamma)/\alpha$ is a
+nuisance intercept and $u_\tau$ is a residual. Ordinary least squares on
+Equation~\eqref{eq:tip_ols} over the full $\tau$ grid yields the slope
+$\hat{m}$ and the baseline estimate $\alphah_{\mathrm{tip}} = -1/\hat{m}$.
+The coefficient of determination $R^2$ is reported as a diagnostic for the
+power-law linearity assumption; a high $R^2$ is necessary but not sufficient
+for the Lévy model.
 
 \subsection{Collapse-quality estimator}
 \label{sec:methodology:collapse}
 
-% Grid search over alpha in [1.2, 2.8].
-% Score(alpha) = mean sq. log deviation of rescaled curves.
-% Reference Algorithm 2 (notebook).
+For a trial exponent $\alpha$, define the rescaled coordinate
+$\tilde{x} = x/\tau^{1/\alpha}$ and the rescaled density
+$\tilde{P}(\tilde{x},\tau) = \tau^{1/\alpha}\Ph(x,\tau)$. Under exact Lévy
+self-similarity all rescaled curves collapse onto the common function
+$F_\alpha$. Collapse quality is measured by
+\begin{equation}
+  \mathrm{Score}(\alpha)
+  = \frac{1}{|\mathcal{G}||\mathcal{T}|}
+    \sum_{\tilde{x}_j\in\mathcal{G}}
+    \sum_{\tau\in\mathcal{T}}
+    \!\left[\log\tilde{P}(\tilde{x}_j,\tau) - \mu_j\right]^2,
+  \label{eq:score}
+\end{equation}
+where $\mu_j = |\mathcal{T}|^{-1}\sum_\tau\log\tilde{P}(\tilde{x}_j,\tau)$ is
+the cross-$\tau$ log-mean at grid point $\tilde{x}_j$ and $\mathcal{G}$ is a
+common evaluation grid in $\tilde{x}$. The collapse estimator
+$\alphah_{\mathrm{collapse}}$ is the minimiser of Score($\alpha$) over a grid
+of 160 candidate values in $[1.2,2.8]$.
 
 \subsection{Structure-function estimator}
 \label{sec:methodology:sf}
 
-% S_q(tau) = E[|Delta P_tau|^q] for q in {0.25, 0.5, ..., 1.5}.
-% OLS of log S_q on log tau, slope = q/alpha.
-% Median over q -> alpha-hat_sf.
+For each moment order $q\in\{0.25,0.50,0.75,1.00,1.25,1.50\}$, the empirical
+structure function is
+\begin{equation}
+  \hat{S}_q(\tau)
+  = \frac{1}{N_\tau}\sum_t |\Delta P_\tau(t)|^q.
+  \label{eq:sf}
+\end{equation}
+The Lévy scaling prediction $\hat{S}_q(\tau) \propto \tau^{q/\alpha}$ implies
+the log-log regression slope $\hat\zeta(q) = q/\alphah_q$. The
+structure-function estimator $\alphah_{\mathrm{sf}}$ is the median of
+$\alphah_q$ across the six moment orders. Fractional orders $q<1$ downweight
+large increments and converge reliably on moderate samples, while
+$q\in(1,\alpha)$ probe the tail more directly. Systematic concavity of
+$\hat\zeta(q)$ would signal multifractal corrections; the present analysis
+uses the structure functions as a cross-check on the Lévy self-similarity
+assumption rather than a test for multifractality.
 
 \subsection{Intraday seasonality correction}
 \label{sec:methodology:seasonality}
 
-% Multiplicative model: delta_k = sigma_m(k) * delta-tilde_k.
-% sigma-hat_m estimated as cross-day mean absolute increment at minute m.
-% Normalised series cumsum -> de-seasonalised price series.
-% Re-run Section~\ref{sec:methodology:tip} on corrected series.
+Equity-index futures exhibit a well-documented U-shaped intraday volatility
+pattern \parencite{WoodMcInishOrd1985,AndersenBollerslev1997}. The
+seasonality model decomposes the 1-minute increment as $\delta_k =
+\hat\sigma_{m(k)}\cdot\tilde\delta_k$, where $m(k)\in\{1,\ldots,M\}$ is the
+minute-of-session and $\hat\sigma_m$ is the deterministic intraday factor. The
+profile is estimated as the cross-day mean absolute increment at each
+minute-of-session:
+\begin{equation}
+  \hat\sigma_m
+  = \frac{1}{D_m}\sum_{d:\,m(k)=m}|\delta_k|,
+  \label{eq:profile}
+\end{equation}
+where $D_m$ is the number of trading days with an observation at minute $m$.
+The profile is normalized to mean 1 across the session. The de-seasonalized
+increment is $\tilde\delta_k = \delta_k/\hat\sigma_{m(k)}$, and the
+de-seasonalized cumulative price series is $\tilde{P}(t)
+= \sum_{k=1}^t\tilde\delta_k$. The full PDF analysis is rerun on
+$\Delta\tilde{P}_\tau$, and the resulting $\alphah$ is compared to the
+baseline raw estimate to isolate the effect of the seasonality removal.
 
 \subsection{Robustness analysis}
 \label{sec:methodology:robustness}
 
-% Full factorial: epsilon in {...}, N_tau in {20, 37},
-% preprocessing in {raw, de-seasonalised},
-% estimator in {tip, collapse, sf}.
-% Variance decomposition by factor.
+A full-factorial sensitivity analysis spans all combinations of bin resolution
+$\varepsilon\in\{0.1,0.2,0.3,0.4,0.5\}$, lag grid density $N_\tau\in\{20,37\}$,
+preprocessing (raw or de-seasonalized), and estimator (tip, collapse,
+structure functions). Every combination is run for all eight markets, producing
+a robustness matrix of $\alphah$ estimates. The contribution of each factor to
+the cross-cell variance of $\alphah$ is quantified by a variance decomposition,
+identifying which methodological choices drive the most estimation uncertainty.
 
 \subsection{Bias correction}
 \label{sec:methodology:bias}
 
-% Autocorrelation rho-hat(k) estimated from 1-minute increments.
-% VR-hat(tau) from Equation~\eqref{eq:vr_rho}.
-% Correction term b(tau) = -0.5 log VR-hat(tau).
-% Corrected OLS: log P-hat(0,tau) - b(tau) ~ log tau -> alpha-hat_corr.
-% Reference Algorithm 3 (notebook).
+Sample autocorrelations $\rhoh(k)$ are estimated from the sequence of
+1-minute price increments for lags $k = 1,\ldots,K_{\max} = 60$. The
+variance ratio at each $\tau$ is then constructed from the identity
+in Equation~\eqref{eq:vr_rho}:
+\begin{equation}
+  \VRh(\tau)
+  = 1 + 2\sum_{k=1}^{\min(\tau-1,\,K_{\max})}\!
+    \left(1 - \frac{k}{\tau}\right)\rhoh(k).
+  \label{eq:vr_hat}
+\end{equation}
+The dependence correction term is $b(\tau) = -\tfrac{1}{2}\log\VRh(\tau)$.
+The bias-adjusted response is $y^*(\tau) = \log\Ph(0,\tau) - b(\tau)$, and
+the corrected OLS regression of $y^*(\tau)$ on $\log\tau$ gives
+$\alphah_{\mathrm{corr}} = -1/\hat{m}_{\mathrm{corr}}$, recovering
+Equation~\eqref{eq:corrected_peak}.
+
+The correction is implemented as a constrained fit with the coefficient of
+$b(\tau)$ fixed at 1, rather than a free two-regressor regression. On the
+project lag grid $\log\tau$ and $b(\tau)$ are highly collinear (both are
+nearly monotone functions of $\tau$), so an unconstrained regression would
+produce unstable coefficient estimates regardless of whether the underlying
+theory is correct. The constrained approach bypasses this collinearity by
+imposing the theoretical coefficient directly. The sensitivity of
+$\alphah_{\mathrm{corr}}$ to the truncation $K_{\max}$ is assessed as a
+robustness check.
 
 
 % ══════════════════════════════════════════════════════════════════════════════
