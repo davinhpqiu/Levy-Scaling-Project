@@ -819,12 +819,91 @@ in Section~\ref{sec:results:estimators}.
 \label{sec:conclusion}
 % ══════════════════════════════════════════════════════════════════════════════
 
-% TODO: ~1 page
-% Summarise the six findings.
-% State limitations: single asset class (futures), body-scaling not
-%   tail-index, i.i.d. increments assumed within lags.
-% Suggest extensions: longer sample, intraday tau extension, GARCH
-%   residuals, cross-market correlation of alpha.
+This paper has examined Lévy scaling in short-horizon futures returns across
+eight equity-index contracts spanning North America and Europe, using
+1-minute OHLCV data from exchange inception through January 2026.
+Six findings emerge.
+
+\textbf{(i) Baseline scaling.}
+Seven of the eight markets yield peak-scaling exponents firmly within
+$\alphah_{\mathrm{tip}}\in(1.7,\,2.0)$, with $R^2>0.99$ for the log-log
+regression in every case.
+The cross-market mean is $\bar\alpha\approx 1.77$, consistent with the
+Mantegna--Stanley consensus and with prior estimates for equity-index
+instruments.
+The S\&P Canada 60 contract (PT) is a persistent outlier
+($\alphah\approx 2.6$, $R^2\approx 0.91$), suggesting the single-exponent
+Lévy description is less adequate for that instrument.
+
+\textbf{(ii) Intraday seasonality.}
+Removing the U-shaped intraday volatility profile shifts $\alphah_{\mathrm{tip}}$
+by at most $0.13$ exponent units and has a negligible effect on regression
+quality ($|\Delta R^2|<0.003$).
+The direction of the shift is market-specific.
+Intraday seasonality is therefore not a dominant confound for Lévy scaling
+estimation at the 1-minute frequency.
+
+\textbf{(iii) Estimator consistency.}
+Three independent estimators --- tip-scaling OLS, collapse-quality minimisation,
+and fractional-order structure functions --- produce broadly consistent but
+not identical results.
+The systematic ordering $\alphah_{\mathrm{tip}}<\alphah_{\mathrm{sf}}<
+\alphah_{\mathrm{collapse}}$ holds for six of the eight markets, with
+inter-estimator spreads of $0.15$--$0.35$ units.
+This gap is comparable to or larger than the inter-market spread among the
+seven non-PT contracts, implying that reported $\alphah$ values from different
+studies cannot be directly compared without controlling for the estimation
+principle.
+
+\textbf{(iv) Robustness.}
+Within any fixed estimator, $\alphah$ is essentially insensitive to histogram
+resolution $\varepsilon$ and lag-grid density $N_\tau$: the standard deviation
+across these design choices is below $0.025$ for every market.
+The estimator choice, not the tuning parameters, is the dominant source of
+variation in reported $\alphah$ values.
+
+\textbf{(v) Symmetry.}
+The empirical PDFs exhibit mild but detectable asymmetry at short lags,
+with mean absolute asymmetry ratios ranging from $0.23$ (CF) to $0.54$ (FT)
+in aggregate.
+In the moderate-lag region where PDF estimates are most reliable, $|A|$
+falls below $0.1$ for all markets.
+Symmetrising the PDFs prior to collapse matching produces at most a marginal
+improvement in collapse score, confirming that the symmetric Lévy approximation
+is a reasonable first-order description.
+
+\textbf{(vi) Bias correction.}
+All eight markets exhibit negative first-order autocorrelation, with
+variance ratios $\VRh_\infty\in(0.895,\,0.980)$.
+The variance-ratio correction reduces $\alphah_{\mathrm{tip}}$ by
+$\widehat{\Delta\alpha}\in(0.05,\,1.56)$ across markets, with the correction
+monotonically ordered by $\VRh_\infty$ --- a cross-sectional validation of the
+bias mechanism.
+The corrected estimates for the most liquid equity-index futures fall within
+$0.02$ exponent units of historical benchmarks.
+
+\paragraph{Limitations.}
+Several caveats apply.
+The study covers a single asset class; whether the $\alpha\approx 1.7$--$1.8$
+finding extends to foreign exchange, commodity, or fixed-income futures is an
+open question.
+The peak-scaling estimator targets the body of the distribution rather than
+the tail index in the Hill--Pickands sense, and the two need not coincide for
+truncated Lévy flights.
+The bias correction is derived under covariance-stationarity; at the very
+shortest lags, microstructure effects such as bid-ask bounce and price
+discreteness can introduce deviations that the correction does not fully absorb.
+
+\paragraph{Extensions.}
+Longer samples would allow the temporal stability of $\alphah$ to be assessed
+and would permit the cross-market correlation of exponent estimates to be
+studied as a possible systemic risk indicator.
+Applying the same framework to GARCH-filtered residuals would separate the
+contribution of conditional heteroscedasticity from the unconditional tail
+behaviour.
+Finally, extending the lag grid to sub-minute frequencies, where Lévy
+scaling is expected to break down due to price-grid discreteness, would
+sharpen the lower boundary of the self-similar regime.
 
 
 % ══════════════════════════════════════════════════════════════════════════════
