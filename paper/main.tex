@@ -65,9 +65,9 @@ estimated exponents consistently falling in the range $\alpha\approx 1.5$--$1.9$
 Despite this activity, three important gaps remain. First, most existing
 studies focus on a single market or a narrow class of instruments, typically
 US equity indices or individual stocks, and it is unclear how far the
-$\alpha\approx 1.7$--$1.8$ consensus extends to a broader cross-section of
-liquid futures contracts across different geographies and regulatory
-environments. Second, the sensitivity of $\alphah$ to methodological
+$\alpha\approx 1.7$--$1.8$ consensus extends to a focused cross-section of
+eight liquid equity-index futures contracts across different geographies and
+regulatory environments. Second, the sensitivity of $\alphah$ to methodological
 choices including histogram resolution, lag grid density, intraday
 seasonality removal, and estimator selection has not been systematically
 quantified in a single study; different choices can shift estimates by
@@ -259,13 +259,11 @@ log-peak regression reads
 For a mean-reverting process ($VR(\tau)<1$) the omission of the second term
 causes the raw OLS slope to underestimate $-1/\alpha$ in magnitude, biasing
 $\alphah_{\mathrm{tip}}$ upward toward the Gaussian boundary. The correction
-procedure is developed in Section~\ref{sec:methodology:bias}. To our
-knowledge, this closed-form bias formula for the Lévy peak-scaling estimator
-under short-term mean reversion has not been previously derived and validated
-across a cross-section of futures markets; Bouchaud and Potters \cite{BouchaudPotters2003}
-(Ch.~6) discuss the qualitative direction of the effect, but the specific OLS
-bias formula and cross-market validation are original contributions of the
-present study.
+procedure is developed in Section~\ref{sec:methodology:bias}. To our knowledge, the explicit OLS bias formula in the
+Campbell--Lo--MacKinlay variance-ratio form and its cross-market empirical
+validation have not been jointly reported; Bouchaud and Potters \cite{BouchaudPotters2003}
+(Ch.~6) discuss the qualitative direction of the effect but do not derive
+the specific correction term or validate it across a cross-section of markets.
 
 
 % ══════════════════════════════════════════════════════════════════════════════
@@ -538,23 +536,24 @@ robustness check.
 Table~\ref{tab:three_way} reports the tip-scaling estimate $\alphah_{\mathrm{tip}}$
 for all eight markets, averaged over $\varepsilon \in \{0.1,\ldots,0.5\}$ and
 $N_\tau\in\{20,37\}$.
-Seven of the eight markets yield $\alphah_{\mathrm{tip}}$ firmly inside the
-interval $(1.7,\,2.0)$, consistent with the truncated Lévy flight picture of
+Seven of the eight markets yield $\alphah_{\mathrm{tip}}$ lying within the
+interval $(1.73,\,1.84)$, consistent with the truncated Lévy flight picture of
 Mantegna and Stanley \cite{MantegnaStanley1994,MantegnaStanley1995} and with prior estimates for
 equity-index instruments \cite{Gopikrishnan1999,BouchaudPotters2003}.
 The goodness-of-fit measure $R^2$ for the log-log regression
 (Equation~\eqref{eq:tip_ols}) exceeds 0.99 for all markets except PT, confirming
 that the power-law decay of the empirical PDF peak is a very accurate description
 of the data.
-The Platinum futures contract (PT) is an outlier throughout the analysis:
+The S\&P/TSX 60 futures contract (PT) is an outlier throughout the analysis:
 $\alphah_{\mathrm{tip}}\approx 2.6$ and $R^2\approx 0.91$, suggesting that a
 single self-similar Lévy law provides a less adequate description for that
-instrument.
-The financial-index futures --- YM ($\alphah\approx 1.76$), CF ($\alphah\approx
+instrument, likely reflecting the lower liquidity and higher proportion of
+zero-increment minutes characteristic of the Montreal Exchange.
+The North American equity-index futures --- YM ($\alphah\approx 1.76$), CF ($\alphah\approx
 1.73$), ER ($\alphah\approx 1.77$), NQ ($\alphah\approx 1.75$) and ES
 ($\alphah\approx 1.78$) --- cluster near the empirical consensus value of
-$\alpha\approx 1.7$--$1.8$, while the grain (DA) and energy (FT) contracts sit
-somewhat higher at $\alphah\approx 1.75$ and $1.83$, respectively.
+$\alpha\approx 1.7$--$1.8$, while the European index contracts DAX (DA) and
+FTSE 100 (FT) sit somewhat higher at $\alphah\approx 1.75$ and $1.83$, respectively.
 
 
 \subsection{Effect of intraday seasonality}
@@ -572,7 +571,7 @@ it lowers $\alphah$ slightly for CF ($-0.016$) and YM ($-0.009$).
 The effect on regression quality is negligible: $\Delta R^2$ is below $0.003$ in
 absolute value for every market.
 
-These findings convey two messages.
+Two implications follow.
 First, deterministic intraday seasonality is not a dominant driver of the fitted
 Lévy exponent; the broad Lévy scaling picture survives preprocessing.
 Second, the direction of the shift is market-specific, indicating that the intraday
@@ -763,6 +762,13 @@ and the implied correction $\widehat{\Delta\alpha} = \alphah_{\mathrm{tip}}
 - \alphah_{\mathrm{corr}}$.
 For reference the table is sorted by $\VRh_\infty$ in ascending order (strongest
 mean reversion first).
+Note that the $\alphah_{\mathrm{tip}}$ values for ES, NQ, and PT in this table
+are drawn from the tick-scaled peak-scaling pipeline (Section~\ref{sec:methodology:bias}),
+which uses a price-grid-relative $x_{\max}$ and produces larger raw estimates
+than the unit-normalised pipeline used in Tables~\ref{tab:seasonality}--\ref{tab:asymmetry}.
+The bias-correction procedure is applied consistently within this pipeline;
+the corrected values $\alphah_{\mathrm{corr}}$ and the correction magnitudes
+$\widehat{\Delta\alpha}$ are the quantities of primary interest.
 
 The correction is systematic and consistent with the theoretical prediction of
 Section~\ref{sec:background:vr}: every market corrects downward
@@ -824,13 +830,13 @@ eight equity-index contracts spanning North America and Europe, using
 Six findings emerge.
 
 \textbf{(i) Baseline scaling.}
-Seven of the eight markets yield peak-scaling exponents firmly within
-$\alphah_{\mathrm{tip}}\in(1.7,\,2.0)$, with $R^2>0.99$ for the log-log
+Seven of the eight markets yield peak-scaling exponents lying within
+$\alphah_{\mathrm{tip}}\in(1.73,\,1.84)$, with $R^2>0.99$ for the log-log
 regression in every case.
 The cross-market mean is $\bar\alpha\approx 1.77$, consistent with the
 Mantegna--Stanley consensus and with prior estimates for equity-index
 instruments.
-The S\&P Canada 60 contract (PT) is a persistent outlier
+The S\&P/TSX 60 contract (PT) is a persistent outlier
 ($\alphah\approx 2.6$, $R^2\approx 0.91$), suggesting the single-exponent
 Lévy description is less adequate for that instrument.
 
