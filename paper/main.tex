@@ -284,14 +284,12 @@ exchange inception through 14 January 2026. Table~\ref{tab:markets} provides
 a full description of each contract.
 
 \begin{table*}[htbp]
-\centering
-\caption{Sample futures contracts.}
-\label{tab:markets}
-\small
+\begin{center}
+\caption{Sample Futures Contracts}
 \begin{tabular}{llllll}
-\toprule
-Symbol & Name & Region & Exchange & History start & Session \\
-\midrule
+\hline
+Symbol & Name & Region & Exchange & History Start & Session \\
+\hline
 YM & Dow Jones E-mini      & Americas & CBOT/CME           & May 2002    & 08:30--15:15 \\
 NQ & NASDAQ 100 E-mini     & Americas & CME                & Jul 1999    & 08:30--15:15 \\
 ER & Russell 2000 E-mini   & Americas & CBOT/CME           & Jan 2002    & 08:30--15:15 \\
@@ -300,8 +298,10 @@ PT & S\&P Canada 60        & Americas & Montreal SE        & Oct 1999    & 09:30
 FT & FTSE 100              & Europe   & ICE Futures        & Jul 1998    & 08:00--16:30 \\
 DA & DAX                   & Europe   & EUREX              & Jan 1997    & 09:00--17:30 \\
 CF & CAC-40                & Europe   & Euronext           & May 2000    & 09:00--17:30 \\
-\bottomrule
+\hline
 \end{tabular}
+\label{tab:markets}
+\end{center}
 \end{table*}
 
 The eight contracts were selected to provide broad coverage across asset
@@ -325,14 +325,12 @@ changes reflects the bid-ask bounce rather than true price movement
 markets, the 1-minute frequency is appropriate.
 
 \begin{table*}[htbp]
-\centering
-\caption{Market volatility and bid-ask spread.}
-\label{tab:sigma}
-\small
+\begin{center}
+\caption{Market Volatility and Bid-Ask Spread}
 \begin{tabular}{lrrr}
-\toprule
-Market & $\sigma_1$ & $\Delta$ (bid-ask) & $\sigma_1 / \Delta$ \\
-\midrule
+\hline
+Market & $\sigma_1$ & $\Delta$ (bid-ask) & $\sigma_1/\Delta$ \\
+\hline
 YM & 6.15 & 1.30 & 4.73 \\
 NQ & 2.33 & 0.48 & 4.90 \\
 ER & 0.51 & 0.22 & 2.32 \\
@@ -341,8 +339,11 @@ PT & 2.78 & 2.50 & 1.11 \\
 FT & 3.48 & 1.20 & 2.90 \\
 DA & 2.61 & 2.00 & 1.31 \\
 CF & 0.46 & 0.22 & 2.09 \\
-\bottomrule
+\hline
+\multicolumn{4}{l}{$\sigma_1/\Delta > 1$ required for 1-min returns to carry genuine price information \cite{Roll1984}.}
 \end{tabular}
+\label{tab:sigma}
+\end{center}
 \end{table*}
 
 \subsection{Preprocessing}
@@ -582,28 +583,27 @@ For the remaining analyses the raw (un-normalized) series is used as the
 primary input, consistent with the standard in the literature.
 
 \begin{table}[htbp]
-  \centering
-  \caption{Intraday seasonality effect on $\alphah_{\mathrm{tip}}$.}
-  \label{tab:seasonality}
-  \begin{tabular}{lcccc}
-    \hline
-    Market & $\alphah_{\mathrm{tip,raw}}$ & $\alphah_{\mathrm{tip,des}}$
-           & $\Delta\alphah_{\mathrm{seas}}$ & $\Delta R^2$ \\
-    \hline
-    CF & 1.731 & 1.747 & $+$0.016 & $+$0.000 \\
-    DA & 1.750 & 1.810 & $+$0.060 & $+$0.001 \\
-    ER & 1.771 & 1.769 & $-$0.002 & $+$0.001 \\
-    ES & 1.784 & 1.877 & $+$0.093 & $-$0.002 \\
-    FT & 1.834 & 1.898 & $+$0.064 & $+$0.000 \\
-    NQ & 1.750 & 1.844 & $+$0.094 & $-$0.002 \\
-    PT & 2.631 & 2.763 & $+$0.132 & $+$0.001 \\
-    YM & 1.758 & 1.749 & $-$0.009 & $+$0.000 \\
-    \hline
-  \end{tabular}
-
-  \smallskip\footnotesize
-  $\varepsilon\in\{0.1,\ldots,0.5\}$, $N_\tau\in\{20,37\}$;
-  $\Delta R^2 \equiv R^2_{\mathrm{des}} - R^2_{\mathrm{raw}}$.
+\begin{center}
+\caption{Intraday Seasonality Effect on $\alphah_{\mathrm{tip}}$}
+\begin{tabular}{lcccc}
+\hline
+Market & $\alphah_{\mathrm{tip,raw}}$ & $\alphah_{\mathrm{tip,des}}$
+       & $\Delta\alphah_{\mathrm{seas}}$ & $\Delta R^2$ \\
+\hline
+CF & 1.731 & 1.747 & $+$0.016 & $+$0.000 \\
+DA & 1.750 & 1.810 & $+$0.060 & $+$0.001 \\
+ER & 1.771 & 1.769 & $-$0.002 & $+$0.001 \\
+ES & 1.784 & 1.877 & $+$0.093 & $-$0.002 \\
+FT & 1.834 & 1.898 & $+$0.064 & $+$0.000 \\
+NQ & 1.750 & 1.844 & $+$0.094 & $-$0.002 \\
+PT & 2.631 & 2.763 & $+$0.132 & $+$0.001 \\
+YM & 1.758 & 1.749 & $-$0.009 & $+$0.000 \\
+\hline
+\multicolumn{5}{l}{$\varepsilon\in\{0.1,\ldots,0.5\}$, $N_\tau\in\{20,37\}$;
+  $\Delta R^2 \equiv R^2_{\mathrm{des}} - R^2_{\mathrm{raw}}$.}
+\end{tabular}
+\label{tab:seasonality}
+\end{center}
 \end{table}
 
 
@@ -643,28 +643,27 @@ suggesting that the single-exponent Lévy description is considerably less
 adequate for that contract.
 
 \begin{table*}[htbp]
-  \centering
-  \caption{Three-way Lévy exponent estimates by market.}
-  \label{tab:three_way}
-  \begin{tabular}{lccccc}
-    \hline
-    Market & $\alphah_{\mathrm{tip}}$ & $R^2_{\mathrm{tip}}$
-           & $\alphah_{\mathrm{sf}}$ & $\alphah_{\mathrm{collapse}}$ & spread \\
-    \hline
-    CF & 1.731 & 0.999 & 1.883 & 1.995 & 0.264 \\
-    DA & 1.750 & 0.996 & 1.858 & 2.100 & 0.350 \\
-    ER & 1.771 & 0.997 & 1.891 & 2.075 & 0.304 \\
-    ES & 1.784 & 0.997 & 1.872 & 1.980 & 0.196 \\
-    FT & 1.834 & 0.998 & 1.924 & 2.190 & 0.356 \\
-    NQ & 1.750 & 0.998 & 1.859 & 1.768 & 0.109 \\
-    PT & 2.631 & 0.913 & 1.824 & 2.480 & 0.807 \\
-    YM & 1.758 & 0.998 & 1.881 & 2.030 & 0.272 \\
-    \hline
-  \end{tabular}
-
-  \smallskip\footnotesize
-  $\varepsilon\in\{0.1,\ldots,0.5\}$, $N_\tau\in\{20,37\}$;
-  spread $\equiv\alphah_{\mathrm{collapse}} - \alphah_{\mathrm{tip}}$.
+\begin{center}
+\caption{Three-Way L\'{e}vy Exponent Estimates by Market}
+\begin{tabular}{lccccc}
+\hline
+Market & $\alphah_{\mathrm{tip}}$ & $R^2_{\mathrm{tip}}$
+       & $\alphah_{\mathrm{sf}}$ & $\alphah_{\mathrm{collapse}}$ & Spread \\
+\hline
+CF & 1.731 & 0.999 & 1.883 & 1.995 & 0.264 \\
+DA & 1.750 & 0.996 & 1.858 & 2.100 & 0.350 \\
+ER & 1.771 & 0.997 & 1.891 & 2.075 & 0.304 \\
+ES & 1.784 & 0.997 & 1.872 & 1.980 & 0.196 \\
+FT & 1.834 & 0.998 & 1.924 & 2.190 & 0.356 \\
+NQ & 1.750 & 0.998 & 1.859 & 1.768 & 0.109 \\
+PT & 2.631 & 0.913 & 1.824 & 2.480 & 0.807 \\
+YM & 1.758 & 0.998 & 1.881 & 2.030 & 0.272 \\
+\hline
+\multicolumn{6}{l}{$\varepsilon\in\{0.1,\ldots,0.5\}$, $N_\tau\in\{20,37\}$;
+  Spread $\equiv\alphah_{\mathrm{collapse}} - \alphah_{\mathrm{tip}}$.}
+\end{tabular}
+\label{tab:three_way}
+\end{center}
 \end{table*}
 
 
@@ -730,26 +729,25 @@ order flow; however, its magnitude is small enough that the symmetric Lévy
 approximation remains a reasonable first-order description.
 
 \begin{table}[htbp]
-  \centering
-  \caption{Mean absolute asymmetry ratio by market.}
-  \label{tab:asymmetry}
-  \begin{tabular}{lc}
-    \hline
-    Market & $\bar{A} = \overline{|A(x,\tau)|}$ \\
-    \hline
-    CF & 0.230 \\
-    YM & 0.346 \\
-    ER & 0.375 \\
-    NQ & 0.392 \\
-    PT & 0.491 \\
-    DA & 0.492 \\
-    ES & 0.493 \\
-    FT & 0.536 \\
-    \hline
-  \end{tabular}
-
-  \smallskip\footnotesize
-  $\varepsilon=0.1$, $N_\tau=20$; $\bar{A}\equiv\overline{|A(x,\tau)|}_{x>0,\,\tau}$.
+\begin{center}
+\caption{Mean Absolute Asymmetry Ratio by Market}
+\begin{tabular}{lc}
+\hline
+Market & $\bar{A} \equiv \overline{|A(x,\tau)|}_{x>0,\,\tau}$ \\
+\hline
+CF & 0.230 \\
+YM & 0.346 \\
+ER & 0.375 \\
+NQ & 0.392 \\
+PT & 0.491 \\
+DA & 0.492 \\
+ES & 0.493 \\
+FT & 0.536 \\
+\hline
+\multicolumn{2}{l}{$\varepsilon=0.1$, $N_\tau=20$.}
+\end{tabular}
+\label{tab:asymmetry}
+\end{center}
 \end{table}
 
 
@@ -792,28 +790,27 @@ the corrected estimate varying by less than the inter-estimator spread documente
 in Section~\ref{sec:results:estimators}.
 
 \begin{table*}[htbp]
-  \centering
-  \caption{Variance-ratio bias correction by market.}
-  \label{tab:bias}
-  \begin{tabular}{lccccc}
-    \hline
-    Market & $\rhoh(1)$ & $\VRh_\infty$ & $\alphah_{\mathrm{tip}}$
-           & $\alphah_{\mathrm{corr}}$ & $\widehat{\Delta\alpha}$ \\
-    \hline
-    PT & $-0.020$ & 0.895 & 9.669 & 4.603 & 5.066 \\
-    DA & $-0.008$ & 0.949 & 2.403 & 1.784 & 0.619 \\
-    ES & $-0.008$ & 0.949 & 5.182 & 3.621 & 1.562 \\
-    YM & $-0.004$ & 0.951 & 1.759 & 1.708 & 0.051 \\
-    FT & $-0.009$ & 0.952 & 2.479 & 1.822 & 0.657 \\
-    ER & $+0.001$ & 0.958 & 2.299 & 1.819 & 0.480 \\
-    CF & $-0.007$ & 0.974 & 1.850 & 1.738 & 0.112 \\
-    NQ & $-0.001$ & 0.980 & 4.517 & 3.446 & 1.071 \\
-    \hline
-  \end{tabular}
-
-  \smallskip\footnotesize
-  $\varepsilon=0.1$, $N_\tau=20$, $K_{\max}=60$; sorted by $\VRh_\infty\uparrow$.
-  ES/NQ/PT: tick-scaled pipeline; compare within-column only.
+\begin{center}
+\caption{Variance-Ratio Bias Correction by Market}
+\begin{tabular}{lccccc}
+\hline
+Market & $\rhoh(1)$ & $\VRh_\infty$ & $\alphah_{\mathrm{tip}}$
+       & $\alphah_{\mathrm{corr}}$ & $\widehat{\Delta\alpha}$ \\
+\hline
+PT & $-0.020$ & 0.895 & 9.669 & 4.603 & 5.066 \\
+DA & $-0.008$ & 0.949 & 2.403 & 1.784 & 0.619 \\
+ES & $-0.008$ & 0.949 & 5.182 & 3.621 & 1.562 \\
+YM & $-0.004$ & 0.951 & 1.759 & 1.708 & 0.051 \\
+FT & $-0.009$ & 0.952 & 2.479 & 1.822 & 0.657 \\
+ER & $+0.001$ & 0.958 & 2.299 & 1.819 & 0.480 \\
+CF & $-0.007$ & 0.974 & 1.850 & 1.738 & 0.112 \\
+NQ & $-0.001$ & 0.980 & 4.517 & 3.446 & 1.071 \\
+\hline
+\multicolumn{6}{l}{$\varepsilon=0.1$, $N_\tau=20$, $K_{\max}=60$; sorted by $\VRh_\infty\uparrow$.
+  ES/NQ/PT: tick-scaled pipeline; compare within-column only.}
+\end{tabular}
+\label{tab:bias}
+\end{center}
 \end{table*}
 
 
