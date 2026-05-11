@@ -1,14 +1,16 @@
-\documentclass[12pt,a4paper]{article}
+\documentclass[conference]{IEEEtran}
+\IEEEoverridecommandlockouts
 \input{preamble}
-\addbibresource{references.bib}
-
-\onehalfspacing
 
 % ── Title block ───────────────────────────────────────────────────────────────
-\title{\textbf{Empirical Lévy Scaling in Short-Horizon Futures Returns}\\[0.4em]
-       \large Estimation, Sensitivity, and Autocorrelation Bias}
-\author{Haoping Qiu}
-\date{\today}
+\title{Empirical L\'{e}vy Scaling in Short-Horizon Futures Returns:
+       Estimation, Sensitivity, and Autocorrelation Bias}
+
+\author{\IEEEauthorblockN{Haoping Qiu}
+\IEEEauthorblockA{\textit{[Department]}\\
+\textit{[University]}\\
+[City, Country]\\
+[email]}}
 
 % ══════════════════════════════════════════════════════════════════════════════
 \begin{document}
@@ -25,8 +27,10 @@
 % shifts alpha downward by ~0.02-0.05), conclusion.
 \end{abstract}
 
-\tableofcontents
-\newpage
+\begin{IEEEkeywords}
+Lévy-stable distributions, peak-scaling estimator, equity-index futures,
+variance ratio, intraday returns, self-similarity.
+\end{IEEEkeywords}
 
 % ══════════════════════════════════════════════════════════════════════════════
 \section{Introduction}
@@ -35,14 +39,14 @@
 
 The distributional properties of short-horizon price changes have been a
 central concern of financial economics and econophysics since at least
-\textcite{Bachelier1900}. The Gaussian random-walk model, which predicts
+Bachelier \cite{Bachelier1900}. The Gaussian random-walk model, which predicts
 normally distributed increments and variance scaling linearly with the holding
 period, is a natural first approximation but a poor empirical description of
 intraday returns. High-frequency data reveal distributions with heavy tails,
 excess kurtosis, and a central body that is far more peaked than the Gaussian.
 These features, documented across equities, foreign exchange, and derivatives
 markets, motivate the use of Lévy-stable distributions as a richer
-distributional model \parencite{Mandelbrot1963,MantegnaStanley1994,Cont2001}.
+distributional model \cite{Mandelbrot1963,MantegnaStanley1994,Cont2001}.
 
 The central prediction of the symmetric $\alpha$-stable model is
 \textit{self-similarity}: the distribution of $\tau$-step price increments is
@@ -51,13 +55,13 @@ as $\tau^{1/\alpha}$ for a characteristic exponent $\alpha\in(1,2)$. This
 implies, in particular, that the peak of the empirical probability density
 decays as $P(0,\tau)\propto\tau^{-1/\alpha}$, a relation that can be estimated
 by ordinary least squares on a log-log plot and that forms the basis of the
-\textit{peak-scaling} approach of \textcite{MantegnaStanley1994,MantegnaStanley1995}.
+\textit{peak-scaling} approach of Mantegna and Stanley \cite{MantegnaStanley1994,MantegnaStanley1995}.
 The same self-similarity predicts that empirical PDFs at different lags, when
 rescaled by $\tau^{1/\alpha}$, should collapse onto a common curve, providing
 a qualitative visual test of the Lévy hypothesis. Both the regression and the
 collapse have been applied extensively in the econophysics literature, with
 estimated exponents consistently falling in the range $\alpha\approx 1.5$--$1.9$
-\parencite{Gopikrishnan1999,Weron2001,BouchaudPotters2003}.
+\cite{Gopikrishnan1999,Weron2001,BouchaudPotters2003}.
 
 Despite this activity, three important gaps remain. First, most existing
 studies focus on a single market or a narrow class of instruments, typically
@@ -72,8 +76,8 @@ amounts that matter for practical inference. Third, and most substantively,
 the peak-scaling estimator is derived under the assumption of independent
 increments, yet 1-minute futures returns exhibit well-documented short-term
 mean reversion driven by the bid-ask bounce and order-book dynamics
-\parencite{Roll1984,Bouchaud2004}. The direction of the resulting bias is
-known qualitatively \parencite{BouchaudPotters2003}, but no closed-form
+\cite{Roll1984,Bouchaud2004}. The direction of the resulting bias is
+known qualitatively \cite{BouchaudPotters2003}, but no closed-form
 correction has been derived and validated empirically.
 
 This paper addresses all three gaps. Using 1-minute OHLCV data for eight
@@ -116,7 +120,7 @@ findings, discusses limitations, and suggests extensions.
 
 The Lévy-Khintchine theorem establishes that the class of stable distributions
 is the complete set of non-trivial distributional limits of normalized sums of
-i.i.d.\ random variables \parencite{SamorodTaqqu1994,GnedenkoKolmogorov1954}.
+i.i.d.\ random variables \cite{SamorodTaqqu1994,GnedenkoKolmogorov1954}.
 A symmetric $\alpha$-stable variable $X \sim S_\alpha(\gamma,0,0)$ has
 characteristic function
 \begin{equation}
@@ -149,9 +153,9 @@ Setting $x=0$ and using $F_\alpha(0) = \Gamma(1/\alpha)/(\pi\alpha)$ gives the
 The log-log regression of $\Ph(0,\tau)$ on $\tau$ therefore has slope
 $-1/\alpha$, independent of the scale parameter $\gamma$.
 
-\textcite{Mandelbrot1963} first proposed that asset-price increments lie in
+Mandelbrot \cite{Mandelbrot1963} first proposed that asset-price increments lie in
 the domain of attraction of a stable law with $\alpha\in(1,2)$.
-\textcite{MantegnaStanley1994,MantegnaStanley1995} provided the first
+Mantegna and Stanley \cite{MantegnaStanley1994,MantegnaStanley1995} provided the first
 systematic intraday evidence using S\&P 500 data, finding $\alpha\approx 1.4$
 over three orders of magnitude in lag and demonstrating clean PDF collapse.
 The truncated Lévy flight (TLF) resolves the tension between
@@ -159,21 +163,21 @@ infinite-variance stable laws and finite empirical moments: the distribution
 follows the stable power law over intermediate scales but is exponentially
 cut off in the far tail, producing finite variance while preserving
 Lévy-like body scaling over the observable range
-\parencite{MantegnaStanley1994,BouchaudPotters2003}. \textcite{Weron2001}
+\cite{MantegnaStanley1994,BouchaudPotters2003}. Weron \cite{Weron2001}
 showed that samples of $10^6$ or more are required before the true stable tail
 emerges, far beyond the practical size of intraday datasets, so empirical
 $\alphah$ estimates are best interpreted as body-scaling parameters rather
 than tail-index claims.
 
-\textcite{Gopikrishnan1999} extended the analysis to individual US stocks and
+Gopikrishnan et al.\ \cite{Gopikrishnan1999} extended the analysis to individual US stocks and
 found power-law tails with exponent $\zeta\approx 3$, outside the Lévy-stable
-regime in the strict sense. \textcite{Weron2001} showed this apparent
+regime in the strict sense. Weron \cite{Weron2001} showed this apparent
 discrepancy is a finite-sample artifact: a Lévy-stable distribution with
 $\alpha\approx 1.7$-$1.8$ produces Hill-estimator values of $\zeta\approx 3$
 on samples of realistic size. This reconciliation motivates the
 multi-estimator approach of the present paper and the conservative
 interpretation of $\alphah$ as a central-body parameter. More recent work by
-\textcite{Masoliver2021} and \textcite{ContMiami2023} confirms that the
+Masoliver and Perelló \cite{Masoliver2021} and Cont et al.\ \cite{ContMiami2023} confirms that the
 central-body Lévy-scaling picture is stable through the 2010s, justifying its
 application to contemporary futures data.
 
@@ -183,12 +187,12 @@ application to contemporary futures data.
 Three estimation strategies are used in this paper.
 
 The \textit{peak-scaling OLS} estimator, introduced by
-\textcite{MantegnaStanley1994}, regresses $\log\Ph(0,\tau)$ on $\log\tau$ and
+Mantegna and Stanley \cite{MantegnaStanley1994}, regresses $\log\Ph(0,\tau)$ on $\log\tau$ and
 recovers $\alphah_{\mathrm{tip}} = -1/\hat{m}$ from the slope $\hat{m}$.
 The estimator is semi-parametric: it uses only the value of the distribution
 at the origin and makes no assumption about the shape elsewhere.
 
-The \textit{collapse-quality} estimator \parencite{Drozdz2003} chooses
+The \textit{collapse-quality} estimator \cite{Drozdz2003} chooses
 $\alpha$ to minimize the spread of the rescaled empirical curves
 $\tau^{1/\alpha}\Ph(\tau^{1/\alpha}\tilde{x},\tau)$ around a common function.
 A mean-squared log-deviation score weights the central body and the tails
@@ -196,18 +200,18 @@ more evenly than a pure-origin regression, providing an independent route to
 $\alphah$ that does not rely on a single histogram bin.
 
 The \textit{fractional structure function} estimator
-\parencite{MuzyBacry1993,BouchaudPotters2003} exploits the prediction
+\cite{MuzyBacry1993,BouchaudPotters2003} exploits the prediction
 $S_q(\tau) = \Etau[|\Delta P_\tau|^q] \propto \tau^{q/\alpha}$ for $q <
 \alpha$. A log-log regression of $\hat{S}_q(\tau)$ on $\tau$ yields
 slope $q/\alphah_q$; the median across moment orders
 $q\in\{0.25,0.5,0.75,1.0,1.25,1.5\}$ gives $\alphah_{\mathrm{sf}}$.
 Fractional orders $q\in(0,1)$ downweight outliers and converge reliably on
-moderate samples \parencite{Uchaikin2003}, while $q\in(1,\alpha)$ are
+moderate samples \cite{Uchaikin2003}, while $q\in(1,\alpha)$ are
 sensitive to the tail. Systematic concavity of the empirical scaling exponent
 $\hat\zeta(q) = q/\alphah_q$ would signal multifractal corrections beyond
-simple Lévy scaling \parencite{Mandelbrot1997,MuzyBacry1993}.
+simple Lévy scaling \cite{Mandelbrot1997,MuzyBacry1993}.
 
-\textcite{Weron2001} and \textcite{Barunik2010} document that all three of
+Weron \cite{Weron2001} and Baru\v{n}\'ik and Va\v{c}ha \cite{Barunik2010} document that all three of
 these semi-parametric methods outperform the Hill estimator for $\alpha$ near
 2 on finite samples. The comparison of the three estimators across all eight
 markets is central to the robustness analysis of this paper.
@@ -215,7 +219,7 @@ markets is central to the robustness analysis of this paper.
 \subsection{Short-term dependence and the variance-ratio bias}
 \label{sec:background:vr}
 
-\textcite{LoMacKinlay1988} introduced the variance ratio
+Lo and MacKinlay \cite{LoMacKinlay1988} introduced the variance ratio
 \begin{equation}
   VR(\tau) = \frac{\mathrm{Var}(\Delta P_\tau)}{\tau\,\mathrm{Var}(\delta_1)},
   \label{eq:vr}
@@ -232,13 +236,13 @@ which forms the basis for both variance-ratio estimators implemented in the
 notebook.
 
 At 1-minute frequency the dominant effect is mean reversion, not the positive
-correlation found at weekly horizons by \textcite{LoMacKinlay1988}. Two
-mechanisms contribute. \textcite{Roll1984} showed that bid-ask bounce
+correlation found at weekly horizons by Lo and MacKinlay \cite{LoMacKinlay1988}. Two
+mechanisms contribute. Roll \cite{Roll1984} showed that bid-ask bounce
 generates spurious first-order autocorrelation $\rhoh(1)\approx -s^2/4$ for
-effective spread $s$, a purely mechanical effect. \textcite{Bouchaud2004} and
-\textcite{Farmer2006} documented that large market orders move prices but
+effective spread $s$, a purely mechanical effect. Bouchaud et al.\ \cite{Bouchaud2004} and
+Farmer et al.\ \cite{Farmer2006} documented that large market orders move prices but
 this impact partially reverts as the order book replenishes, adding genuine
-mean reversion at short horizons. \textcite{BouchaudPotters2003} (Ch.~6)
+mean reversion at short horizons. Bouchaud and Potters \cite{BouchaudPotters2003} (Ch.~6)
 report $\rhoh(1)\approx -0.1$ to $-0.2$ at 1-minute frequency in major
 equity index futures, consistent with the values found in this paper.
 
@@ -259,7 +263,7 @@ $\alphah_{\mathrm{tip}}$ upward toward the Gaussian boundary. The correction
 procedure is developed in Section~\ref{sec:methodology:bias}. To our
 knowledge, this closed-form bias formula for the Lévy peak-scaling estimator
 under short-term mean reversion has not been previously derived and validated
-across a cross-section of futures markets; \textcite{BouchaudPotters2003}
+across a cross-section of futures markets; Bouchaud and Potters \cite{BouchaudPotters2003}
 (Ch.~6) discuss the qualitative direction of the effect, but the specific OLS
 bias formula and cross-market validation are original contributions of the
 present study.
@@ -280,7 +284,7 @@ TickData, covering each contract from its
 exchange inception through 14 January 2026. Table~\ref{tab:markets} provides
 a full description of each contract.
 
-\begin{table}[H]
+\begin{table}[htbp]
 \centering
 \caption{Sample futures contracts.}
 \label{tab:markets}
@@ -318,10 +322,10 @@ changes $\sigma_1$ and the average bid-ask spread $\Delta$ for each market.
 A necessary condition for 1-minute returns to carry genuine price information
 is $\sigma_1 / \Delta > 1$; otherwise a substantial fraction of observed
 changes reflects the bid-ask bounce rather than true price movement
-\parencite{Roll1984}. As the ratio $\sigma_1/\Delta$ exceeds 1 for all eight
+\cite{Roll1984}. As the ratio $\sigma_1/\Delta$ exceeds 1 for all eight
 markets, the 1-minute frequency is appropriate.
 
-\begin{table}[H]
+\begin{table}[htbp]
 \centering
 \caption{Market volatility and bid-ask spread.}
 \label{tab:sigma}
@@ -464,7 +468,7 @@ assumption rather than a test for multifractality.
 \label{sec:methodology:seasonality}
 
 Equity-index futures exhibit a well-documented U-shaped intraday volatility
-pattern \parencite{WoodMcInishOrd1985,AndersenBollerslev1997}. The
+pattern \cite{WoodMcInishOrd1985,AndersenBollerslev1997}. The
 seasonality model decomposes the 1-minute increment as $\delta_k =
 \hat\sigma_{m(k)}\cdot\tilde\delta_k$, where $m(k)\in\{1,\ldots,M\}$ is the
 minute-of-session and $\hat\sigma_m$ is the deterministic intraday factor. The
@@ -537,8 +541,8 @@ for all eight markets, averaged over $\varepsilon \in \{0.1,\ldots,0.5\}$ and
 $N_\tau\in\{20,37\}$.
 Seven of the eight markets yield $\alphah_{\mathrm{tip}}$ firmly inside the
 interval $(1.7,\,2.0)$, consistent with the truncated Lévy flight picture of
-\textcite{MantegnaStanley1994,MantegnaStanley1995} and with prior estimates for
-equity-index instruments \parencite{Gopikrishnan1999,BouchaudPotters2003}.
+Mantegna and Stanley \cite{MantegnaStanley1994,MantegnaStanley1995} and with prior estimates for
+equity-index instruments \cite{Gopikrishnan1999,BouchaudPotters2003}.
 The goodness-of-fit measure $R^2$ for the log-log regression
 (Equation~\eqref{eq:tip_ols}) exceeds 0.99 for all markets except PT, confirming
 that the power-law decay of the empirical PDF peak is a very accurate description
@@ -578,7 +582,7 @@ classes.
 For the remaining analyses the raw (un-normalized) series is used as the
 primary input, consistent with the standard in the literature.
 
-\begin{table}[H]
+\begin{table}[htbp]
   \centering
   \caption{Intraday seasonality effect on $\alphah_{\mathrm{tip}}$.}
   \label{tab:seasonality}
@@ -629,7 +633,7 @@ The structure-function analysis provides additional evidence for approximate
 rather than exact scaling: the implied exponent $\alpha(q) = q/\hat\zeta(q)$
 is not constant across $q$ but increases monotonically with the moment
 order, consistent with the truncated Lévy flight picture in which exact
-self-similarity fails in the far tails \parencite{MantegnaStanley1995,Gopikrishnan1999}.
+self-similarity fails in the far tails \cite{MantegnaStanley1995,Gopikrishnan1999}.
 For ES (the pilot market), $\alpha(q)$ rises from approximately 1.74 at $q=0.25$
 to 1.96 at $q=1.50$, bracketing the tip and collapse estimates.
 
@@ -639,7 +643,7 @@ $\alphah_{\mathrm{sf}}\approx 1.82$ and $\alphah_{\mathrm{collapse}}\approx 2.48
 suggesting that the single-exponent Lévy description is considerably less
 adequate for that contract.
 
-\begin{table}[H]
+\begin{table}[htbp]
   \centering
   \caption{Three-way Lévy exponent estimates by market.}
   \label{tab:three_way}
@@ -726,7 +730,7 @@ consistent with bid-ask bounce asymmetry and short-term momentum in futures
 order flow; however, its magnitude is small enough that the symmetric Lévy
 approximation remains a reasonable first-order description.
 
-\begin{table}[H]
+\begin{table}[htbp]
   \centering
   \caption{Mean absolute asymmetry ratio by market.}
   \label{tab:asymmetry}
@@ -782,13 +786,13 @@ but reduces the magnitudes slightly, consistent with a contribution from
 microstructure effects at very short horizons.
 For the most liquid equity-index futures (YM, CF, ER), the correction on the
 restricted grid is below 0.02 exponent units, placing the corrected estimates
-squarely within the historical Lévy-finance benchmarks of \textcite{MantegnaStanley1994,Gopikrishnan1999}.
+squarely within the historical Lévy-finance benchmarks of \cite{MantegnaStanley1994,Gopikrishnan1999}.
 The $K_{\max}$ sensitivity analysis on the pilot market (ES) confirms that
 $\alphah_{\mathrm{corr}}$ is stable across $K_{\max}\in\{30,60,120,240\}$, with
 the corrected estimate varying by less than the inter-estimator spread documented
 in Section~\ref{sec:results:estimators}.
 
-\begin{table}[H]
+\begin{table}[htbp]
   \centering
   \caption{Variance-ratio bias correction by market.}
   \label{tab:bias}
@@ -907,12 +911,10 @@ sharpen the lower boundary of the self-similar regime.
 
 
 % ══════════════════════════════════════════════════════════════════════════════
-\section*{Acknowledgements}
-\addcontentsline{toc}{section}{Acknowledgements}
+\section*{Acknowledgment}
 % TODO: fill in after meeting with Prof. Chekhlov
 
-% ══════════════════════════════════════════════════════════════════════════════
-\printbibliography[heading=bibintoc,title={References}]
-% ══════════════════════════════════════════════════════════════════════════════
+\bibliographystyle{IEEEtran}
+\bibliography{references}
 
 \end{document}
