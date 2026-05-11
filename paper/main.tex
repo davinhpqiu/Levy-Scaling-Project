@@ -1,5 +1,4 @@
 \documentclass[conference]{IEEEtran}
-\IEEEoverridecommandlockouts
 \input{preamble}
 
 % ── Title block ───────────────────────────────────────────────────────────────
@@ -284,7 +283,7 @@ TickData, covering each contract from its
 exchange inception through 14 January 2026. Table~\ref{tab:markets} provides
 a full description of each contract.
 
-\begin{table}[htbp]
+\begin{table*}[htbp]
 \centering
 \caption{Sample futures contracts.}
 \label{tab:markets}
@@ -303,7 +302,7 @@ DA & DAX                   & Europe   & EUREX              & Jan 1997    & 09:00
 CF & CAC-40                & Europe   & Euronext           & May 2000    & 09:00--17:30 \\
 \bottomrule
 \end{tabular}
-\end{table}
+\end{table*}
 
 The eight contracts were selected to provide broad coverage across asset
 classes and geographies rather than on the basis of any statistical
@@ -325,7 +324,7 @@ changes reflects the bid-ask bounce rather than true price movement
 \cite{Roll1984}. As the ratio $\sigma_1/\Delta$ exceeds 1 for all eight
 markets, the 1-minute frequency is appropriate.
 
-\begin{table}[htbp]
+\begin{table*}[htbp]
 \centering
 \caption{Market volatility and bid-ask spread.}
 \label{tab:sigma}
@@ -344,7 +343,7 @@ DA & 2.61 & 2.00 & 1.31 \\
 CF & 0.46 & 0.22 & 2.09 \\
 \bottomrule
 \end{tabular}
-\end{table}
+\end{table*}
 
 \subsection{Preprocessing}
 \label{sec:data:preprocessing}
@@ -643,7 +642,7 @@ $\alphah_{\mathrm{sf}}\approx 1.82$ and $\alphah_{\mathrm{collapse}}\approx 2.48
 suggesting that the single-exponent Lévy description is considerably less
 adequate for that contract.
 
-\begin{table}[htbp]
+\begin{table*}[htbp]
   \centering
   \caption{Three-way Lévy exponent estimates by market.}
   \label{tab:three_way}
@@ -666,7 +665,7 @@ adequate for that contract.
   \smallskip\footnotesize
   $\varepsilon\in\{0.1,\ldots,0.5\}$, $N_\tau\in\{20,37\}$;
   spread $\equiv\alphah_{\mathrm{collapse}} - \alphah_{\mathrm{tip}}$.
-\end{table}
+\end{table*}
 
 
 \subsection{Robustness}
@@ -792,7 +791,7 @@ $\alphah_{\mathrm{corr}}$ is stable across $K_{\max}\in\{30,60,120,240\}$, with
 the corrected estimate varying by less than the inter-estimator spread documented
 in Section~\ref{sec:results:estimators}.
 
-\begin{table}[htbp]
+\begin{table*}[htbp]
   \centering
   \caption{Variance-ratio bias correction by market.}
   \label{tab:bias}
@@ -815,7 +814,7 @@ in Section~\ref{sec:results:estimators}.
   \smallskip\footnotesize
   $\varepsilon=0.1$, $N_\tau=20$, $K_{\max}=60$; sorted by $\VRh_\infty\uparrow$.
   ES/NQ/PT: tick-scaled pipeline; compare within-column only.
-\end{table}
+\end{table*}
 
 
 % ══════════════════════════════════════════════════════════════════════════════
