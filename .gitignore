@@ -1,25 +1,10 @@
-# Python
-__pycache__/
-*.pyc
-.ipynb_checkpoints/
-.venv/
-
-# LaTeX build artifacts
+*.pdf
 *.aux
-*.log
 *.bbl
-*.bcf
 *.blg
-*.run.xml
-*.synctex.gz
+*.log
+*.out
+*.toc
 *.fls
 *.fdb_latexmk
-
-# macOS
-.DS_Store
-
-# Large data files (kept locally only)
-Data/
-
-# Course materials (local only)
-course_materials/
+*.synctex.gz
