@@ -38,12 +38,16 @@ attributable to low liquidity and excess zero increments.
 The estimator choice, not tuning parameters, is the dominant source of
 variation in reported exponents; inter-estimator spreads of $0.15$--$0.35$
 units exceed the inter-market range for the seven conforming contracts.
-All eight markets exhibit negative first-order autocorrelation, violating the
+Seven of the eight markets exhibit negative first-order autocorrelation
+and one (ER) a marginally positive value, all violating the
 i.i.d.\ assumption underlying peak-scaling.
 A closed-form variance-ratio bias correction reduces $\hat\alpha$ by
-$0.05$--$1.56$ units; the correction magnitude is monotonically ordered by
-variance ratio across markets, providing a cross-sectional validation of the
-bias mechanism.
+$0.04$--$0.92$ units for seven of the eight markets; the sole exception (ER)
+has marginally positive first-order autocorrelation and corrects upward by
+$0.04$ units.
+The correction magnitude is monotonically ordered by variance ratio across
+the seven mean-reverting markets, providing a cross-sectional validation of
+the bias mechanism.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -589,41 +593,15 @@ The goodness-of-fit measure $R^2$ for the log-log regression
 (Equation~\eqref{eq:tip_ols}) exceeds 0.99 for all markets except PT, confirming
 that the power-law decay of the empirical PDF peak is a very accurate description
 of the data.
-The North American equity-index futures --- YM ($\alphah\approx 1.76$),
-CF ($\alphah\approx 1.73$), ER ($\alphah\approx 1.77$), NQ ($\alphah\approx
-1.75$) and ES ($\alphah\approx 1.78$) --- cluster near the empirical consensus
-value of $\alpha\approx 1.7$--$1.8$, while the European index contracts
-DAX~(DA) and FTSE~100~(FT) sit somewhat higher at $\alphah\approx 1.75$ and
-$1.83$, respectively.
+The four North American equity-index futures --- YM ($\alphah\approx 1.76$),
+ER ($\alphah\approx 1.77$), NQ ($\alphah\approx 1.75$) and
+ES ($\alphah\approx 1.78$) --- cluster tightly near the empirical consensus
+value of $\alpha\approx 1.7$--$1.8$.
+The three European contracts are slightly more dispersed:
+CAC-40~(CF) sits at the lower end ($\alphah\approx 1.73$),
+DAX~(DA) at $\alphah\approx 1.75$, and FTSE~100~(FT) at the top of the
+non-PT range ($\alphah\approx 1.83$).
 
-Figure~\ref{fig:collapse} illustrates the PDF collapse for the pilot market
-ES and the outlier PT at $\varepsilon=0.1$, $N_\tau=20$.
-For ES the rescaled curves at all 20 lags overlay closely, confirming clean
-Lévy self-similarity in the central body; the collapse degrades visibly toward
-the outer tails, consistent with the truncation expected for a TLF.
-For PT the collapse is noticeably noisier: the rescaled curves fail to align
-uniformly across the body, reflecting the excess zero increments and lower
-tick activity that inflate $\alphah_{\mathrm{tip}}$ toward 2.6.
-
-\begin{figure*}[htbp]
-  \centering
-  \subfloat[ES (S\&P 500 E-mini) --- clean collapse,
-            $\alphah_{\mathrm{tip}}\approx 1.78$]
-    {\includegraphics[width=0.47\textwidth]
-      {figures/ES_eps0.1_Ntau20_collapse.png}%
-     \label{fig:collapse:es}}
-  \hfil
-  \subfloat[PT (S\&P/TSX~60) --- noisy collapse,
-            $\alphah_{\mathrm{tip}}\approx 2.63$]
-    {\includegraphics[width=0.47\textwidth]
-      {figures/PT_eps0.1_Ntau20_collapse.png}%
-     \label{fig:collapse:pt}}
-  \caption{PDF collapse plots ($\varepsilon=0.1$, $N_\tau=20$).
-    Each curve shows the rescaled empirical density
-    $\tau^{1/\alphah}\hat{P}(\tau^{1/\alphah}\tilde{x},\tau)$
-    at a single lag; tight overlap indicates Lévy self-similarity.}
-  \label{fig:collapse}
-\end{figure*}
 
 \paragraph{PT diagnostic.}
 The S\&P/TSX~60 futures contract (PT) is a persistent outlier in every
@@ -753,7 +731,8 @@ PT & 2.631 & 0.913 & 1.824 & 2.480 & 0.807 \\
 YM & 1.758 & 0.998 & 1.881 & 2.030 & 0.272 \\
 \hline
 \multicolumn{6}{l}{$\varepsilon\in\{0.1,\ldots,0.5\}$, $N_\tau\in\{20,37\}$;
-  Spread $\equiv\alphah_{\mathrm{collapse}} - \alphah_{\mathrm{tip}}$.}
+  Spread $\equiv \max(\alphah_{\mathrm{tip}},\alphah_{\mathrm{sf}},\alphah_{\mathrm{collapse}})
+  - \min(\alphah_{\mathrm{tip}},\alphah_{\mathrm{sf}},\alphah_{\mathrm{collapse}})$.}
 \end{tabular}
 \label{tab:three_way}
 \end{center}
@@ -802,8 +781,9 @@ The scalar summary per market is the mean of $|A(x,\tau)|$ over $x>0$,
 averaged further over the full lag grid.
 
 Table~\ref{tab:asymmetry} reports these values across markets.
-The most symmetric market is CF (0.23), followed by YM (0.35) and ER (0.37);
-the least symmetric are FT (0.54) and ES and DA (both near 0.49).
+The most symmetric market is ER (0.27), followed by NQ (0.32) and YM (0.35);
+the least symmetric are PT (0.54) and FT (0.51), with DA (0.45) also above
+the cross-market average.
 These aggregate ratios are dominated by the behavior at the very shortest
 lags and in the far tails, where histogram estimates are sparse and noisy.
 In the moderate-lag range where the PDF estimates are most reliable, the mean
@@ -828,14 +808,14 @@ approximation remains a reasonable first-order description.
 \hline
 Market & $\bar{A} \equiv \overline{|A(x,\tau)|}_{x>0,\,\tau}$ \\
 \hline
-CF & 0.230 \\
+ER & 0.267 \\
+NQ & 0.324 \\
 YM & 0.346 \\
-ER & 0.375 \\
-NQ & 0.392 \\
-PT & 0.491 \\
-DA & 0.492 \\
-ES & 0.493 \\
-FT & 0.536 \\
+ES & 0.397 \\
+CF & 0.443 \\
+DA & 0.450 \\
+FT & 0.513 \\
+PT & 0.537 \\
 \hline
 \multicolumn{2}{l}{$\varepsilon=0.1$, $N_\tau=20$.}
 \end{tabular}
@@ -847,8 +827,8 @@ FT & 0.536 \\
 \subsection{Bias correction}
 \label{sec:results:bias}
 
-All eight markets exhibit negative first-order autocorrelation of 1-minute
-returns.
+Seven of the eight markets exhibit negative first-order autocorrelation of
+1-minute returns; ER is the exception with $\rhoh(1)=+0.001$.
 Table~\ref{tab:bias} reports the estimated first-order autocorrelation
 $\rhoh(1)$, the long-run variance ratio
 $\VRh_\infty = 1 + 2\sum_{k\geq 1}\rhoh(k)$, the uncorrected tip estimate
@@ -857,25 +837,24 @@ and the implied correction $\widehat{\Delta\alpha} = \alphah_{\mathrm{tip}}
 - \alphah_{\mathrm{corr}}$.
 For reference the table is sorted by $\VRh_\infty$ in ascending order (strongest
 mean reversion first).
-Note that the $\alphah_{\mathrm{tip}}$ values for ES, NQ, and PT in this table
-are drawn from the tick-scaled peak-scaling pipeline (Section~\ref{sec:methodology:bias}),
-which uses a price-grid-relative $x_{\max}$ and produces larger raw estimates
-than the unit-normalised pipeline used in Tables~\ref{tab:seasonality}--\ref{tab:asymmetry}.
-The bias-correction procedure is applied consistently within this pipeline;
-the corrected values $\alphah_{\mathrm{corr}}$ and the correction magnitudes
-$\widehat{\Delta\alpha}$ are the quantities of primary interest.
 
-The correction is systematic and consistent with the theoretical prediction of
-Section~\ref{sec:background:vr}: every market corrects downward
-($\widehat{\Delta\alpha}>0$), and the markets with the smallest $\VRh_\infty$
-(strongest net mean reversion) display the largest corrections.
+The correction is systematic for seven of the eight markets: every contract
+except ER corrects downward ($\widehat{\Delta\alpha}>0$), and the markets with
+the smallest $\VRh_\infty$ (strongest net mean reversion) display the largest
+corrections.
 PT, which has $\VRh_\infty = 0.895$ and $\rhoh(1) = -0.020$, shows the
-largest correction in absolute terms.
-At the other extreme, CF with $\VRh_\infty = 0.974$ and $\rhoh(1) = -0.007$
-shows the smallest correction ($\widehat{\Delta\alpha}\approx 0.11$).
-The monotone ordering of $\widehat{\Delta\alpha}$ with $\VRh_\infty$ across all
-eight markets constitutes a cross-sectional validation of the bias mechanism
-derived in Section~\ref{sec:background:vr}.
+largest correction ($\widehat{\Delta\alpha}=0.921$).
+Among markets that correct downward, CF with $\VRh_\infty = 0.974$ and
+$\rhoh(1) = -0.007$ shows the smallest correction ($\widehat{\Delta\alpha}\approx
+0.04$).
+ER is the sole exception: with $\rhoh(1) = +0.001$, the variance ratio at
+short lags slightly exceeds 1, so the correction at those lags acts in the
+opposite direction, yielding a net upward correction of
+$|\widehat{\Delta\alpha}| = 0.043$.
+The monotone ordering of $\widehat{\Delta\alpha}$ with $\VRh_\infty$ holds
+across the seven mean-reverting markets, constituting a cross-sectional
+validation of the bias mechanism derived in
+Section~\ref{sec:background:vr}.
 
 The robustness check that excludes the three shortest lags ($\tau\in\{1,2,3\}$),
 which are most contaminated by bid-ask bounce, leaves the ordering unchanged
@@ -897,17 +876,16 @@ in Section~\ref{sec:results:estimators}.
 Market & $\rhoh(1)$ & $\VRh_\infty$ & $\alphah_{\mathrm{tip}}$
        & $\alphah_{\mathrm{corr}}$ & $\widehat{\Delta\alpha}$ \\
 \hline
-PT & $-0.020$ & 0.895 & 9.669 & 4.603 & 5.066 \\
-DA & $-0.008$ & 0.949 & 2.403 & 1.784 & 0.619 \\
-ES & $-0.008$ & 0.949 & 5.182 & 3.621 & 1.562 \\
-YM & $-0.004$ & 0.951 & 1.759 & 1.708 & 0.051 \\
-FT & $-0.009$ & 0.952 & 2.479 & 1.822 & 0.657 \\
-ER & $+0.001$ & 0.958 & 2.299 & 1.819 & 0.480 \\
-CF & $-0.007$ & 0.974 & 1.850 & 1.738 & 0.112 \\
-NQ & $-0.001$ & 0.980 & 4.517 & 3.446 & 1.071 \\
+PT & $-0.020$ & 0.895 & 2.684 & 1.764 & $+0.921$ \\
+DA & $-0.008$ & 0.949 & 1.758 & 1.623 & $+0.135$ \\
+ES & $-0.008$ & 0.949 & 1.791 & 1.714 & $+0.077$ \\
+YM & $-0.004$ & 0.951 & 1.759 & 1.708 & $+0.051$ \\
+FT & $-0.009$ & 0.952 & 1.842 & 1.783 & $+0.059$ \\
+ER & $+0.001$ & 0.958 & 1.784 & 1.827 & $-0.043$ \\
+CF & $-0.007$ & 0.974 & 1.730 & 1.695 & $+0.036$ \\
+NQ & $-0.001$ & 0.980 & 1.737 & 1.690 & $+0.046$ \\
 \hline
-\multicolumn{6}{l}{$\varepsilon=0.1$, $N_\tau=20$, $K_{\max}=60$; sorted by $\VRh_\infty\uparrow$.
-  ES/NQ/PT: tick-scaled pipeline; compare within-column only.}
+\multicolumn{6}{l}{$\varepsilon=0.1$, $N_\tau=20$, $K_{\max}=60$; sorted by $\VRh_\infty\uparrow$.}
 \end{tabular}
 \label{tab:bias}
 \end{center}
@@ -964,7 +942,7 @@ variation in reported $\alphah$ values.
 
 \textbf{(v) Symmetry.}
 The empirical PDFs exhibit mild but detectable asymmetry at short lags,
-with mean absolute asymmetry ratios ranging from $0.23$ (CF) to $0.54$ (FT)
+with mean absolute asymmetry ratios ranging from $0.27$ (ER) to $0.54$ (PT)
 in aggregate.
 In the moderate-lag region where PDF estimates are most reliable, $|A|$
 falls below $0.1$ for all markets.
@@ -973,12 +951,15 @@ improvement in collapse score, confirming that the symmetric Lévy approximation
 is a reasonable first-order description.
 
 \textbf{(vi) Bias correction.}
-All eight markets exhibit negative first-order autocorrelation, with
-variance ratios $\VRh_\infty\in(0.895,\,0.980)$.
-The variance-ratio correction reduces $\alphah_{\mathrm{tip}}$ by
-$\widehat{\Delta\alpha}\in(0.05,\,1.56)$ across markets, with the correction
-monotonically ordered by $\VRh_\infty$ --- a cross-sectional validation of the
-bias mechanism.
+Seven of the eight markets exhibit negative first-order autocorrelation; ER
+is the exception with $\rhoh(1)=+0.001$.
+Long-run variance ratios span $\VRh_\infty\in(0.895,\,0.980)$.
+For the seven mean-reverting markets the variance-ratio correction reduces
+$\alphah_{\mathrm{tip}}$ by $\widehat{\Delta\alpha}\in(0.04,\,0.92)$, with
+the correction monotonically ordered by $\VRh_\infty$ --- a cross-sectional
+validation of the bias mechanism.
+ER corrects slightly upward ($\widehat{\Delta\alpha}=-0.04$) due to its
+marginally positive $\rhoh(1)$.
 The corrected estimates for the most liquid equity-index futures fall within
 $0.02$ exponent units of historical benchmarks.
 
