@@ -26,8 +26,8 @@ $\alpha\in(1,2)$.
 This paper examines Lévy scaling across eight equity-index futures contracts
 spanning North America and Europe using 1-minute OHLCV data from exchange
 inception through January 2026.
-Three estimation approaches --- peak-scaling OLS, collapse-quality
-minimisation, and fractional-order structure functions --- are applied across
+Three estimation approaches (peak-scaling OLS, collapse-quality
+minimisation, and fractional-order structure functions) are applied across
 a full-factorial robustness matrix spanning histogram resolution, lag-grid
 density, and intraday seasonality correction.
 Seven of the eight markets yield peak-scaling exponents
@@ -119,8 +119,8 @@ improves collapse quality.
 (ii)~We test the effect of intraday seasonality removal on $\alphah$, running
 the full PDF analysis on both raw and de-seasonalized price series and
 comparing the resulting estimates.
-(iii)~We compare three independent estimators --- tip-scaling OLS,
-collapse-quality minimization, and fractional-order structure functions ---
+(iii)~We compare three independent estimators (tip-scaling OLS,
+collapse-quality minimization, and fractional-order structure functions)
 across all markets to assess their mutual consistency.
 (iv)~We construct a full-factorial robustness matrix spanning all combinations
 of histogram resolution, lag-grid density, preprocessing choice, and
@@ -207,7 +207,7 @@ regime in the strict sense. Weron \cite{Weron2001} showed this apparent
 discrepancy is a finite-sample artifact: a Lévy-stable distribution with
 $\alpha\approx 1.7$-$1.8$ produces Hill-estimator values of $\zeta\approx 3$
 on samples of realistic size. This reconciliation motivates the
-multi-estimator approach of the present paper and the conservative
+multi-estimator approach used here and the conservative
 interpretation of $\alphah$ as a central-body parameter. More recent work by
 Masoliver and Perelló \cite{Masoliver2021} and Cont et al.\ \cite{ContMiami2023} confirms that the
 central-body Lévy-scaling picture is stable through the 2010s, justifying its
@@ -216,7 +216,7 @@ application to contemporary futures data.
 \subsection{Estimation of the scaling exponent}
 \label{sec:background:estimation}
 
-Three estimation strategies are used in this paper.
+Three estimation strategies are employed.
 
 The \textit{peak-scaling OLS} estimator, introduced by
 Mantegna and Stanley \cite{MantegnaStanley1994}, regresses $\log\Ph(0,\tau)$ on $\log\tau$ and
@@ -246,7 +246,7 @@ simple Lévy scaling \cite{Mandelbrot1997,MuzyBacry1993}.
 Weron \cite{Weron2001} and Baru\v{n}\'ik and Va\v{c}ha \cite{Barunik2010} document that all three of
 these semi-parametric methods outperform the Hill estimator for $\alpha$ near
 2 on finite samples. The comparison of the three estimators across all eight
-markets is central to the robustness analysis of this paper.
+markets is central to the robustness analysis of Section~\ref{sec:results:robustness}.
 
 \subsection{Short-term dependence and the variance-ratio bias}
 \label{sec:background:vr}
@@ -276,7 +276,7 @@ Farmer et al.\ \cite{Farmer2006} documented that large market orders move prices
 this impact partially reverts as the order book replenishes, adding genuine
 mean reversion at short horizons. Bouchaud and Potters \cite{BouchaudPotters2003} (Ch.~6)
 report $\rhoh(1)\approx -0.1$ to $-0.2$ at 1-minute frequency in major
-equity index futures, consistent with the values found in this paper.
+equity index futures, consistent with the values reported here.
 
 The canonical peak formula~\eqref{eq:peak} is derived under strictly
 independent increments. When $VR(\tau)\neq 1$, the effective Lévy scale at
@@ -351,9 +351,9 @@ CF & CAC-40                & Europe   & Euronext           & May 2000    & 09:00
 \end{center}
 \end{table*}
 
-The eight contracts were selected to provide broad coverage across asset
-classes and geographies rather than on the basis of any statistical
-pre-screening. Three North American equity-index contracts (YM, NQ, ER, ES)
+The eight contracts were selected to provide a focused cross-section of
+liquid equity-index futures across geographies rather than on the basis of
+any statistical pre-screening. Three North American equity-index contracts (YM, NQ, ER, ES)
 trade on CME Group venues; one Canadian contract (PT) trades on the Montreal
 Stock Exchange; and three European contracts (FT, DA, CF) cover the major
 continental and UK equity benchmarks.
@@ -450,6 +450,11 @@ The resolution parameter $\varepsilon$ is treated as a sensitivity dimension:
 all analyses are run at $\varepsilon\in\{0.1,0.2,0.3,0.4,0.5\}$ and the
 sensitivity of $\alphah$ to this choice is quantified in the robustness matrix
 (Section~\ref{sec:methodology:robustness}).
+The lower bound $\varepsilon=0.1$ corresponds to one tick per bin half-width,
+below which counts in the central bin become too sparse at short lags to
+estimate $\Ph(0,\tau)$ reliably; the upper bound $\varepsilon=0.5$ is where
+excessive bin width smooths out the distributional peak and biases the density
+estimate downward.
 
 \subsection{Baseline peak-scaling estimator}
 \label{sec:methodology:tip}
@@ -582,20 +587,18 @@ robustness check.
 \subsection{Baseline scaling}
 \label{sec:results:baseline}
 
-Table~\ref{tab:three_way} reports the tip-scaling estimate $\alphah_{\mathrm{tip}}$
-for all eight markets, averaged over $\varepsilon \in \{0.1,\ldots,0.5\}$ and
-$N_\tau\in\{20,37\}$.
+Tip-scaling estimates $\alphah_{\mathrm{tip}}$, averaged over
+$\varepsilon\in\{0.1,\ldots,0.5\}$ and $N_\tau\in\{20,37\}$, are reported
+alongside the three-estimator comparison in Table~\ref{tab:three_way} below.
 Seven of the eight markets yield $\alphah_{\mathrm{tip}}$ lying within the
 interval $(1.73,\,1.84)$, consistent with the truncated Lévy flight picture of
 Mantegna and Stanley \cite{MantegnaStanley1994,MantegnaStanley1995} and with prior estimates for
 equity-index instruments \cite{Gopikrishnan1999,BouchaudPotters2003}.
-The goodness-of-fit measure $R^2$ for the log-log regression
-(Equation~\eqref{eq:tip_ols}) exceeds 0.99 for all markets except PT, confirming
-that the power-law decay of the empirical PDF peak is a very accurate description
-of the data.
-The four North American equity-index futures --- YM ($\alphah\approx 1.76$),
-ER ($\alphah\approx 1.77$), NQ ($\alphah\approx 1.75$) and
-ES ($\alphah\approx 1.78$) --- cluster tightly near the empirical consensus
+The $R^2$ of the log-log regression (Equation~\eqref{eq:tip_ols}) exceeds
+$0.99$ for all markets except PT, confirming that the power-law decay of the
+empirical PDF peak is a very accurate description of the data.
+The four North American equity-index futures (YM, ER, NQ, and ES), with
+$\alphah$ in the range $1.75$--$1.78$, cluster tightly near the empirical consensus
 value of $\alpha\approx 1.7$--$1.8$.
 The three European contracts are slightly more dispersed:
 CAC-40~(CF) sits at the lower end ($\alphah\approx 1.73$),
@@ -790,8 +793,8 @@ In the moderate-lag range where the PDF estimates are most reliable, the mean
 $|A|$ is generally below 0.1 for all markets, indicating near-symmetry in the
 region that determines the Lévy fit.
 
-The symmetrized collapse --- in which the empirical PDF is replaced by
-$\Ph_{\mathrm{sym}}(x,\tau) = [\Ph(x,\tau)+\Ph(-x,\tau)]/2$ --- matches or
+The symmetrized collapse, in which the empirical PDF is replaced by
+$\Ph_{\mathrm{sym}}(x,\tau) = [\Ph(x,\tau)+\Ph(-x,\tau)]/2$, matches or
 marginally improves on the raw collapse for all markets.
 The improvement in collapse score is small, confirming that the asymmetric
 component of the distribution does not materially affect the self-similar
@@ -864,9 +867,10 @@ For the most liquid equity-index futures (YM, CF, ER), the correction on the
 restricted grid is below 0.02 exponent units, placing the corrected estimates
 squarely within the historical Lévy-finance benchmarks of \cite{MantegnaStanley1994,Gopikrishnan1999}.
 The $K_{\max}$ sensitivity analysis on the pilot market (ES) confirms that
-$\alphah_{\mathrm{corr}}$ is stable across $K_{\max}\in\{30,60,120,240\}$, with
-the corrected estimate varying by less than the inter-estimator spread documented
-in Section~\ref{sec:results:estimators}.
+$\alphah_{\mathrm{corr}}$ is stable across $K_{\max}\in\{30,60,120,240\}$:
+the corrected estimates are $1.673$, $1.714$, $1.674$, and $1.717$ respectively,
+a range of $0.044$ units, well below the inter-estimator spread of $0.196$
+documented in Section~\ref{sec:results:estimators}.
 
 \begin{table}[htbp]
 \begin{center}
@@ -922,8 +926,8 @@ Intraday seasonality is therefore not a dominant confound for Lévy scaling
 estimation at the 1-minute frequency.
 
 \textbf{(iii) Estimator consistency.}
-Three independent estimators --- tip-scaling OLS, collapse-quality minimisation,
-and fractional-order structure functions --- produce broadly consistent but
+Three independent estimators (tip-scaling OLS, collapse-quality minimisation,
+and fractional-order structure functions) produce broadly consistent but
 not identical results.
 The systematic ordering $\alphah_{\mathrm{tip}}<\alphah_{\mathrm{sf}}<
 \alphah_{\mathrm{collapse}}$ holds for six of the eight markets, with
@@ -956,7 +960,7 @@ is the exception with $\rhoh(1)=+0.001$.
 Long-run variance ratios span $\VRh_\infty\in(0.895,\,0.980)$.
 For the seven mean-reverting markets the variance-ratio correction reduces
 $\alphah_{\mathrm{tip}}$ by $\widehat{\Delta\alpha}\in(0.04,\,0.92)$, with
-the correction monotonically ordered by $\VRh_\infty$ --- a cross-sectional
+the correction monotonically ordered by $\VRh_\infty$, a cross-sectional
 validation of the bias mechanism.
 ER corrects slightly upward ($\widehat{\Delta\alpha}=-0.04$) due to its
 marginally positive $\rhoh(1)$.
