@@ -8,3 +8,8 @@
 *.fls
 *.fdb_latexmk
 *.synctex.gz
+.venv/
+.DS_Store
+outputs/
+__pycache__/
+*.pyc
