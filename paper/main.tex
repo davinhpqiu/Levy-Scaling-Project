@@ -427,6 +427,72 @@ estimations to assess the sensitivity of $\alphah$ to the choice of $N_\tau$.
 \label{sec:methodology}
 % ══════════════════════════════════════════════════════════════════════════════
 
+Figure~\ref{fig:pipeline} gives an overview of the full analysis pipeline.
+Each step is detailed in the subsections below.
+
+% ── Pipeline diagram ─────────────────────────────────────────────────────────
+\begin{figure*}[t]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tikzpicture}[
+  node distance = 0.45cm and 0.7cm,
+  box/.style  = {rectangle, draw=black!55, rounded corners=3pt,
+                 minimum width=2.1cm, minimum height=1.05cm,
+                 align=center, font=\small},
+  dbox/.style = {box, fill=gray!12},
+  pbox/.style = {box, fill=blue!8},
+  ebox/.style = {box, fill=orange!10, minimum width=1.95cm, minimum height=0.9cm,
+                 font=\footnotesize},
+  rbox/.style = {box, fill=green!8, minimum width=2.5cm},
+  obox/.style = {box, fill=black!7},
+  arr/.style  = {-Stealth, thick, draw=black!60},
+  garr/.style = {thick, draw=black!50},
+]
+
+%% ── Main horizontal nodes ──────────────────────────────────────────────────
+\node[dbox] (data)   {\textbf{Data Input}\\8 contracts\\1-min OHLCV};
+\node[pbox, right=of data]  (prep)   {\textbf{Preprocessing}\\int.\ scale $\cdot$ LOCF\\ lag grid $\mathcal{T}$};
+\node[pbox, right=of prep]  (pdf)    {\textbf{PDF Estimation}\\ $\hat{P}(x_j,\tau)$\\ bin width $\varepsilon\!\cdot\!\Delta$};
+
+%% ── Three estimators (stacked, right of pdf) ───────────────────────────────
+\node[ebox, right=1.0cm of pdf, yshift= 1.35cm] (tip) {Tip-scaling OLS\\$\hat\alpha_{\mathrm{tip}}$};
+\node[ebox, right=1.0cm of pdf]                 (sf)  {Struct.\ functions\\$\hat\alpha_{\mathrm{sf}}$};
+\node[ebox, right=1.0cm of pdf, yshift=-1.35cm] (col) {Collapse quality\\$\hat\alpha_{\mathrm{collapse}}$};
+
+%% ── Robustness, bias, output ───────────────────────────────────────────────
+\node[rbox, right=1.0cm of sf]  (rob)  {\textbf{Robustness}\\$\varepsilon,\,N_\tau,$ raw/deseas.};
+\node[pbox, right=of rob]       (bias) {\textbf{Bias Correction}\\ $\hat\rho(k)\!\to\!\widehat{VR}(\tau)$\\ $\hat\alpha_{\mathrm{corr}}$};
+\node[obox, right=of bias]      (out)  {\textbf{Results}\\$\hat\alpha_{\mathrm{tip}},\hat\alpha_{\mathrm{sf}}$\\$\hat\alpha_{\mathrm{collapse}},\hat\alpha_{\mathrm{corr}}$};
+
+%% ── Arrows: data → prep → pdf ──────────────────────────────────────────────
+\draw[arr] (data) -- (prep);
+\draw[arr] (prep) -- (pdf);
+
+%% ── Fan-out from pdf to three estimators ───────────────────────────────────
+\coordinate (split) at ($(pdf.east)+(0.42,0)$);
+\draw[garr] (pdf.east) -- (split);
+\draw[arr]  (split) |- (tip.west);
+\draw[arr]  (split) -- (sf.west);
+\draw[arr]  (split) |- (col.west);
+
+%% ── Fan-in from estimators to robustness ───────────────────────────────────
+\coordinate (merge) at ($(rob.west)+(-0.42,0)$);
+\draw[garr] (tip.east) -| (merge);
+\draw[garr] (sf.east)  -- (merge);
+\draw[garr] (col.east) -| (merge);
+\draw[arr]  (merge) -- (rob.west);
+
+%% ── Robustness → bias → output ─────────────────────────────────────────────
+\draw[arr] (rob)  -- (bias);
+\draw[arr] (bias) -- (out);
+
+\end{tikzpicture}}% end resizebox
+\caption{Analysis pipeline. Each of the three estimators receives the same
+empirical PDF and feeds into a common robustness matrix before bias correction.}
+\label{fig:pipeline}
+\end{figure*}
+% ─────────────────────────────────────────────────────────────────────────────
+
 \subsection{Empirical PDF estimation}
 \label{sec:methodology:pdf}
 
