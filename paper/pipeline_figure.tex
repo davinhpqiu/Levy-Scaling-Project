@@ -1,5 +1,5 @@
-% ── Mathematical Data-Processing Pipeline ─────────────────────────────────────
-% Standalone figure; included in main.tex via \input{pipeline_figure}.
+% ── Lévy Estimation Pipeline ──────────────────────────────────────────────────
+% Standalone figure; include in main.tex via \input{pipeline_figure}.
 % Requires (already in preamble.tex):
 %   \usepackage{tikz}
 %   \usetikzlibrary{shapes.geometric,arrows.meta,positioning,calc}
@@ -9,152 +9,201 @@
 \centering
 \resizebox{\textwidth}{!}{%
 \begin{tikzpicture}[
-  % ── node styles ──────────────────────────────────────────────────────────
-  data/.style   = {rectangle, rounded corners=4pt, draw=black!70, fill=blue!8,
-                   text width=2.6cm, align=center, minimum height=0.9cm,
-                   font=\small},
-  proc/.style   = {rectangle, rounded corners=4pt, draw=black!60, fill=gray!10,
-                   text width=2.8cm, align=center, minimum height=0.9cm,
-                   font=\small},
-  estim/.style  = {rectangle, rounded corners=4pt, draw=black!70, fill=green!8,
-                   text width=3.4cm, align=center, minimum height=1.1cm,
-                   font=\small},
-  result/.style = {ellipse, draw=black!70, fill=orange!12,
-                   text width=2.0cm, align=center, minimum height=0.85cm,
-                   font=\small\bfseries},
-  bias/.style   = {rectangle, rounded corners=4pt, draw=black!60, fill=violet!8,
-                   text width=3.0cm, align=center, minimum height=0.9cm,
-                   font=\small},
-  label/.style  = {font=\footnotesize\itshape, text=black!60},
-  % ── arrow style ──────────────────────────────────────────────────────────
-  arr/.style    = {-{Stealth[length=5pt]}, thick, black!65},
-  arrb/.style   = {-{Stealth[length=5pt]}, thick, violet!70, dashed},
+  %% node styles
+  raw/.style   = {rectangle, rounded corners=3pt, draw=blue!60,  fill=blue!7,
+                  align=center, font=\small, minimum height=0.9cm},
+  proc/.style  = {rectangle, rounded corners=3pt, draw=black!55, fill=gray!8,
+                  align=center, font=\small, minimum height=0.9cm},
+  est/.style   = {rectangle, rounded corners=3pt, draw=green!60!black, fill=green!7,
+                  align=center, font=\small, minimum height=0.9cm},
+  bias/.style  = {rectangle, rounded corners=3pt, draw=violet!65, fill=violet!7,
+                  align=center, font=\small, minimum height=0.9cm},
+  res/.style   = {ellipse, draw=orange!70, fill=orange!14,
+                  align=center, font=\small\bfseries,
+                  minimum width=1.6cm, minimum height=0.75cm},
+  tbl/.style   = {rectangle, draw=black!40, fill=white,
+                  align=center, font=\scriptsize, inner sep=3pt},
+  lbl/.style   = {font=\scriptsize\itshape, text=black!50},
+  arr/.style   = {-{Stealth[length=5pt]}, thick, black!60},
+  arrv/.style  = {-{Stealth[length=4pt]}, semithick, violet!65, dashed},
+  node distance= 0.5cm,
 ]
 
-%% ── Column 1 : raw data ───────────────────────────────────────────────────
-\node[data] (prices)
-  {$P(t)$\\[2pt]\footnotesize tick-level prices};
+%% ═══════════════════════════════════════════════════════════════
+%% ROW 1  –  Data → Increments → Empirical PDF
+%% ═══════════════════════════════════════════════════════════════
 
-%% ── Column 2 : lag-$\tau$ increments ────────────────────────────────────
-\node[proc, right=1.6cm of prices] (incr)
-  {$\Delta P_\tau(t)$\\[2pt]
-   $= P(t) - P(t{-}\tau)$\\[2pt]
-   \footnotesize $\tau = 1,\ldots,K_{\max}$ lags};
+\node[raw, text width=2.2cm, minimum height=1.1cm] (raw)
+  {\textbf{Raw Prices}\\$P(t)$\\[3pt]
+   \scriptsize 1-min OHLCV\\8 futures markets};
 
-\draw[arr] (prices) -- (incr)
-  node[midway, above, label] {$\times$ multiplier};
+\node[proc, text width=2.4cm, right=1.0cm of raw] (scale)
+  {\textbf{Tick Scaling}\\[3pt]
+   $P_{\mathbb{Z}}(t) = \lfloor P(t)/\Delta \rceil$\\[2pt]
+   \scriptsize 1 tick $= 1$ integer unit};
 
-%% ── Column 3 : empirical PDF ─────────────────────────────────────────────
-\node[proc, right=1.6cm of incr] (pdf)
-  {$\hat{P}(x_j,\tau)$\\[2pt]
-   \footnotesize histogram,\\
-   bin width $\varepsilon$};
+\draw[arr] (raw) -- (scale) node[midway,above,lbl]{$\times 1/\Delta$};
 
-\draw[arr] (incr) -- (pdf)
-  node[midway, above, label] {bin \& normalise};
+\node[proc, text width=2.4cm, right=1.0cm of scale] (locf)
+  {\textbf{Gap-Fill}\\[3pt]
+   \scriptsize LOCF on missing\\1-min bars\\(zero-change rule)};
 
-%% ── Phantom branch node ──────────────────────────────────────────────────
-% Place a phantom node to the right of pdf so we can fan out to 3 estimators.
-\node[right=1.4cm of pdf] (fan) {};
+\draw[arr] (scale) -- (locf);
 
-\draw[arr] (pdf) -- (fan.west);
+\node[proc, text width=3.2cm, right=1.0cm of locf] (incr)
+  {\textbf{Lag Increments}\\[4pt]
+   $\delta_\tau(t) = P(t) - P(t{-}\tau)$\\[4pt]
+   \begin{tabular}{c|l}
+     $\tau$ & grid\\\hline
+     coarse & $N_\tau=20$\\
+     fine   & $N_\tau=37$
+   \end{tabular}};
 
-%% ── Column 4 : three estimators (stacked vertically) ────────────────────
-% top estimator  – tip scaling
-\node[estim, above right=0.6cm and 0.1cm of fan] (tip)
-  {\textbf{(1) Tip-scaling OLS}\\[3pt]
-   extract $\hat{P}(0,\tau)$\\
-   $\log\hat{P}(0,\tau) = -\tfrac{1}{\alpha}\log\tau + c$\\[2pt]
-   $\hat{\alpha}_{\mathrm{tip}} = -1/\hat{\beta}$};
+\draw[arr] (locf) -- (incr);
 
-% middle estimator – structure functions
-\node[estim, right=0.1cm of fan] (sf)
-  {\textbf{(2) Structure Functions}\\[3pt]
-   $S_q(\tau)=\mathbb{E}[|\Delta P_\tau|^q]$\\
-   log-log slope per $q$;\\
-   median over $q$-grid $\Rightarrow\hat{\alpha}_{\mathrm{sf}}$};
+\node[proc, text width=3.4cm, right=1.1cm of incr] (pdf)
+  {\textbf{Empirical PDF}\\[4pt]
+   $\hat{P}(x_j,\tau)=\dfrac{\#\{i:\delta_\tau(t_i)\in\text{bin }j\}}{N_\tau\cdot\Delta x}$\\[4pt]
+   \scriptsize bin width $\Delta x = \varepsilon\cdot\Delta$,\;$\varepsilon\in\{0.1,\ldots,0.5\}$};
 
-% bottom estimator – collapse
-\node[estim, below right=0.6cm and 0.1cm of fan] (coll)
-  {\textbf{(3) Collapse Quality}\\[3pt]
-   rescale $x\!\to\! x/\tau^{1/\alpha}$\\
-   minimise Score$(\alpha)$\\[2pt]
-   $\hat{\alpha}_{\mathrm{collapse}} = \arg\min_\alpha \mathrm{Score}$};
+\draw[arr] (incr) -- (pdf);
 
-% draw fan arrows
-\draw[arr] (fan.east) -- (tip.west);
-\draw[arr] (fan.east) -- (sf.west);
-\draw[arr] (fan.east) -- (coll.west);
+%% ── Seasonality branch (below incr, feeds back as ΔP̃) ──────────────────────
+\node[proc, text width=2.8cm, below=0.9cm of incr] (season)
+  {\textbf{Seasonality Correction}\\[3pt]
+   $\hat\sigma_m = \tfrac{1}{D_m}\sum|\delta_k|$\\[2pt]
+   $\tilde\delta_\tau = \delta_\tau/\hat\sigma_{m}$};
 
-%% ── Column 5 : result nodes ──────────────────────────────────────────────
-\node[result, right=1.2cm of tip]  (rtip)  {$\hat{\alpha}_{\mathrm{tip}}$};
-\node[result, right=1.2cm of sf]   (rsf)   {$\hat{\alpha}_{\mathrm{sf}}$};
-\node[result, right=1.2cm of coll] (rcoll) {$\hat{\alpha}_{\mathrm{collapse}}$};
+\draw[arr] (incr.south) -- (season.north)
+  node[midway,right,lbl]{optional};
+\draw[arr] (season.east) -| (pdf.south)
+  node[near start,below,lbl]{$\Delta\tilde{P}_\tau$};
 
-\draw[arr] (tip)  -- (rtip);
-\draw[arr] (sf)   -- (rsf);
+%% ═══════════════════════════════════════════════════════════════
+%% ROW 2  –  Three parallel estimators (fan from pdf)
+%% ═══════════════════════════════════════════════════════════════
+
+%% fan junction
+\coordinate (fan) at ($(pdf.east)+(1.2,0)$);
+\draw[arr] (pdf.east) -- (fan);
+
+%% ── ① Tip-scaling OLS ────────────────────────────────────────
+\node[est, text width=3.6cm, above right=1.1cm and 0.1cm of fan] (tip)
+  {\textbf{(1) Tip-Scaling OLS}\\[4pt]
+   Extract centre bin $\hat{P}(0,\tau)$\\[2pt]
+   $\log\hat{P}(0,\tau) = m\log\tau + c$\\[4pt]
+   \begin{tabular}{c|c}
+     $\log\tau$ & $\log\hat{P}(0,\tau)$\\\hline
+     0.00 & $-$2.14\\
+     1.10 & $-$2.76\\
+     $\vdots$ & $\vdots$
+   \end{tabular}\\[4pt]
+   OLS slope $\hat{m}$,\quad $R^2>0.99$};
+
+\draw[arr] (fan) |- (tip.west);
+
+\node[res, right=0.8cm of tip] (rtip) {$\hat\alpha_{\mathrm{tip}}=-1/\hat{m}$};
+\draw[arr] (tip) -- (rtip);
+
+%% ── ② Collapse-quality minimiser ─────────────────────────────
+\node[est, text width=3.6cm, right=0.1cm of fan] (coll)
+  {\textbf{(2) PDF Collapse}\\[4pt]
+   Rescale:\;$\tilde{x}=x/\tau^{1/\alpha}$,\;$\tilde{P}=\tau^{1/\alpha}\hat{P}$\\[3pt]
+   $\mathrm{Score}(\alpha)=\!\dfrac{1}{|\mathcal{G}||\mathcal{T}|}
+     \!\sum\![\log\tilde{P}-\mu_j]^2$\\[4pt]
+   grid search $\alpha\in[1.2,2.8]$,\;160 pts};
+
+\draw[arr] (fan) -- (coll.west);
+
+\node[res, right=0.8cm of coll] (rcoll)
+  {$\hat\alpha_{\mathrm{collapse}}=\arg\min\,\mathrm{Score}$};
 \draw[arr] (coll) -- (rcoll);
 
-%% ── Bias-correction path (below, violet dashed) ─────────────────────────
-% autocorrelation node below incr
-\node[bias, below=1.6cm of pdf] (rho)
-  {$\hat{\rho}(k) = \mathrm{Corr}(\Delta P_t,\Delta P_{t-k})$\\[2pt]
-   \footnotesize $k=1,\ldots,K_{\max}$};
+%% ── ③ Structure functions ─────────────────────────────────────
+\node[est, text width=3.6cm, below right=1.1cm and 0.1cm of fan] (sf)
+  {\textbf{(3) Structure Functions}\\[4pt]
+   $\hat{S}_q(\tau)=\tfrac{1}{N_\tau}\sum|\delta_\tau|^q$,\;
+   $q\in\{0.25,\ldots,1.5\}$\\[3pt]
+   log-log slope: $\hat\zeta(q)=q/\hat\alpha_q$\\[4pt]
+   \begin{tabular}{c|c}
+     $q$ & $\hat\alpha_q$\\\hline
+     0.25 & 1.76\\
+     0.75 & 1.79\\
+     $\vdots$ & $\vdots$
+   \end{tabular}};
 
-% variance ratio
-\node[bias, right=1.4cm of rho] (vr)
-  {$\widehat{VR}(\tau)$\\[2pt]
-   $= 1 + 2\!\sum_{k=1}^{\tau-1}\!\Bigl(1-\tfrac{k}{\tau}\Bigr)\hat{\rho}(k)$};
+\draw[arr] (fan) |- (sf.west);
 
-% bias term
-\node[bias, right=1.4cm of vr] (bt)
-  {$b(\tau) = -\tfrac{1}{2}\log\widehat{VR}(\tau)$\\[2pt]
-   \footnotesize OLS bias correction};
+\node[res, right=0.8cm of sf] (rsf)
+  {$\hat\alpha_{\mathrm{sf}}=\mathrm{median}(\hat\alpha_q)$};
+\draw[arr] (sf) -- (rsf);
 
-% corrected response
-\node[bias, right=1.3cm of bt] (ystar)
-  {$y^*(\tau)$\\[2pt]
-   $=\log\hat{P}(0,\tau)-b(\tau)$};
+%% ═══════════════════════════════════════════════════════════════
+%% ROW 3  –  Bias correction (below, violet dashed)
+%% ═══════════════════════════════════════════════════════════════
 
-% corrected alpha
-\node[result, right=1.2cm of ystar, fill=orange!20] (rcorr)
-  {$\hat{\alpha}_{\mathrm{corr}}$};
+\node[bias, text width=3.2cm, below=2.2cm of pdf] (rho)
+  {\textbf{Autocorrelations}\\[3pt]
+   $\hat\rho(k)=\mathrm{Corr}(\delta_t,\delta_{t-k})$\\[2pt]
+   \scriptsize $k=1,\ldots,K_{\max}=60$};
 
-% arrows along bias path
-\draw[arrb] (incr.south) -- ++(0,-0.6) -| (rho.north);
-\draw[arrb] (rho)  -- (vr);
-\draw[arrb] (vr)   -- (bt);
-\draw[arrb] (bt)   -- (ystar);
-\draw[arrb] (ystar) -- (rcorr);
+\node[bias, text width=3.4cm, right=0.9cm of rho] (vr)
+  {\textbf{Variance Ratio}\\[3pt]
+   $\widehat{VR}(\tau)=1+2\!\sum_{k=1}^{\tau-1}\!\bigl(1-\tfrac{k}{\tau}\bigr)\hat\rho(k)$};
 
-% connect tip result down to corrected alpha (dashed)
-\draw[arrb] (rtip.south) -- ++(0,-0.4) -| (ystar.north);
+\node[bias, text width=2.8cm, right=0.9cm of vr] (bt)
+  {\textbf{Bias Term}\\[3pt]
+   $b(\tau)=-\tfrac{1}{2}\log\widehat{VR}(\tau)$};
 
-%% ── Ordering arrow between the three alpha results ───────────────────────
-\draw[arr, gray!60, dotted]
-  (rtip.north) to[bend left=20]
-  node[above, label, black!50] {sys.\ ordering?}
-  (rsf.north);
-\draw[arr, gray!60, dotted]
-  (rsf.north) to[bend left=20]
-  (rcoll.north);
+\node[bias, text width=3.0cm, right=0.9cm of bt] (ystar)
+  {\textbf{Corrected Response}\\[3pt]
+   $y^*(\tau)=\log\hat{P}(0,\tau)-b(\tau)$\\[2pt]
+   \scriptsize coefficient of $b$ fixed at 1};
 
-%% ── Section labels ───────────────────────────────────────────────────────
-\node[label, above=0.35cm of prices]  {\S4.1 Data};
-\node[label, above=0.35cm of incr]    {\S4.2 Increments};
-\node[label, above=0.35cm of pdf]     {\S4.3 PDF};
-\node[label, above=0.35cm of tip]     {\S4.4--4.6 Estimators};
-\node[label, below=0.25cm of rho]     {\S4.7 Bias Correction};
+\node[res, fill=orange!20, right=0.9cm of ystar] (rcorr)
+  {$\hat\alpha_{\mathrm{corr}}=-1/\hat{m}^*$};
+
+%% bias chain arrows
+\draw[arrv] (rho)   -- (vr);
+\draw[arrv] (vr)    -- (bt);
+\draw[arrv] (bt)    -- (ystar);
+\draw[arrv] (ystar) -- (rcorr);
+
+%% connect 1-min increments feed → autocorrelation node
+\draw[arrv] (incr.south) -- ++(0,-1.6) -| (rho.north)
+  node[near start, right, lbl]{1-min $\delta_t$};
+
+%% connect tip result → corrected response (tip feeds y*)
+\draw[arrv] (rtip.south) -- ++(0,-0.4) -| (ystar.north)
+  node[near start, right, lbl]{$\log\hat{P}(0,\tau)$};
+
+%% ── Section labels ────────────────────────────────────────────
+\node[lbl, above=0.3cm of scale]  {\S4.1 Preprocessing};
+\node[lbl, above=0.3cm of pdf]    {\S4.3 PDF};
+\node[lbl, above=0.3cm of tip]    {\S4.4 Tip OLS};
+\node[lbl, above=0.3cm of coll]   {\S4.5 Collapse};
+\node[lbl, above=0.3cm of sf]     {\S4.6 Struct. Fn.};
+\node[lbl, below=0.2cm of rho]    {\S4.7 Bias Correction};
 
 \end{tikzpicture}%
-}% end resizebox
-\caption{Mathematical pipeline. Prices $P(t)$ are differenced at lag $\tau$
-to form increments $\Delta P_\tau$; an empirical PDF $\hat{P}(x,\tau)$ is
-then constructed.  Three independent estimators (tip-scaling OLS, structure
-functions, and PDF collapse) each extract the tail exponent $\alpha$ from the
-same distribution.  The bias-correction path (violet, dashed) uses
-lag-$k$ autocorrelations to form the variance ratio $\widehat{VR}(\tau)$,
-yielding a corrected log-probability $y^*(\tau)$ and a bias-adjusted
-estimate $\hat{\alpha}_{\mathrm{corr}}$.}
+}
+\caption{Full estimation pipeline.
+\textbf{Top row}: raw 1-minute prices undergo tick scaling, LOCF gap-filling,
+and lag-$\tau$ differencing to produce increments $\delta_\tau(t)$, from which
+the empirical PDF $\hat{P}(x_j,\tau)$ is constructed at each lag on two
+log-spaced grids ($N_\tau\in\{20,37\}$) and five bin-width values
+($\varepsilon\in\{0.1,\ldots,0.5\}$).
+An optional intraday seasonality correction replaces raw increments with
+de-seasonalized increments $\tilde\delta_\tau$.
+\textbf{Middle}: three independent estimators extract the Lévy exponent
+from $\hat{P}$---tip-scaling OLS on the centre bin, collapse-quality
+minimisation over a grid of 160 candidate $\alpha$ values, and
+structure-function log-log regressions at six moment orders~$q$.
+\textbf{Bottom row} (violet, dashed): lag-$k$ autocorrelations $\hat\rho(k)$
+from the 1-minute series yield the variance ratio $\widehat{VR}(\tau)$,
+whose log supplies the bias term $b(\tau)=-\tfrac{1}{2}\log\widehat{VR}(\tau)$.
+Subtracting $b(\tau)$ from $\log\hat{P}(0,\tau)$ gives the corrected response
+$y^*(\tau)$, and a constrained OLS refits the slope to obtain
+$\hat\alpha_{\mathrm{corr}}$.}
 \label{fig:pipeline}
 \end{figure*}
