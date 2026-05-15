@@ -1,13 +1,23 @@
-% ── Lévy Estimation Pipeline ──────────────────────────────────────────────────
-% Include via \input{pipeline_figure} in main.tex.
-% Requires (preamble.tex already has these):
-%   \usepackage{tikz}
-%   \usetikzlibrary{shapes.geometric,arrows.meta,positioning,calc}
+% ── Lévy Estimation Pipeline (standalone) ─────────────────────────────────────
+% Compile this file directly in Overleaf to preview the diagram.
+% Include in main.tex with the figure wrapper below:
+%
+%   \begin{figure*}[!t]
+%   \centering
+%   \resizebox{\textwidth}{!}{\input{pipeline_figure}}
+%   \caption{...}
+%   \label{fig:pipeline}
+%   \end{figure*}
+%
+% \usepackage{standalone} in preamble.tex makes \input{pipeline_figure} strip
+% the documentclass/begin-end document tags automatically.
 % ──────────────────────────────────────────────────────────────────────────────
+\documentclass[tikz, border=12pt]{standalone}
+\usepackage{amsmath,amssymb}
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric,arrows.meta,positioning,calc}
 
-\begin{figure*}[!t]
-\centering
-\resizebox{\textwidth}{!}{%
+\begin{document}
 \begin{tikzpicture}[
   %% ── node styles ─────────────────────────────────────────────────────────
   databox/.style  = {rectangle, rounded corners=4pt,
@@ -93,7 +103,6 @@
 %% TIER 2 — Three parallel estimators (fan from PDF)
 %%═══════════════════════════════════════════════════════════════════════════════
 
-%% fan junction: a point 1.2 cm east of pdf
 \coordinate (fan) at ($(pdf.east)+(1.2,0)$);
 \draw[arr] (pdf.east) -- (fan);
 
@@ -158,7 +167,6 @@
 %% TIER 3 — Bias correction (violet dashed, below Tier 1)
 %%═══════════════════════════════════════════════════════════════════════════════
 
-%% anchored directly below the incr node
 \node[biasbox, text width=3.0cm]
   (rho) at ($(incr)+(0,-7.2)$)
   {\textbf{Autocorrelation}\\[5pt]
@@ -185,7 +193,6 @@
 \node[resnode, fill=orange!20, right=0.9cm of ystar] (rcorr)
   {$\hat\alpha_{\mathrm{corr}} = -1/\hat{m}^*$};
 
-%% bias chain arrows
 \draw[arrv] (rho)   -- (vr);
 \draw[arrv] (vr)    -- (bt);
 \draw[arrv] (bt)    -- (ystar);
@@ -195,36 +202,12 @@
 \draw[arrv] (incr.south) -- (rho.north)
   node[midway, right, lbl] {1-min $\delta_t$};
 
-%% tip result feeds log P̂(0,τ) into the corrected response
+%% tip result feeds log P̂(0,τ) into corrected response
 \draw[arrv] (rtip.south) -- ++(0,-0.45) -| (ystar.north)
   node[pos=0.22, below, lbl] {$\log\hat{P}(0,\tau)$};
 
 %% Section label (Tier 3)
 \node[lbl, below=0.22cm of rho] {\S4.7 Bias Correction};
 
-\end{tikzpicture}%
-}
-\caption{Estimation pipeline.
-\textbf{Top row}: raw 1-minute prices are tick-scaled to integer units, missing
-bars are filled by last-observation-carried-forward (zero price change), and
-lag-$\tau$ increments $\delta_\tau(t)=P(t)-P(t{-}\tau)$ are formed on two
-log-spaced grids.
-The empirical PDF $\hat{P}(x_j,\tau)$ is constructed at each lag using
-histogram bin width $\Delta x=\varepsilon\Delta$, with $\varepsilon$ varied
-across five values as a robustness dimension.
-\textbf{Middle}: three independent estimators are applied to the same PDF.
-(1)~Tip-scaling OLS regresses $\log\hat{P}(0,\tau)$ on $\log\tau$ and reads
-off $\hat\alpha_{\mathrm{tip}}=-1/\hat{m}$.
-(2)~PDF collapse minimises the cross-$\tau$ variance of the rescaled density
-$\tilde{P}(\tilde{x},\tau)$ over a grid of trial exponents.
-(3)~Structure functions compute the $q$-th absolute moment $\hat{S}_q(\tau)$
-at each lag; the Lévy scaling $\hat{S}_q\!\propto\!\tau^{q/\alpha}$ gives
-$\hat\alpha_q$ per moment order, and the median is taken.
-\textbf{Bottom row} (violet, dashed): lag-$k$ autocorrelations $\hat\rho(k)$
-from the 1-minute series form the variance ratio $\widehat{VR}(\tau)$, whose
-log yields the bias term $b(\tau)=-\tfrac{1}{2}\log\widehat{VR}(\tau)$.
-Subtracting $b(\tau)$ from $\log\hat{P}(0,\tau)$ and re-running the OLS
-with the coefficient of $b$ constrained to one gives the
-autocorrelation-corrected estimate $\hat\alpha_{\mathrm{corr}}$.}
-\label{fig:pipeline}
-\end{figure*}
+\end{tikzpicture}
+\end{document}
