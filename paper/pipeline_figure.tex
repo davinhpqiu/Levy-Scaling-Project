@@ -1,6 +1,5 @@
 % ── Lévy Estimation Pipeline (standalone) ─────────────────────────────────────
-% Compile this file directly in Overleaf to preview the diagram.
-% Include in main.tex with the figure wrapper below:
+% Compile directly in Overleaf to preview. Include in main.tex with:
 %
 %   \begin{figure*}[!t]
 %   \centering
@@ -8,9 +7,6 @@
 %   \caption{...}
 %   \label{fig:pipeline}
 %   \end{figure*}
-%
-% \usepackage{standalone} in preamble.tex makes \input{pipeline_figure} strip
-% the documentclass/begin-end document tags automatically.
 % ──────────────────────────────────────────────────────────────────────────────
 \documentclass[tikz, border=12pt]{standalone}
 \usepackage{amsmath,amssymb}
@@ -19,195 +15,159 @@
 
 \begin{document}
 \begin{tikzpicture}[
-  %% ── node styles ─────────────────────────────────────────────────────────
   databox/.style  = {rectangle, rounded corners=4pt,
                      draw=blue!55, fill=blue!9, semithick,
-                     align=center, font=\small, inner sep=7pt},
+                     align=center, font=\small, inner sep=8pt,
+                     minimum height=1.2cm},
   procbox/.style  = {rectangle, rounded corners=4pt,
                      draw=black!45, fill=gray!9, semithick,
-                     align=center, font=\small, inner sep=7pt},
+                     align=center, font=\small, inner sep=8pt,
+                     minimum height=1.2cm},
   estimbox/.style = {rectangle, rounded corners=4pt,
                      draw=green!55!black, fill=green!8, semithick,
-                     align=center, font=\small, inner sep=7pt},
+                     align=center, font=\small, inner sep=8pt,
+                     minimum height=1.2cm},
   biasbox/.style  = {rectangle, rounded corners=4pt,
                      draw=violet!60, fill=violet!8, semithick,
-                     align=center, font=\small, inner sep=6pt},
+                     align=center, font=\small, inner sep=8pt,
+                     minimum height=1.2cm},
   resnode/.style  = {ellipse, draw=orange!70, fill=orange!14,
                      align=center, font=\small\bfseries,
-                     minimum width=2.0cm, minimum height=1.0cm},
-  %% ── arrow styles ────────────────────────────────────────────────────────
-  arr/.style  = {-{Stealth[length=5pt,width=4.5pt]}, thick,  black!55},
-  arrv/.style = {-{Stealth[length=4pt,width=4pt]},   semithick, violet!65, dashed},
+                     minimum width=2.2cm, minimum height=1.1cm},
+  arr/.style  = {-{Stealth[length=5pt,width=4.5pt]}, thick, black!55},
+  arrv/.style = {-{Stealth[length=4pt,width=4pt]}, semithick, violet!65, dashed},
   lbl/.style  = {font=\scriptsize\itshape, text=black!50},
 ]
 
-%%═══════════════════════════════════════════════════════════════════════════════
-%% TIER 1 — Data preprocessing (left → right)
-%%═══════════════════════════════════════════════════════════════════════════════
+%%═══════════════════════════════════════════════════════════
+%% TIER 1 — Preprocessing
+%%═══════════════════════════════════════════════════════════
 
-%% ── A: Raw prices ────────────────────────────────────────────────────────────
 \node[databox, text width=2.0cm] (prices) at (0,0)
-  {\textbf{Prices} $P(t)$\\[5pt]
-   \scriptsize 8 equity-index\\[-1pt]
-   futures markets\\[-1pt]
-   1-min OHLCV};
+  {\textbf{Prices} $P(t)$\\[4pt]
+   \scriptsize 8 equity-index\\futures, 1-min\\OHLCV};
 
-%% ── B: Tick scaling ──────────────────────────────────────────────────────────
-\node[procbox, text width=2.9cm, right=1.0cm of prices] (scale)
-  {\textbf{Tick Scaling}\\[5pt]
-   $P_{\mathrm{int}}(t)=\bigl\lfloor P(t)/\Delta\bigr\rceil$\\[4pt]
-   \scriptsize 1 tick $\;=\;$ 1 integer unit\\[-1pt]
-   avoids float rounding};
+\node[procbox, text width=2.4cm, right=1.0cm of prices] (scale)
+  {\textbf{Tick Scaling}\\[4pt]
+   $P_{\mathrm{int}}(t)=\bigl\lfloor P(t)/\Delta\bigr\rceil$\\[3pt]
+   \scriptsize 1 tick $=$ 1 integer};
 
-\draw[arr] (prices) -- (scale)
-  node[midway, above, lbl] {$\times 1/\Delta$};
+\draw[arr] (prices) -- (scale) node[midway,above,lbl]{$\times 1/\Delta$};
 
-%% ── C: LOCF gap-fill ─────────────────────────────────────────────────────────
-\node[procbox, text width=2.4cm, right=0.9cm of scale] (locf)
-  {\textbf{Gap Fill}\\[5pt]
-   \scriptsize LOCF on missing\\[-1pt]
-   1-min bars\\[-1pt]
-   (zero $\Delta P$)};
+\node[procbox, text width=2.2cm, right=0.9cm of scale] (locf)
+  {\textbf{Gap Fill}\\[4pt]
+   \scriptsize LOCF on missing\\1-min bars\\(zero $\Delta P$)};
 
 \draw[arr] (scale) -- (locf);
 
-%% ── D: Lag increments ────────────────────────────────────────────────────────
-\node[procbox, text width=3.1cm, right=0.9cm of locf] (incr)
-  {\textbf{Lag Increments}\\[5pt]
-   $\delta_\tau(t)=P(t)-P(t{-}\tau)$\\[5pt]
-   \begin{tabular}{l|r}
-     grid       & $N_\tau$ \\\hline
-     coarse & 20 \\
-     fine     & 37
-   \end{tabular}\\[4pt]
-   \scriptsize $\tau\!\in\![1,\,56{,}234]$ min\\[-1pt]
-   opt.: de-seasonalise $\tilde\delta_\tau$};
+\node[procbox, text width=2.8cm, right=0.9cm of locf] (incr)
+  {\textbf{Lag Increments}\\[4pt]
+   $\delta_\tau(t)=P(t)-P(t{-}\tau)$\\[3pt]
+   \scriptsize $\tau\in[1,56{,}234]$ min\\
+   grids: $N_\tau\in\{20,\,37\}$\\
+   opt.: de-seasonalise};
 
 \draw[arr] (locf) -- (incr);
 
-%% ── E: Empirical PDF ─────────────────────────────────────────────────────────
-\node[procbox, text width=3.3cm, right=0.9cm of incr] (pdf)
-  {\textbf{Empirical PDF}\\[5pt]
-   $\hat{P}(x_j,\tau)=\dfrac{N_j}{N_\tau\cdot\varepsilon\Delta}$\\[6pt]
-   \scriptsize $N_x=2{,}000$ bins,\;$\Delta x=\varepsilon\Delta$\\[-1pt]
-   $\varepsilon\in\{0.1,\,0.2,\,0.3,\,0.4,\,0.5\}$\\[3pt]
-   extract centre bin $\hat{P}(0,\tau)$};
+\node[procbox, text width=3.0cm, right=0.9cm of incr] (pdf)
+  {\textbf{Empirical PDF}\\[4pt]
+   $\hat{P}(x_j,\tau)=\dfrac{N_j}{N_\tau\cdot\varepsilon\Delta}$\\[5pt]
+   \scriptsize $\Delta x=\varepsilon\Delta$,\;
+   $\varepsilon\in\{0.1,\ldots,0.5\}$\\
+   centre bin: $\hat{P}(0,\tau)$};
 
 \draw[arr] (incr) -- (pdf);
 
-%% ── Section labels (Tier 1) ──────────────────────────────────────────────────
-\node[lbl, above=0.28cm of scale] {\S4.1 Preprocessing};
-\node[lbl, above=0.28cm of pdf]   {\S4.3 Empirical PDF};
+\node[lbl, above=0.3cm of scale] {\S4.1 Preprocessing};
+\node[lbl, above=0.3cm of pdf]   {\S4.3 Empirical PDF};
 
-%%═══════════════════════════════════════════════════════════════════════════════
-%% TIER 2 — Three parallel estimators (fan from PDF)
-%%═══════════════════════════════════════════════════════════════════════════════
+%%═══════════════════════════════════════════════════════════
+%% TIER 2 — Three estimators
+%%═══════════════════════════════════════════════════════════
 
-\coordinate (fan) at ($(pdf.east)+(1.2,0)$);
+\coordinate (fan) at ($(pdf.east)+(1.1,0)$);
 \draw[arr] (pdf.east) -- (fan);
 
-%% ── (1) Tip-scaling OLS ──────────────────────────────────────────────────────
-\node[estimbox, text width=3.9cm, anchor=west]
-  (tip) at ($(fan)+(0.1, 3.2)$)
+%% (1) Tip-Scaling OLS
+\node[estimbox, text width=3.6cm, anchor=west]
+  (tip) at ($(fan)+(0.1, 2.6)$)
   {\textbf{(1) Tip-Scaling OLS}\\[5pt]
-   $\log\hat{P}(0,\tau)=m\log\tau+c$\\[6pt]
-   \begin{tabular}{c|c}
-     $\log\tau$ & $\log\hat{P}(0,\tau)$ \\\hline
-     0.00 & $-$2.14 \\
-     1.79 & $-$3.06 \\
-     $\vdots$ & $\vdots$
-   \end{tabular}\\[5pt]
-   OLS slope $\hat{m}$;\quad $R^2 > 0.99$};
+   $\log\hat{P}(0,\tau) = m\log\tau + c$\\[4pt]
+   OLS slope $\hat{m}$,\quad $R^2>0.99$};
 
 \draw[arr] (fan) -- (tip.west);
 \node[resnode, right=0.9cm of tip] (rtip)
-  {$\hat\alpha_{\mathrm{tip}} = -1/\hat{m}$};
+  {$\hat\alpha_{\mathrm{tip}}=-1/\hat{m}$};
 \draw[arr] (tip) -- (rtip);
 
-%% ── (2) PDF Collapse ─────────────────────────────────────────────────────────
-\node[estimbox, text width=3.9cm, anchor=west]
+%% (2) PDF Collapse
+\node[estimbox, text width=3.6cm, anchor=west]
   (coll) at ($(fan)+(0.1, 0)$)
   {\textbf{(2) PDF Collapse}\\[5pt]
-   rescale:\;$\tilde{x}=x/\tau^{1/\alpha}$,\\[2pt]
-   $\tilde{P}(\tilde{x},\tau)=\tau^{1/\alpha}\hat{P}$\\[5pt]
+   $\tilde{x}=x/\tau^{1/\alpha}$,\quad
+   $\tilde{P}=\tau^{1/\alpha}\hat{P}$\\[4pt]
    $\mathrm{Score}(\alpha)=
      \tfrac{1}{|\mathcal{G}||\mathcal{T}|}
-     \displaystyle\sum\bigl[\log\tilde{P}-\mu_j\bigr]^2$\\[5pt]
-   \scriptsize grid: $\alpha\in[1.2,\,2.8]$, 160 pts\\[-1pt]
-   $\mu_j$: cross-$\tau$ log-mean at $\tilde{x}_j$};
+     \sum[\log\tilde{P}-\mu_j]^2$\\[4pt]
+   \scriptsize grid: $\alpha\in[1.2,\,2.8]$, 160 pts};
 
 \draw[arr] (fan) -- (coll.west);
 \node[resnode, right=0.9cm of coll] (rcoll)
-  {$\hat\alpha_{\mathrm{collapse}}$\\[2pt]$=\arg\min\,\mathrm{Score}$};
+  {$\hat\alpha_{\mathrm{collapse}}$\\$=\arg\min\,\mathrm{Score}$};
 \draw[arr] (coll) -- (rcoll);
 
-%% ── (3) Structure Functions ──────────────────────────────────────────────────
-\node[estimbox, text width=3.9cm, anchor=west]
-  (sf) at ($(fan)+(0.1,-3.2)$)
+%% (3) Structure Functions
+\node[estimbox, text width=3.6cm, anchor=west]
+  (sf) at ($(fan)+(0.1,-2.6)$)
   {\textbf{(3) Structure Functions}\\[5pt]
-   $\hat{S}_q(\tau)=\tfrac{1}{N_\tau}\!\sum_t|\delta_\tau(t)|^q$\\[4pt]
-   log-log slope:\;$\hat\zeta(q)=q/\hat\alpha_q$\\[5pt]
-   \begin{tabular}{c|c}
-     $q$ & $\hat\alpha_q$ \\\hline
-     0.25 & 1.76 \\
-     0.75 & 1.79 \\
-     $\vdots$ & $\vdots$
-   \end{tabular}\\[4pt]
+   $\hat{S}_q(\tau)=\tfrac{1}{N_\tau}\sum_t|\delta_\tau(t)|^q$\\[4pt]
+   slope:\;$\hat\zeta(q)=q/\hat\alpha_q$\\[3pt]
    \scriptsize $q\in\{0.25,\,0.50,\,0.75,\,1.00,\,1.25,\,1.50\}$};
 
 \draw[arr] (fan) -- (sf.west);
 \node[resnode, right=0.9cm of sf] (rsf)
-  {$\hat\alpha_{\mathrm{sf}}$\\[2pt]$=\mathrm{median}(\hat\alpha_q)$};
+  {$\hat\alpha_{\mathrm{sf}}$\\$=\mathrm{median}(\hat\alpha_q)$};
 \draw[arr] (sf) -- (rsf);
 
-%% ── Section label (Tier 2) ───────────────────────────────────────────────────
-\node[lbl, above=0.28cm of tip] {\S4.4--4.6 Three Estimators};
+\node[lbl, above=0.3cm of tip] {\S4.4--4.6 Three Estimators};
 
-%%═══════════════════════════════════════════════════════════════════════════════
-%% TIER 3 — Bias correction (violet dashed, below Tier 1)
-%%═══════════════════════════════════════════════════════════════════════════════
+%%═══════════════════════════════════════════════════════════
+%% TIER 3 — Bias correction
+%%═══════════════════════════════════════════════════════════
 
-\node[biasbox, text width=3.0cm]
-  (rho) at ($(incr)+(0,-7.2)$)
-  {\textbf{Autocorrelation}\\[5pt]
-   $\hat\rho(k)=\mathrm{Corr}(\delta_t,\delta_{t-k})$\\[4pt]
-   \scriptsize $k=1,\ldots,K_{\max}=60$\\[-1pt]
-   from 1-min series};
+\node[biasbox, text width=2.8cm] (rho) at ($(incr)+(0,-5.8)$)
+  {\textbf{Autocorrelation}\\[4pt]
+   $\hat\rho(k)=\mathrm{Corr}(\delta_t,\delta_{t-k})$\\[3pt]
+   \scriptsize $k=1,\ldots,60$};
 
-\node[biasbox, text width=3.5cm, right=0.9cm of rho] (vr)
-  {\textbf{Variance Ratio}\\[5pt]
+\node[biasbox, text width=3.4cm, right=0.9cm of rho] (vr)
+  {\textbf{Variance Ratio}\\[4pt]
    $\widehat{VR}(\tau)=1+2\!\sum_{k<\tau}\!\bigl(1-\tfrac{k}{\tau}\bigr)\hat\rho(k)$};
 
-\node[biasbox, text width=2.8cm, right=0.9cm of vr] (bt)
-  {\textbf{Bias Term}\\[5pt]
-   $b(\tau)=-\tfrac{1}{2}\log\widehat{VR}(\tau)$\\[4pt]
-   \scriptsize captures autocorr.\\[-1pt]
-   bias on OLS slope};
+\node[biasbox, text width=2.6cm, right=0.9cm of vr] (bt)
+  {\textbf{Bias Term}\\[4pt]
+   $b(\tau)=-\tfrac{1}{2}\log\widehat{VR}(\tau)$};
 
-\node[biasbox, text width=3.1cm, right=0.9cm of bt] (ystar)
-  {\textbf{Corrected Response}\\[5pt]
-   $y^*(\tau)=\log\hat{P}(0,\tau)-b(\tau)$\\[4pt]
-   \scriptsize coeff.\ of $b(\tau)$ fixed at 1\\[-1pt]
-   (collinearity avoidance)};
+\node[biasbox, text width=3.0cm, right=0.9cm of bt] (ystar)
+  {\textbf{Corrected Response}\\[4pt]
+   $y^*(\tau)=\log\hat{P}(0,\tau)-b(\tau)$\\[3pt]
+   \scriptsize coeff.\ of $b$ fixed at 1};
 
 \node[resnode, fill=orange!20, right=0.9cm of ystar] (rcorr)
-  {$\hat\alpha_{\mathrm{corr}} = -1/\hat{m}^*$};
+  {$\hat\alpha_{\mathrm{corr}}=-1/\hat{m}^*$};
 
 \draw[arrv] (rho)   -- (vr);
 \draw[arrv] (vr)    -- (bt);
 \draw[arrv] (bt)    -- (ystar);
 \draw[arrv] (ystar) -- (rcorr);
 
-%% 1-min increments → autocorrelation (straight down)
 \draw[arrv] (incr.south) -- (rho.north)
   node[midway, right, lbl] {1-min $\delta_t$};
 
-%% tip result feeds log P̂(0,τ) into corrected response
-\draw[arrv] (rtip.south) -- ++(0,-0.45) -| (ystar.north)
-  node[pos=0.22, below, lbl] {$\log\hat{P}(0,\tau)$};
+\draw[arrv] (rtip.south) -- ++(0,-0.4) -| (ystar.north)
+  node[pos=0.2, below, lbl] {$\log\hat{P}(0,\tau)$};
 
-%% Section label (Tier 3)
-\node[lbl, below=0.22cm of rho] {\S4.7 Bias Correction};
+\node[lbl, below=0.25cm of rho] {\S4.7 Bias Correction};
 
 \end{tikzpicture}
 \end{document}
