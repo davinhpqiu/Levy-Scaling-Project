@@ -13,8 +13,9 @@
 \title{Empirical L\'{e}vy Scaling in Short-Horizon Futures Returns:
        Estimation, Sensitivity, and Autocorrelation Bias}
 
-\author{Haoping Qiu\\
-\small{davinhpqiu@outlook.com}}
+\author{Haoping Qiu$^1$ \and Alexei Chekhlov$^2$\\
+\small{$^1$Department of Statistics, University of Oxford \quad davinhpqiu@outlook.com}\\
+\small{$^2$Department of Mathematics, Columbia University \quad ac3085@columbia.edu}}
 
 % ══════════════════════════════════════════════════════════════════════════════
 \maketitle
@@ -260,8 +261,7 @@ to the autocorrelation function is
   = 1 + 2\sum_{k=1}^{\tau-1}\!\left(1-\frac{k}{\tau}\right)\rho(k),
   \label{eq:vr_rho}
 \end{equation}
-which forms the basis for both variance-ratio estimators implemented in the
-notebook.
+which forms the basis for both variance-ratio estimators implemented here.
 
 At 1-minute frequency the dominant effect is mean reversion, not the positive
 correlation found at weekly horizons by Lo and MacKinlay \cite{LoMacKinlay1988}. Two
@@ -494,17 +494,17 @@ of 160 candidate values in $[1.2,2.8]$.
 \subsection{Structure-function estimator}
 \label{sec:methodology:sf}
 
-For each moment order $q\in\{0.25,0.50,0.75,1.00,1.25,1.50\}$, the empirical
-structure function is
+The empirical structure function at moment order $q$ is
 \begin{equation}
   \hat{S}_q(\tau)
-  = \frac{1}{N_\tau}\sum_t |\Delta P_\tau(t)|^q.
+  = \frac{1}{N_\tau}\sum_t |\Delta P_\tau(t)|^q,
   \label{eq:sf}
 \end{equation}
+computed for $q\in\{0.25,0.50,0.75,1.00,1.25,1.50\}$.
 The Lévy scaling prediction $\hat{S}_q(\tau) \propto \tau^{q/\alpha}$ implies
 the log-log regression slope $\hat\zeta(q) = q/\alphah_q$. The
-structure-function estimator $\alphah_{\mathrm{sf}}$ is the median of
-$\alphah_q$ across the six moment orders. Fractional orders $q<1$ downweight
+structure function estimator $\alphah_{\mathrm{sf}}$ is the median of
+$\alphah_q$ across these six orders. Fractional orders $q<1$ downweight
 large increments and converge reliably on moderate samples, while
 $q\in(1,\alpha)$ probe the tail more directly. Systematic concavity of
 $\hat\zeta(q)$ would signal multifractal corrections; the present analysis
@@ -617,7 +617,7 @@ non-PT range ($\alphah\approx 1.83$).
 \label{fig:collapse}
 \end{figure}
 
-\paragraph{PT diagnostic.}
+
 The S\&P/TSX~60 futures contract (PT) is a persistent outlier in every
 analysis carried out in this paper ($\alphah_{\mathrm{tip}}\approx 2.6$,
 $R^2\approx 0.91$, largest inter-estimator spread).
@@ -928,6 +928,8 @@ NQ & $-0.001$ & 0.980 & 1.737 & 1.690 & $+0.046$ \\
 \label{sec:conclusion}
 % ══════════════════════════════════════════════════════════════════════════════
 
+\subsection{Summary of Findings}
+
 This paper has examined Lévy scaling in short-horizon futures returns across
 eight equity-index contracts spanning North America and Europe, using
 1-minute OHLCV data from exchange inception through January 2026.
@@ -994,7 +996,7 @@ marginally positive $\rhoh(1)$.
 The corrected estimates for the most liquid equity-index futures fall within
 $0.02$ exponent units of historical benchmarks.
 
-\paragraph{Limitations.}
+\subsection{Limitations}
 Several caveats apply.
 The study covers a single asset class; whether the $\alpha\approx 1.7$--$1.8$
 finding extends to foreign exchange, commodity, or fixed-income futures is an
@@ -1006,7 +1008,7 @@ The bias correction is derived under covariance-stationarity; at the very
 shortest lags, microstructure effects such as bid-ask bounce and price
 discreteness can introduce deviations that the correction does not fully absorb.
 
-\paragraph{Extensions.}
+\subsection{Extensions}
 Longer samples would allow the temporal stability of $\alphah$ to be assessed
 and would permit the cross-market correlation of exponent estimates to be
 studied as a possible systemic risk indicator.
@@ -1020,9 +1022,6 @@ sharpen the lower boundary of the self-similar regime.
 
 % ══════════════════════════════════════════════════════════════════════════════
 \FloatBarrier
-\section*{Acknowledgment}
-The author thanks Prof.\ Alexei Chekhlov for providing the equity-index
-futures data via OneTick/TickData.
 
 \bibliographystyle{IEEEtran}
 \bibliography{references}
