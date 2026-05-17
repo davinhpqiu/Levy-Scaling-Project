@@ -30,24 +30,24 @@ motivating Lévy-stable distributional models.
 This paper examines Lévy scaling across eight equity-index futures contracts
 spanning North America and Europe, using 1-minute OHLCV data from exchange
 inception through January 2026.
-Three estimation approaches (peak-scaling OLS, collapse-quality
-minimisation, and fractional-order structure functions) are compared
+Three estimation approaches (peak scaling OLS, collapse quality
+minimisation, and fractional order structure functions) are compared
 across a full factorial sensitivity analysis spanning histogram resolution,
 lag grid density, and intraday seasonality correction.
-Seven of the eight markets yield peak-scaling exponents consistent with the
+Seven of the eight markets yield peak scaling exponents consistent with the
 truncated Lévy-flight consensus; the S\&P/TSX~60 contract is a persistent
 outlier attributable to microstructure effects.
 The estimator choice is found to be the dominant source of variation in
 reported exponents, substantially exceeding the sensitivity to tuning
 parameters or intraday seasonality correction.
 Finally, a closed-form variance-ratio bias correction is derived for the
-peak-scaling estimator under short-term mean reversion and validated
+peak scaling estimator under short-term mean reversion and validated
 cross-sectionally: the correction magnitude is monotonically ordered by
 variance ratio across the mean-reverting markets, providing empirical
 support for the bias mechanism.
 \end{abstract}
 
-\medskip\noindent\textbf{Keywords:} Lévy-stable distributions, peak-scaling estimator, equity-index futures, variance ratio, intraday returns, self-similarity.
+\medskip\noindent\textbf{Keywords:} Lévy-stable distributions, peak scaling estimator, equity-index futures, variance ratio, intraday returns, self-similarity.
 
 % ══════════════════════════════════════════════════════════════════════════════
 \section{Introduction}
@@ -72,7 +72,7 @@ as $\tau^{1/\alpha}$ for a characteristic exponent $\alpha\in(1,2)$. This
 implies, in particular, that the peak of the empirical probability density
 decays as $P(0,\tau)\propto\tau^{-1/\alpha}$, a relation that can be estimated
 by ordinary least squares on a log-log plot and that forms the basis of the
-\textit{peak-scaling} approach of Mantegna and Stanley \cite{MantegnaStanley1994,MantegnaStanley1995}.
+\textit{peak scaling} approach of Mantegna and Stanley \cite{MantegnaStanley1994,MantegnaStanley1995}.
 The same self-similarity predicts that empirical PDFs at different lags, when
 rescaled by $\tau^{1/\alpha}$, should collapse onto a common curve, providing
 a qualitative visual test of the Lévy hypothesis. Both the regression and the
@@ -90,7 +90,7 @@ choices including histogram resolution, lag grid density, intraday
 seasonality removal, and estimator selection has not been systematically
 quantified in a single study; different choices can shift estimates by
 amounts that matter for practical inference. Third, and most substantively,
-the peak-scaling estimator is derived under the assumption of independent
+the peak scaling estimator is derived under the assumption of independent
 increments, yet 1-minute futures returns exhibit well-documented short-term
 mean reversion driven by the bid-ask bounce and order-book dynamics
 \cite{Roll1984,Bouchaud2004}. The direction of the resulting bias is
@@ -104,7 +104,7 @@ OneTick via TickData and covering each contract from exchange inception through
 January 2026, we make six contributions organized around the three gaps.
 
 \textit{Addressing gap 1 (cross-market coverage):}
-(i)~We establish a baseline peak-scaling survey across all eight markets,
+(i)~We establish a baseline peak scaling survey across all eight markets,
 reporting $\alphah_{\mathrm{tip}}$ and collapse diagnostics for each.
 (v)~We test the symmetry assumption of the Lévy model by computing the
 pointwise asymmetry of the empirical PDFs and examining whether symmetrization
@@ -115,7 +115,7 @@ improves collapse quality.
 the full PDF analysis on both raw and deseasonalized price series and
 comparing the resulting estimates.
 (iii)~We compare three independent estimators (tip-scaling OLS,
-collapse-quality minimization, and fractional-order structure functions)
+collapse quality minimization, and fractional order structure functions)
 across all markets to assess their mutual consistency.
 (iv)~We construct a full factorial robustness matrix spanning all combinations
 of histogram resolution, lag grid density, preprocessing choice, and
@@ -123,13 +123,13 @@ estimator, and decompose the variance of $\alphah$ across these factors to
 identify which choices matter most.
 
 \textit{Addressing gap 3 (bias correction):}
-(vi)~We derive a closed-form bias correction for the peak-scaling estimator
+(vi)~We derive a closed-form bias correction for the peak scaling estimator
 under short-term mean reversion, express it in terms of the
 Campbell--Lo--MacKinlay variance ratio, and validate the correction across
 all eight markets.
 
 The paper is organized as follows. Section~\ref{sec:background} provides
-the theoretical background on Lévy-stable distributions, peak-scaling
+the theoretical background on Lévy-stable distributions, peak scaling
 estimation, and the variance-ratio framework. Section~\ref{sec:data} describes
 the data and preprocessing steps. Section~\ref{sec:methodology} develops the
 six analytical methods in detail. Section~\ref{sec:results} presents the
@@ -142,7 +142,7 @@ findings, discusses limitations, and suggests extensions.
 \label{sec:background}
 % ══════════════════════════════════════════════════════════════════════════════
 
-\subsection{Lévy-stable distributions and the peak-scaling formula}
+\subsection{Lévy-stable distributions and the peak scaling formula}
 \label{sec:background:levy}
 
 The Lévy-Khintchine theorem establishes that the class of stable distributions
@@ -171,7 +171,7 @@ where $F_\alpha$ is the standardized stable density. This scaling form is the
 central prediction of the Lévy model: the shape of the increment distribution
 is identical at every lag, up to a scale factor growing as $\tau^{1/\alpha}$.
 Setting $x=0$ and using $F_\alpha(0) = \Gamma(1/\alpha)/(\pi\alpha)$ gives the
-\textit{peak-scaling formula}
+\textit{peak scaling formula}
 \begin{equation}
   P(0,\tau)
   = \frac{\Gamma(1/\alpha)}{\pi\alpha}\,(\gamma\tau)^{-1/\alpha}.
@@ -213,13 +213,13 @@ application to contemporary futures data.
 
 Three estimation strategies are employed.
 
-The \textit{peak-scaling OLS} estimator, introduced by
+The \textit{peak scaling OLS} estimator, introduced by
 Mantegna and Stanley \cite{MantegnaStanley1994}, regresses $\log\Ph(0,\tau)$ on $\log\tau$ and
 recovers $\alphah_{\mathrm{tip}} = -1/\hat{m}$ from the slope $\hat{m}$.
 The estimator is semiparametric: it uses only the value of the distribution
 at the origin and makes no assumption about the shape elsewhere.
 
-The \textit{collapse-quality} estimator \cite{Drozdz2003} chooses
+The \textit{collapse quality} estimator \cite{Drozdz2003} chooses
 $\alpha$ to minimize the spread of the rescaled empirical curves
 $\tau^{1/\alpha}\Ph(\tau^{1/\alpha}\tilde{x},\tau)$ around a common function.
 A mean-squared log-deviation score weights the central body and the tails
@@ -446,7 +446,7 @@ estimate $\Ph(0,\tau)$ reliably; the upper bound $\varepsilon=0.5$ is where
 excessive bin width smooths out the distributional peak and biases the density
 estimate downward.
 
-\subsection{Baseline peak-scaling estimator}
+\subsection{Baseline peak scaling estimator}
 \label{sec:methodology:tip}
 
 Taking logs of Equation~\eqref{eq:peak} gives the tip regression
@@ -701,7 +701,7 @@ This systematic ordering is not sampling noise.
 The tip estimator depends only on the central value of the PDF at each lag;
 the structure-function estimator weights the entire distribution,
 with greater emphasis on the tails for larger $q$;
-and the collapse-quality estimator penalizes global misalignment of
+and the collapse quality estimator penalizes global misalignment of
 the rescaled PDFs.
 The fact that different distributional features select different effective
 exponents confirms that the data are only \emph{approximately} described by a
@@ -928,7 +928,7 @@ eight equity-index contracts spanning North America and Europe, using
 Six findings emerge.
 
 \textbf{(i) Baseline scaling.}
-Seven of the eight markets yield peak-scaling exponents lying within
+Seven of the eight markets yield peak scaling exponents lying within
 $\alphah_{\mathrm{tip}}\in(1.73,\,1.84)$, with $R^2>0.99$ for the log-log
 regression in every case.
 The cross-market mean is $\bar\alpha\approx 1.77$, consistent with the
@@ -947,8 +947,8 @@ Intraday seasonality is therefore not a dominant confound for Lévy scaling
 estimation at the 1-minute frequency.
 
 \textbf{(iii) Estimator consistency.}
-Three independent estimators (tip-scaling OLS, collapse-quality minimisation,
-and fractional-order structure functions) produce broadly consistent but
+Three independent estimators (tip-scaling OLS, collapse quality minimisation,
+and fractional order structure functions) produce broadly consistent but
 not identical results.
 The systematic ordering $\alphah_{\mathrm{tip}}<\alphah_{\mathrm{sf}}<
 \alphah_{\mathrm{collapse}}$ holds for six of the eight markets, with
@@ -993,7 +993,7 @@ Several caveats apply.
 The study covers a single asset class; whether the $\alpha\approx 1.7$--$1.8$
 finding extends to foreign exchange, commodity, or fixed-income futures is an
 open question.
-The peak-scaling estimator targets the body of the distribution rather than
+The peak scaling estimator targets the body of the distribution rather than
 the tail index in the Hill--Pickands sense, and the two need not coincide for
 truncated Lévy flights.
 The bias correction is derived under covariance-stationarity; at the very
