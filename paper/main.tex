@@ -20,35 +20,27 @@
 
 % ── Abstract ──────────────────────────────────────────────────────────────────
 \begin{abstract}
-Short-horizon price increments in equity-index futures exhibit heavy tails and
-a sharply peaked central body inconsistent with Gaussian dynamics, motivating
-Lévy-stable distributional models with characteristic exponent
-$\alpha\in(1,2)$.
+Short-horizon price increments in equity-index futures exhibit heavy tails
+and a sharply peaked central body inconsistent with Gaussian dynamics,
+motivating Lévy-stable distributional models.
 This paper examines Lévy scaling across eight equity-index futures contracts
-spanning North America and Europe using 1-minute OHLCV data from exchange
+spanning North America and Europe, using 1-minute OHLCV data from exchange
 inception through January 2026.
-Three estimation approaches (peak-scaling OLS, collapse-quality
-minimisation, and fractional-order structure functions) are applied across
-a full-factorial robustness matrix spanning histogram resolution, lag-grid
-density, and intraday seasonality correction.
-Seven of the eight markets yield peak-scaling exponents
-$\hat\alpha_{\mathrm{tip}}\in(1.73,\,1.84)$ with $R^2>0.99$, consistent with
-the truncated Lévy-flight consensus.
-The S\&P/TSX~60 contract is a persistent outlier ($\hat\alpha\approx 2.6$),
-attributable to low liquidity and excess zero increments.
-The estimator choice, not tuning parameters, is the dominant source of
-variation in reported exponents; inter-estimator spreads of $0.15$--$0.35$
-units exceed the inter-market range for the seven conforming contracts.
-Seven of the eight markets exhibit negative first-order autocorrelation
-and one (ER) a marginally positive value, all violating the
-i.i.d.\ assumption underlying peak-scaling.
-A closed-form variance-ratio bias correction reduces $\hat\alpha$ by
-$0.04$--$0.92$ units for seven of the eight markets; the sole exception (ER)
-has marginally positive first-order autocorrelation and corrects upward by
-$0.04$ units.
-The correction magnitude is monotonically ordered by variance ratio across
-the seven mean-reverting markets, providing a cross-sectional validation of
-the bias mechanism.
+Three estimation approaches --- peak-scaling OLS, collapse-quality
+minimisation, and fractional-order structure functions --- are compared
+across a full factorial sensitivity analysis spanning histogram resolution,
+lag grid density, and intraday seasonality correction.
+Seven of the eight markets yield peak-scaling exponents consistent with the
+truncated Lévy-flight consensus; the S\&P/TSX~60 contract is a persistent
+outlier attributable to microstructure effects.
+The estimator choice is found to be the dominant source of variation in
+reported exponents, substantially exceeding the sensitivity to tuning
+parameters or intraday seasonality correction.
+Finally, a closed-form variance-ratio bias correction is derived for the
+peak-scaling estimator under short-term mean reversion and validated
+cross-sectionally: the correction magnitude is monotonically ordered by
+variance ratio across the mean-reverting markets, providing empirical
+support for the bias mechanism.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -119,13 +111,13 @@ improves collapse quality.
 
 \textit{Addressing gap 2 (methodological sensitivity):}
 (ii)~We test the effect of intraday seasonality removal on $\alphah$, running
-the full PDF analysis on both raw and de-seasonalized price series and
+the full PDF analysis on both raw and deseasonalized price series and
 comparing the resulting estimates.
 (iii)~We compare three independent estimators (tip-scaling OLS,
 collapse-quality minimization, and fractional-order structure functions)
 across all markets to assess their mutual consistency.
-(iv)~We construct a full-factorial robustness matrix spanning all combinations
-of histogram resolution, lag-grid density, preprocessing choice, and
+(iv)~We construct a full factorial robustness matrix spanning all combinations
+of histogram resolution, lag grid density, preprocessing choice, and
 estimator, and decompose the variance of $\alphah$ across these factors to
 identify which choices matter most.
 
@@ -223,7 +215,7 @@ Three estimation strategies are employed.
 The \textit{peak-scaling OLS} estimator, introduced by
 Mantegna and Stanley \cite{MantegnaStanley1994}, regresses $\log\Ph(0,\tau)$ on $\log\tau$ and
 recovers $\alphah_{\mathrm{tip}} = -1/\hat{m}$ from the slope $\hat{m}$.
-The estimator is semi-parametric: it uses only the value of the distribution
+The estimator is semiparametric: it uses only the value of the distribution
 at the origin and makes no assumption about the shape elsewhere.
 
 The \textit{collapse-quality} estimator \cite{Drozdz2003} chooses
@@ -246,7 +238,7 @@ $\hat\zeta(q) = q/\alphah_q$ would signal multifractal corrections beyond
 simple Lévy scaling \cite{Mandelbrot1997,MuzyBacry1993}.
 
 Weron \cite{Weron2001} and Baru\v{n}\'ik and Va\v{c}ha \cite{Barunik2010} document that all three of
-these semi-parametric methods outperform the Hill estimator for $\alpha$ near
+these semiparametric methods outperform the Hill estimator for $\alpha$ near
 2 on finite samples. The comparison of the three estimators across all eight
 markets is central to the robustness analysis of Section~\ref{sec:results:robustness}.
 
@@ -429,7 +421,7 @@ estimations to assess the sensitivity of $\alphah$ to the choice of $N_\tau$.
 
 For each market and lag $\tau$ on the grid, price increments
 $\Delta P_\tau(t) = P(t) - P(t-\tau)$ are formed from the gap-filled
-integer-scaled price series. The histogram bin width is $\Delta x = \varepsilon
+integer scaled price series. The histogram bin width is $\Delta x = \varepsilon
 \cdot \Delta$, where $\Delta$ is the bid-ask spread in tick units and
 $\varepsilon$ is a dimensionless resolution parameter. The normalised histogram
 density is
@@ -528,9 +520,9 @@ minute-of-session:
   \label{eq:profile}
 \end{equation}
 where $D_m$ is the number of trading days with an observation at minute $m$.
-The profile is normalized to mean 1 across the session. The de-seasonalized
+The profile is normalized to mean 1 across the session. The deseasonalized
 increment is $\tilde\delta_k = \delta_k/\hat\sigma_{m(k)}$, and the
-de-seasonalized cumulative price series is $\tilde{P}(t)
+deseasonalized cumulative price series is $\tilde{P}(t)
 = \sum_{k=1}^t\tilde\delta_k$. The full PDF analysis is rerun on
 $\Delta\tilde{P}_\tau$, and the resulting $\alphah$ is compared to the
 baseline raw estimate to isolate the effect of the seasonality removal.
@@ -538,9 +530,9 @@ baseline raw estimate to isolate the effect of the seasonality removal.
 \subsection{Robustness analysis}
 \label{sec:methodology:robustness}
 
-A full-factorial sensitivity analysis spans all combinations of bin resolution
+A full factorial sensitivity analysis spans all combinations of bin resolution
 $\varepsilon\in\{0.1,0.2,0.3,0.4,0.5\}$, lag grid density $N_\tau\in\{20,37\}$,
-preprocessing (raw or de-seasonalized), and estimator (tip, collapse,
+preprocessing (raw or deseasonalized), and estimator (tip, collapse,
 structure functions). Every combination is run for all eight markets, producing
 a robustness matrix of $\alphah$ estimates. The contribution of each factor to
 the cross-cell variance of $\alphah$ is quantified by a variance decomposition,
@@ -634,7 +626,7 @@ compared with below 5\% for the most liquid contracts (ES, NQ); these zeros
 compress the empirical peak values at short lags and distort the log-log
 regression slope.
 Third, the tick size for PT (CAD~1 per contract) is large relative to
-intraday volatility, so the integer-scaled price increments occupy only a
+intraday volatility, so the integer scaled price increments occupy only a
 small number of distinct values at short lags, violating the continuous-distribution
 assumption underlying both the peak formula and the collapse estimator.
 Taken together, these factors suggest that the PT anomaly is a microstructure
@@ -649,7 +641,7 @@ the seven more liquid markets.
 
 Removing the U-shaped intraday volatility profile has a clear but market-specific
 effect on $\alphah_{\mathrm{tip}}$.
-Table~\ref{tab:seasonality} shows the raw and de-seasonalized tip estimates,
+Table~\ref{tab:seasonality} shows the raw and deseasonalized tip estimates,
 together with their difference $\Delta\alphah_{\mathrm{seas}}
 = \alphah_{\mathrm{tip,des}} - \alphah_{\mathrm{tip,raw}}$.
 Across the eight markets the shift ranges from $-0.002$ (ER) to $+0.132$ (PT),
@@ -665,7 +657,7 @@ Lévy exponent; the broad Lévy scaling picture survives preprocessing.
 Second, the direction of the shift is market-specific, indicating that the intraday
 volatility profile interacts with the distribution shape differently across asset
 classes.
-For the remaining analyses the raw (un-normalized) series is used as the
+For the remaining analyses the raw (unnormalized) series is used as the
 primary input, consistent with the standard in the literature.
 
 \begin{table}[htbp]
@@ -765,9 +757,9 @@ YM & 1.758 & 0.998 & 1.881 & 2.030 & 0.272 \\
 \subsection{Robustness}
 \label{sec:results:robustness}
 
-The full-factorial robustness matrix enumerates all combinations of resolution
-$\varepsilon\in\{0.1,\ldots,0.5\}$, lag-grid density $N_\tau\in\{20,37\}$,
-preprocessing (raw or de-seasonalized), and estimator (tip, sf, collapse),
+The full factorial robustness matrix enumerates all combinations of resolution
+$\varepsilon\in\{0.1,\ldots,0.5\}$, lag grid density $N_\tau\in\{20,37\}$,
+preprocessing (raw or deseasonalized), and estimator (tip, sf, collapse),
 yielding a comprehensive picture of which design choices drive estimation
 uncertainty.
 
@@ -967,7 +959,7 @@ principle.
 
 \textbf{(iv) Robustness.}
 Within any fixed estimator, $\alphah$ is essentially insensitive to histogram
-resolution $\varepsilon$ and lag-grid density $N_\tau$: the standard deviation
+resolution $\varepsilon$ and lag grid density $N_\tau$: the standard deviation
 across these design choices is below $0.025$ for every market.
 The estimator choice, not the tuning parameters, is the dominant source of
 variation in reported $\alphah$ values.
