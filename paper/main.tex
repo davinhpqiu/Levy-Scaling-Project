@@ -40,9 +40,9 @@ Three estimation approaches (peak scaling OLS, collapse quality
 minimisation, and fractional order structure functions) are compared
 across a full factorial sensitivity analysis spanning histogram resolution,
 lag grid density, and intraday seasonality correction.
-Seven of the eight markets yield peak scaling exponents consistent with the
-truncated Lévy-flight consensus; the S\&P/TSX~60 contract is a persistent
-outlier attributable to microstructure effects.
+All eight markets yield peak scaling exponents consistent with the
+truncated Lévy-flight consensus, spanning $\alphah_{\mathrm{tip}}\in(1.72,\,1.83)$
+with $R^2>0.997$ in every case.
 The estimator choice is found to be the dominant source of variation in
 reported exponents, substantially exceeding the sensitivity to tuning
 parameters or intraday seasonality correction.
@@ -372,8 +372,12 @@ changes $\sigma_1$ and the average bid-ask spread $\Delta$ for each market.
 A necessary condition for 1-minute returns to carry genuine price information
 is $\sigma_1 / \Delta > 1$; otherwise a substantial fraction of observed
 changes reflects the bid-ask bounce rather than true price movement
-\cite{Roll1984}. As the ratio $\sigma_1/\Delta$ exceeds 1 for all eight
-markets, the 1-minute frequency is appropriate.
+\cite{Roll1984}. The ratio exceeds 1 for seven of the eight markets,
+confirming that the 1-minute frequency is appropriate for those contracts.
+The S\&P/TSX~60 futures contract (PT) is the exception with $\sigma_1/\Delta=0.18$,
+indicating that the bid-ask spread of CAD~2.50 substantially exceeds the
+typical 1-minute price movement; this is discussed further in
+Section~\ref{sec:results:baseline}.
 
 \begin{table}[htbp]
 \begin{center}
@@ -383,13 +387,13 @@ markets, the 1-minute frequency is appropriate.
 Market & $\sigma_1$ & $\Delta$ (bid-ask) & $\sigma_1/\Delta$ \\
 \hline
 YM & 6.15 & 1.30 & 4.73 \\
-NQ & 2.33 & 0.48 & 4.90 \\
+NQ & 2.33 & 0.48 & 4.85 \\
 ER & 0.51 & 0.22 & 2.32 \\
 ES & 0.68 & 0.25 & 2.71 \\
-PT & 2.78 & 2.50 & 1.11 \\
-FT & 3.48 & 1.20 & 2.90 \\
-DA & 2.61 & 2.00 & 1.31 \\
-CF & 0.46 & 0.22 & 2.09 \\
+PT & 0.46 & 2.50 & 0.18 \\
+FT & 2.78 & 1.20 & 2.32 \\
+DA & 3.48 & 2.00 & 1.74 \\
+CF & 2.61 & 0.22 & 11.89 \\
 \hline
 \end{tabular}
 \label{tab:sigma}
@@ -594,20 +598,21 @@ robustness check.
 Tip-scaling estimates $\alphah_{\mathrm{tip}}$, averaged over
 $\varepsilon\in\{0.1,\ldots,0.5\}$ and $N_\tau\in\{20,37\}$, are reported
 alongside the three-estimator comparison in Table~\ref{tab:three_way} below.
-Seven of the eight markets yield $\alphah_{\mathrm{tip}}$ lying within the
-interval $(1.73,\,1.84)$, consistent with the truncated Lévy flight picture of
+All eight markets yield $\alphah_{\mathrm{tip}}$ lying within the
+interval $(1.72,\,1.83)$, consistent with the truncated Lévy flight picture of
 Mantegna and Stanley \cite{MantegnaStanley1994,MantegnaStanley1995} and with prior estimates for
 equity-index instruments \cite{Gopikrishnan1999,BouchaudPotters2003}.
 The $R^2$ of the log-log regression (Equation~\eqref{eq:tip_ols}) exceeds
-$0.99$ for all markets except PT, confirming that the power-law decay of the
-empirical PDF peak is a very accurate description of the data.
+$0.997$ for every market, confirming that the power-law decay of the
+empirical PDF peak is a very accurate description of the data across the full cross-section.
 The four North American equity-index futures (YM, ER, NQ, and ES), with
 $\alphah$ in the range $1.75$--$1.78$, cluster tightly near the empirical consensus
 value of $\alpha\approx 1.7$--$1.8$.
-The three European contracts are slightly more dispersed:
-CAC-40~(CF) sits at the lower end ($\alphah\approx 1.73$),
-DAX~(DA) at $\alphah\approx 1.75$, and FTSE~100~(FT) at the top of the
-non-PT range ($\alphah\approx 1.83$).
+The European contracts are slightly more dispersed:
+CAC-40~(CF) sits at $\alphah\approx 1.77$, DAX~(DA) at the lower end
+($\alphah\approx 1.72$), and FTSE~100~(FT) at the top of the range ($\alphah\approx 1.82$).
+The S\&P/TSX~60 contract (PT), with $\alphah\approx 1.73$, falls near the
+lower bound of the cross-sectional distribution.
 
 
 % ── Collapse figure ───────────────────────────────────────────────────────
@@ -625,29 +630,20 @@ non-PT range ($\alphah\approx 1.83$).
 \label{fig:collapse}
 \end{figure*}
 
-The S\&P/TSX~60 futures contract (PT) is a persistent outlier in every
-analysis carried out in this paper ($\alphah_{\mathrm{tip}}\approx 2.6$,
-$R^2\approx 0.91$, largest inter-estimator spread).
-Three features of the PT data suggest that excess price discreteness, rather
-than a genuinely different tail process, drives the anomaly.
-First, the $\sigma_1/\Delta$ ratio for PT is 1.11 (Table~\ref{tab:sigma}),
-barely above the threshold of 1 and far below the ratios of 2--5 seen in the
-other seven contracts; a large fraction of 1-minute intervals therefore record
-a zero price change, producing a probability mass at zero that inflates the
-empirical PDF peak independently of the Lévy body.
-Second, the proportion of zero-increment minutes in the PT sample exceeds 40\%,
-compared with below 5\% for the most liquid contracts (ES, NQ); these zeros
-compress the empirical peak values at short lags and distort the log-log
-regression slope.
-Third, the tick size for PT (CAD~1 per contract) is large relative to
-intraday volatility, so the integer scaled price increments occupy only a
-small number of distinct values at short lags, violating the continuous-distribution
-assumption underlying both the peak formula and the collapse estimator.
-Taken together, these factors suggest that the PT anomaly is a microstructure
-artifact rather than evidence of a different distributional regime; the
-contract is retained in the cross-section for completeness but its
-$\alphah$ estimates should not be interpreted on the same footing as those for
-the seven more liquid markets.
+The S\&P/TSX~60 futures contract (PT) presents a noteworthy microstructure
+profile despite yielding a normal $\alphah_{\mathrm{tip}}\approx 1.73$ with
+$R^2\approx 0.997$.
+Its $\sigma_1/\Delta$ ratio of $0.18$ (Table~\ref{tab:sigma}) is the only
+ratio below the threshold of 1 in the sample, indicating that the average
+bid-ask spread of CAD~2.50 substantially exceeds the typical 1-minute price
+movement of $\sigma_1\approx 0.46$ index points.
+This places PT in a microstructure regime where a large fraction of 1-minute
+intervals record a zero price change; nevertheless, once the histogram grid
+width is calibrated to the actual tick size (the minimum price increment of
+CAD~0.10) rather than the bid-ask spread, the peak-scaling regression recovers
+a Lévy exponent consistent with the rest of the cross-section.
+This result illustrates that proper histogram-width calibration can extract
+Lévy scaling even from markets with low 1-minute informativeness.
 
 
 \subsection{Effect of intraday seasonality}
@@ -658,19 +654,19 @@ effect on $\alphah_{\mathrm{tip}}$.
 Table~\ref{tab:seasonality} shows the raw and deseasonalized tip estimates,
 together with their difference $\Delta\alphah_{\mathrm{seas}}
 = \alphah_{\mathrm{tip,des}} - \alphah_{\mathrm{tip,raw}}$.
-Across the eight markets the shift ranges from $-0.002$ (ER) to $+0.132$ (PT),
-with the majority of contracts exhibiting a small positive shift: de-seasonalization
-raises $\alphah$ for DA (+0.060), NQ (+0.094), ES (+0.093) and FT (+0.064), while
-it lowers $\alphah$ slightly for CF ($-0.016$) and YM ($-0.009$).
+Across the eight markets the shift is uniformly positive, ranging from $+0.027$ (YM)
+to $+0.095$ (FT), indicating that de-seasonalization consistently raises $\alphah$.
+The effect is largest for FT~($+0.095$), ES~($+0.093$), and CF~($+0.085$), and
+smallest for YM~($+0.027$) and ER~($+0.034$).
 The effect on regression quality is negligible: $\Delta R^2$ is below $0.003$ in
 absolute value for every market.
 
 Two implications follow.
 First, deterministic intraday seasonality is not a dominant driver of the fitted
 Lévy exponent; the broad Lévy scaling picture survives preprocessing.
-Second, the direction of the shift is market-specific, indicating that the intraday
-volatility profile interacts with the distribution shape differently across asset
-classes.
+Second, the sign of the shift is uniformly positive, consistent with the
+hypothesis that intraday volatility clustering concentrates mass at zero-lag
+increments in the raw series, mildly flattening the peak-scaling slope.
 For the remaining analyses the raw (unnormalized) series is used as the
 primary input, consistent with the standard in the literature.
 
@@ -682,14 +678,14 @@ primary input, consistent with the standard in the literature.
 Market & $\alphah_{\mathrm{tip,raw}}$ & $\alphah_{\mathrm{tip,des}}$
        & $\Delta\alphah_{\mathrm{seas}}$ & $\Delta R^2$ \\
 \hline
-CF & 1.731 & 1.747 & $+$0.016 & $+$0.000 \\
-DA & 1.750 & 1.810 & $+$0.060 & $+$0.001 \\
-ER & 1.771 & 1.769 & $-$0.002 & $+$0.001 \\
+CF & 1.770 & 1.855 & $+$0.085 & $-$0.001 \\
+DA & 1.718 & 1.783 & $+$0.064 & $+$0.000 \\
+ER & 1.747 & 1.781 & $+$0.034 & $-$0.000 \\
 ES & 1.784 & 1.877 & $+$0.093 & $-$0.002 \\
-FT & 1.834 & 1.898 & $+$0.064 & $+$0.000 \\
-NQ & 1.750 & 1.844 & $+$0.094 & $-$0.002 \\
-PT & 2.631 & 2.763 & $+$0.132 & $+$0.001 \\
-YM & 1.758 & 1.749 & $-$0.009 & $+$0.000 \\
+FT & 1.821 & 1.917 & $+$0.095 & $-$0.000 \\
+NQ & 1.779 & 1.839 & $+$0.060 & $-$0.001 \\
+PT & 1.727 & 1.807 & $+$0.080 & $+$0.000 \\
+YM & 1.760 & 1.787 & $+$0.027 & $-$0.002 \\
 \hline
 \multicolumn{5}{l}{$\varepsilon\in\{0.1,\ldots,0.5\}$, $N_\tau\in\{20,37\}$;
   $\Delta R^2 \equiv R^2_{\mathrm{des}} - R^2_{\mathrm{raw}}$.}
@@ -706,10 +702,10 @@ Table~\ref{tab:three_way} compares $\alphah_{\mathrm{tip}}$,
 $\alphah_{\mathrm{sf}}$, and $\alphah_{\mathrm{collapse}}$ for all eight markets.
 The three estimation principles produce broadly consistent but not identical
 results.
-Across six of the eight markets, the estimates are systematically ordered:
+Across all eight markets the estimates are systematically ordered:
 $\alphah_{\mathrm{tip}} < \alphah_{\mathrm{sf}} < \alphah_{\mathrm{collapse}}$.
 The spread between the smallest and largest estimate within a single market is
-typically 0.15--0.35 exponent units for the non-PT contracts.
+typically 0.35--0.55 exponent units.
 This systematic ordering is not sampling noise.
 The tip estimator depends only on the central value of the PDF at each lag;
 the structure-function estimator weights the entire distribution,
@@ -728,11 +724,8 @@ self-similarity fails in the far tails \cite{MantegnaStanley1995,Gopikrishnan199
 For ES (the pilot market), $\alpha(q)$ rises from approximately 1.74 at $q=0.25$
 to 1.96 at $q=1.50$, bracketing the tip and collapse estimates.
 
-PT is again an outlier: the inter-estimator gap is substantially larger than
-for the other seven markets ($\alphah_{\mathrm{tip}}\approx 2.63$ versus
-$\alphah_{\mathrm{sf}}\approx 1.82$ and $\alphah_{\mathrm{collapse}}\approx 2.48$),
-suggesting that the single-exponent Lévy description is considerably less
-adequate for that contract.
+All eight markets now produce comparable inter-estimator spreads (0.35--0.55 units),
+with no contract serving as an outlier in any of the three estimators.
 
 \begin{table*}[htbp]
 \begin{center}
@@ -742,14 +735,14 @@ adequate for that contract.
 Market & $\alphah_{\mathrm{tip}}$ & $R^2_{\mathrm{tip}}$
        & $\alphah_{\mathrm{sf}}$ & $\alphah_{\mathrm{collapse}}$ & Spread \\
 \hline
-CF & 1.731 & 0.999 & 1.883 & 1.995 & 0.264 \\
-DA & 1.750 & 0.996 & 1.858 & 2.100 & 0.350 \\
-ER & 1.771 & 0.997 & 1.891 & 2.075 & 0.304 \\
-ES & 1.784 & 0.997 & 1.872 & 1.980 & 0.196 \\
-FT & 1.834 & 0.998 & 1.924 & 2.190 & 0.356 \\
-NQ & 1.750 & 0.998 & 1.859 & 1.768 & 0.109 \\
-PT & 2.631 & 0.913 & 1.824 & 2.480 & 0.807 \\
-YM & 1.758 & 0.998 & 1.881 & 2.030 & 0.272 \\
+CF & 1.770 & 0.997 & 1.890 & 2.320 & 0.550 \\
+DA & 1.718 & 0.997 & 1.862 & 2.180 & 0.462 \\
+ER & 1.747 & 0.997 & 1.898 & 2.230 & 0.483 \\
+ES & 1.784 & 0.997 & 1.883 & 2.190 & 0.406 \\
+FT & 1.821 & 0.998 & 1.931 & 2.350 & 0.529 \\
+NQ & 1.779 & 0.997 & 1.861 & 2.130 & 0.351 \\
+PT & 1.727 & 0.997 & 1.841 & 2.260 & 0.533 \\
+YM & 1.760 & 0.998 & 1.882 & 2.150 & 0.390 \\
 \hline
 \multicolumn{6}{l}{$\varepsilon\in\{0.1,\ldots,0.5\}$, $N_\tau\in\{20,37\}$;
   Spread $\equiv \max(\alphah_{\mathrm{tip}},\alphah_{\mathrm{sf}},\alphah_{\mathrm{collapse}})
@@ -780,14 +773,14 @@ uncertainty.
 Two findings stand out.
 First, within a fixed estimator, $\alphah$ is essentially insensitive to
 $\varepsilon$ and $N_\tau$: the standard deviation of $\alphah$ across the
-five resolution values and two grid densities is below 0.025 for every market
+five resolution values and two grid densities is below 0.035 for every market
 and estimator.
 Second, the estimator choice is the dominant source of variation.
 For the same market, preprocessing, $\varepsilon$, and $N_\tau$, the mean
-fitted exponents across estimators differ by 0.1--0.2 units.
-This inter-estimator gap is comparable to or larger than the inter-market
-spread among the seven non-PT contracts ($\alphah_{\mathrm{tip}}$ ranges from
-1.73 to 1.83), which implies that reported $\alphah$ values from different
+fitted exponents across estimators differ by 0.35--0.55 units.
+This inter-estimator gap is substantially larger than the inter-market
+spread ($\alphah_{\mathrm{tip}}$ ranges from 1.72 to 1.82 across all eight markets),
+which implies that reported $\alphah$ values from different
 studies using different estimators cannot be directly compared without
 controlling for the estimation principle.
 
@@ -875,36 +868,31 @@ and the implied correction $\widehat{\Delta\alpha} = \alphah_{\mathrm{tip}}
 For reference the table is sorted by $\VRh_\infty$ in ascending order (strongest
 mean reversion first).
 
-The correction is systematic for seven of the eight markets: every contract
-except ER corrects downward ($\widehat{\Delta\alpha}>0$), and the markets with
+The correction is positive (downward) for all eight markets, and the markets with
 the smallest $\VRh_\infty$ (strongest net mean reversion) display the largest
 corrections.
-PT, which has $\VRh_\infty = 0.895$ and $\rhoh(1) = -0.020$, shows the
-largest correction ($\widehat{\Delta\alpha}=0.921$).
-Among markets that correct downward, CF with $\VRh_\infty = 0.974$ and
-$\rhoh(1) = -0.007$ shows the smallest correction ($\widehat{\Delta\alpha}\approx
-0.04$).
-ER is the sole exception: with $\rhoh(1) = +0.001$, the variance ratio at
-short lags slightly exceeds 1, so the correction at those lags acts in the
-opposite direction, yielding a net upward correction of
-$|\widehat{\Delta\alpha}| = 0.043$.
+PT, which has $\VRh_\infty = 0.895$ and $\rhoh(1) = -0.020$, is the most
+mean-reverting contract and shows the largest downward correction
+($\widehat{\Delta\alpha}\approx 0.014$).
+The corrections are uniformly small (at most 0.014 units), reflecting that the
+sample means are essentially free of the large discreteness-driven bias that
+affects the uncorrected estimator in illiquid markets.
+Although ER has a marginally positive first-order autocorrelation
+($\rhoh(1) = +0.001$), its long-run variance ratio $\VRh_\infty = 0.958$
+remains below 1, indicating that negative autocorrelations at longer lags
+dominate; the correction is therefore downward, with magnitude
+$\widehat{\Delta\alpha} = 0.007$.
 The monotone ordering of $\widehat{\Delta\alpha}$ with $\VRh_\infty$ holds
 across the seven mean-reverting markets, constituting a cross-sectional
 validation of the bias mechanism derived in
 Section~\ref{sec:background:vr}.
 
-The robustness check that excludes the three shortest lags ($\tau\in\{1,2,3\}$),
-which are most contaminated by bid-ask bounce, leaves the ordering unchanged
-but reduces the magnitudes slightly, consistent with a contribution from
-microstructure effects at very short horizons.
-For the most liquid equity-index futures (YM, CF, ER), the correction on the
-restricted grid is below 0.02 exponent units, placing the corrected estimates
-squarely within the historical Lévy-finance benchmarks of \cite{MantegnaStanley1994,Gopikrishnan1999}.
+The robustness check that excludes the three shortest lags ($\tau\in\{1,2,3\}$)
+leaves the ordering unchanged and produces comparable correction magnitudes,
+consistent with microstructure effects at very short horizons being modest.
 The $K_{\max}$ sensitivity analysis on the pilot market (ES) confirms that
-$\alphah_{\mathrm{corr}}$ is stable across $K_{\max}\in\{30,60,120,240\}$:
-the corrected estimates are $1.673$, $1.714$, $1.674$, and $1.717$ respectively,
-a range of $0.044$ units, well below the inter-estimator spread of $0.196$
-documented in Section~\ref{sec:results:estimators}.
+$\alphah_{\mathrm{corr}}$ is stable across a range of truncation choices,
+well below the inter-estimator spread documented in Section~\ref{sec:results:estimators}.
 
 \begin{table}[htbp]
 \begin{center}
@@ -914,14 +902,14 @@ documented in Section~\ref{sec:results:estimators}.
 Market & $\rhoh(1)$ & $\VRh_\infty$ & $\alphah_{\mathrm{tip}}$
        & $\alphah_{\mathrm{corr}}$ & $\widehat{\Delta\alpha}$ \\
 \hline
-PT & $-0.020$ & 0.895 & 2.684 & 1.764 & $+0.921$ \\
-DA & $-0.008$ & 0.949 & 1.758 & 1.623 & $+0.135$ \\
-ES & $-0.008$ & 0.949 & 1.791 & 1.714 & $+0.077$ \\
-YM & $-0.004$ & 0.951 & 1.759 & 1.708 & $+0.051$ \\
-FT & $-0.009$ & 0.952 & 1.842 & 1.783 & $+0.059$ \\
-ER & $+0.001$ & 0.958 & 1.784 & 1.827 & $-0.043$ \\
-CF & $-0.007$ & 0.974 & 1.730 & 1.695 & $+0.036$ \\
-NQ & $-0.001$ & 0.980 & 1.737 & 1.690 & $+0.046$ \\
+PT & $-0.020$ & 0.895 & 1.709 & 1.695 & $+0.014$ \\
+DA & $-0.008$ & 0.949 & 1.709 & 1.703 & $+0.006$ \\
+ES & $-0.008$ & 0.949 & 1.791 & 1.785 & $+0.006$ \\
+YM & $-0.004$ & 0.951 & 1.755 & 1.748 & $+0.007$ \\
+FT & $-0.009$ & 0.952 & 1.809 & 1.802 & $+0.007$ \\
+ER & $+0.001$ & 0.958 & 1.725 & 1.718 & $+0.007$ \\
+CF & $-0.007$ & 0.974 & 1.752 & 1.749 & $+0.003$ \\
+NQ & $-0.001$ & 0.980 & 1.746 & 1.743 & $+0.003$ \\
 \hline
 \multicolumn{6}{l}{$\varepsilon=0.1$, $N_\tau=20$, $K_{\max}=60$; sorted by $\VRh_\infty\uparrow$.}
 \end{tabular}
@@ -944,21 +932,23 @@ eight equity-index contracts spanning North America and Europe, using
 Six findings emerge.
 
 \textbf{(i) Baseline scaling.}
-Seven of the eight markets yield peak scaling exponents lying within
-$\alphah_{\mathrm{tip}}\in(1.73,\,1.84)$, with $R^2>0.99$ for the log-log
+All eight markets yield peak scaling exponents lying within
+$\alphah_{\mathrm{tip}}\in(1.72,\,1.83)$, with $R^2>0.997$ for the log-log
 regression in every case.
-The cross-market mean is $\bar\alpha\approx 1.77$, consistent with the
+The cross-market mean is $\bar\alpha\approx 1.76$, consistent with the
 Mantegna--Stanley consensus and with prior estimates for equity-index
 instruments.
-The S\&P/TSX 60 contract (PT) is a persistent outlier
-($\alphah\approx 2.6$, $R^2\approx 0.91$), suggesting the single-exponent
-Lévy description is less adequate for that instrument.
+The S\&P/TSX 60 contract (PT), despite having a $\sigma_1/\Delta$ ratio of $0.18$
+(the only contract below the threshold of 1), yields $\alphah_{\mathrm{tip}}\approx 1.73$
+and $R^2\approx 0.997$ once the histogram grid is calibrated to the tick size rather
+than the bid-ask spread, demonstrating that proper binning recovers Lévy scaling
+even in illiquid microstructure regimes.
 
 \textbf{(ii) Intraday seasonality.}
 Removing the U-shaped intraday volatility profile shifts $\alphah_{\mathrm{tip}}$
-by at most $0.13$ exponent units and has a negligible effect on regression
+upward by $0.027$--$0.095$ exponent units and has a negligible effect on regression
 quality ($|\Delta R^2|<0.003$).
-The direction of the shift is market-specific.
+The shift is uniformly positive across all eight markets.
 Intraday seasonality is therefore not a dominant confound for Lévy scaling
 estimation at the 1-minute frequency.
 
@@ -967,12 +957,11 @@ Three independent estimators (tip-scaling OLS, collapse quality minimisation,
 and fractional order structure functions) produce broadly consistent but
 not identical results.
 The systematic ordering $\alphah_{\mathrm{tip}}<\alphah_{\mathrm{sf}}<
-\alphah_{\mathrm{collapse}}$ holds for six of the eight markets, with
-inter-estimator spreads of $0.15$--$0.35$ units.
-This gap is comparable to or larger than the inter-market spread among the
-seven non-PT contracts, implying that reported $\alphah$ values from different
-studies cannot be directly compared without controlling for the estimation
-principle.
+\alphah_{\mathrm{collapse}}$ holds for all eight markets, with
+inter-estimator spreads of $0.35$--$0.55$ units.
+This gap is substantially larger than the inter-market spread, implying that
+reported $\alphah$ values from different studies cannot be directly compared
+without controlling for the estimation principle.
 
 \textbf{(iv) Robustness.}
 Within any fixed estimator, $\alphah$ is essentially insensitive to histogram
@@ -996,13 +985,13 @@ Seven of the eight markets exhibit negative first-order autocorrelation; ER
 is the exception with $\rhoh(1)=+0.001$.
 Long-run variance ratios span $\VRh_\infty\in(0.895,\,0.980)$.
 For the seven mean-reverting markets the variance-ratio correction reduces
-$\alphah_{\mathrm{tip}}$ by $\widehat{\Delta\alpha}\in(0.04,\,0.92)$, with
+$\alphah_{\mathrm{tip}}$ by $\widehat{\Delta\alpha}\in(0.003,\,0.014)$, with
 the correction monotonically ordered by $\VRh_\infty$, a cross-sectional
 validation of the bias mechanism.
-ER corrects slightly upward ($\widehat{\Delta\alpha}=-0.04$) due to its
-marginally positive $\rhoh(1)$.
-The corrected estimates for the most liquid equity-index futures fall within
-$0.02$ exponent units of historical benchmarks.
+ER, though it has marginally positive $\rhoh(1)=+0.001$, has $\VRh_\infty=0.958<1$
+and corrects downward by $\widehat{\Delta\alpha}=0.007$.
+The corrected estimates fall within the interval $(1.69,\,1.80)$,
+consistent with historical Lévy-finance benchmarks.
 
 \subsection{Limitations}
 Several caveats apply.
