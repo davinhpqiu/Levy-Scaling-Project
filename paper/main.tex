@@ -706,15 +706,35 @@ Across all eight markets the estimates are systematically ordered:
 $\alphah_{\mathrm{tip}} < \alphah_{\mathrm{sf}} < \alphah_{\mathrm{collapse}}$.
 The spread between the smallest and largest estimate within a single market is
 typically 0.35--0.55 exponent units.
-This systematic ordering is not sampling noise.
-The tip estimator depends only on the central value of the PDF at each lag;
-the structure-function estimator weights the entire distribution,
-with greater emphasis on the tails for larger $q$;
-and the collapse quality estimator penalizes global misalignment of
-the rescaled PDFs.
-The fact that different distributional features select different effective
-exponents confirms that the data are only \emph{approximately} described by a
-single self-similar Lévy law.
+This systematic ordering is not sampling noise; it reflects the distinct
+distributional features each estimator targets.
+The tip estimator depends only on the central value of the PDF at each lag
+and is therefore anchored to the best-measured, least-noisy region of the
+empirical distribution.
+The structure-function estimator weights the entire distribution with
+increasing emphasis on the tails for larger moment orders $q$, making it
+sensitive to the tail behaviour that the tip estimator deliberately ignores.
+The collapse quality estimator integrates the rescaled PDF over the full
+support, including the far tails where histogram counts are sparse and
+statistical noise is largest; this tail sensitivity pulls
+$\alphah_{\mathrm{collapse}}$ systematically upward.
+
+The collapse estimator carries two additional limitations.
+First, it has no likelihood interpretation: the score function
+(Equation~\eqref{eq:collapse_score}) is a heuristic measure of
+cross-$\tau$ spread, not a statistical objective with known finite-sample
+properties, so there is no theory bounding its bias.
+Second, several of the estimated values ($\alphah_{\mathrm{collapse}}
+\in 2.13$--$2.35$, Table~\ref{tab:three_way}) approach or exceed the
+boundary $\alpha=2$ of the stable-law parameter space.
+For a pure $\alpha$-stable law this boundary is the Gaussian, so values
+near 2 indicate that the estimator is responding to the exponential
+truncation of the far tails rather than to the central Lévy scaling
+regime \cite{MantegnaStanley1994,Weron2001}.
+Weron \cite{Weron2001} demonstrated in simulation that collapse-based
+methods produce unreliable exponent estimates on finite samples relative
+to regression-based alternatives, a finding consistent with the upward
+drift observed here.
 
 The structure-function analysis provides additional evidence for approximate
 rather than exact scaling: the implied exponent $\alpha(q) = q/\hat\zeta(q)$
@@ -723,8 +743,12 @@ order, consistent with the truncated Lévy flight picture in which exact
 self-similarity fails in the far tails \cite{MantegnaStanley1995,Gopikrishnan1999}.
 For ES (the pilot market), $\alpha(q)$ rises from approximately 1.74 at $q=0.25$
 to 1.96 at $q=1.50$, bracketing the tip and collapse estimates.
+Together, these observations motivate treating $\alphah_{\mathrm{tip}}$ as
+the primary estimate throughout the paper: it targets the central scaling
+regime, has a transparent OLS interpretation, and is the least contaminated
+by tail truncation effects.
 
-All eight markets now produce comparable inter-estimator spreads (0.35--0.55 units),
+Across all eight markets the inter-estimator spreads are comparable (0.35--0.55 units),
 with no contract serving as an outlier in any of the three estimators.
 
 \begin{table*}[htbp]
