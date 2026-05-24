@@ -102,7 +102,8 @@ have not, to our knowledge, been jointly reported.
 
 This paper addresses all three gaps. Using 1-minute OHLCV data for eight
 equity-index futures contracts spanning North America and Europe, sourced from
-OneTick via TickData and covering each contract from exchange inception through
+TickData (Tick Data, LLC) and processed using the OneTick tick analytics platform,
+covering each market from the start of available data through
 January 2026, we make six contributions organized around the three gaps.
 
 \textit{Addressing gap 1 (cross-market coverage):}
@@ -185,7 +186,7 @@ $-1/\alpha$, independent of the scale parameter $\gamma$.
 Mandelbrot \cite{Mandelbrot1963} first proposed that asset-price increments lie in
 the domain of attraction of a stable law with $\alpha\in(1,2)$.
 Mantegna and Stanley \cite{MantegnaStanley1994,MantegnaStanley1995} provided the first
-systematic intraday evidence using S\&P 500 data, finding $\alpha\approx 1.4$
+systematic intraday evidence using S\&P 500 data, finding $\alpha\approx 1.40$
 over three orders of magnitude in lag and demonstrating clean PDF collapse.
 The truncated Lévy flight (TLF) resolves the tension between
 infinite-variance stable laws and finite empirical moments: the distribution
@@ -213,7 +214,7 @@ application to contemporary futures data.
 \subsection{Estimation of the scaling exponent}
 \label{sec:background:estimation}
 
-Three estimation strategies are employed.
+Three estimation strategies are commonly used in the literature.
 
 The \textit{peak scaling OLS} estimator, introduced by
 Mantegna and Stanley \cite{MantegnaStanley1994}, regresses $\log\Ph(0,\tau)$ on $\log\tau$ and
@@ -266,8 +267,7 @@ which forms the basis for both variance-ratio estimators implemented here.
 At 1-minute frequency the dominant effect is mean reversion, not the positive
 correlation found at weekly horizons by Lo and MacKinlay \cite{LoMacKinlay1988}. Two
 mechanisms contribute. Roll \cite{Roll1984} showed that bid-ask bounce
-generates spurious first-order autocorrelation $\rhoh(1)\approx -s^2/4$ for
-effective spread $s$, a purely mechanical effect. Bouchaud et al.\ \cite{Bouchaud2004} and
+generates a spurious first-order autocovariance $\mathrm{Cov}(\Delta p_t,\Delta p_{t-1})\approx -s^2/4$ for effective spread $s$, a purely mechanical effect. Bouchaud et al.\ \cite{Bouchaud2004} and
 Farmer et al.\ \cite{Farmer2006} documented that large market orders move prices but
 this impact partially reverts as the order book replenishes, adding genuine
 mean reversion at short horizons. Bouchaud and Potters \cite{BouchaudPotters2003} (Ch.~6)
@@ -303,7 +303,19 @@ log-peak regression
 \end{equation}
 For a mean-reverting process ($VR(\tau)<1$) the omission of the second term
 causes the raw OLS slope to underestimate $-1/\alpha$ in magnitude, biasing
-$\alphah_{\mathrm{tip}}$ upward toward the Gaussian boundary. The correction
+$\alphah_{\mathrm{tip}}$ upward toward the Gaussian boundary.
+
+\textit{Remark (heuristic nature of the correction).}
+The derivation above relies on the homogeneity property of the stable
+characteristic function, which holds exactly for a pure $\alpha$-stable
+law where the variance $\mathrm{Var}(\Delta P_\tau)$ is formally infinite.
+In our empirical setting the relevant model is a truncated Lévy flight (TLF),
+which has finite variance; the variance ratio $VR(\tau)$ is therefore
+well-defined, but the stable homogeneity step is only approximate for TLF.
+The correction is best understood as a heuristic: the second-order moment
+variance ratio proxies for the scale distortion over the observable body of
+the distribution, not a rigorous stable-law result.
+The correction
 procedure is developed in Section~\ref{sec:methodology:bias}. To our knowledge, the explicit OLS bias formula in the
 Campbell--Lo--MacKinlay variance-ratio form and its cross-market empirical
 validation have not been jointly reported; Bouchaud and Potters \cite{BouchaudPotters2003}
@@ -321,9 +333,9 @@ the specific correction term or validate it across a cross-section of markets.
 
 The dataset consists of 1-minute resolution day-session price histories for
 eight equity-index futures contracts spanning four geographical regions. The
-data were provided by Prof.\ Alexei Chekhlov and sourced from OneTick via
-TickData, covering each contract from its
-exchange inception through 14 January 2026. Table~\ref{tab:markets} provides
+1-minute OHLCV data were obtained from TickData (Tick Data, LLC) and processed
+using the OneTick tick analytics platform, covering each market from the start
+of available data through 14 January 2026. Table~\ref{tab:markets} provides
 a full description of each contract.
 
 \begin{table}[htbp]
@@ -331,17 +343,19 @@ a full description of each contract.
 \caption{Sample Futures Contracts}
 \begin{tabular}{llllll}
 \hline
-Symbol & Name & Region & Exchange & History Start & Session \\
+Symbol & Name & Region & Exchange & Sample Start$^{\dagger}$ & Session \\
 \hline
-YM & Dow Jones E-mini      & Americas & CBOT/CME           & May 2002    & 08:30--15:15 \\
-NQ & NASDAQ 100 E-mini     & Americas & CME                & Jul 1999    & 08:30--15:15 \\
-ER & Russell 2000 E-mini   & Americas & CBOT/CME           & Jan 2002    & 08:30--15:15 \\
+YM & Dow Jones E-mini      & Americas & CBOT/CME           & Apr 2002    & 08:30--15:15 \\
+NQ & NASDAQ-100 E-mini     & Americas & CME                & Jun 1999    & 08:30--15:15 \\
+ER & Russell 2000 E-mini   & Americas & ICE Futures US     & Jan 2002    & 08:30--15:15 \\
 ES & S\&P 500 E-mini       & Americas & CME                & Sep 1997    & 08:30--15:15 \\
-PT & S\&P Canada 60        & Americas & Montreal SE        & Oct 1999    & 09:30--16:15 \\
+PT & S\&P/TSX 60           & Americas & MX (Montr\'{e}al) & Sep 1999    & 09:30--16:15 \\
 FT & FTSE 100              & Europe   & ICE Futures        & Jul 1998    & 08:00--16:30 \\
 DA & DAX                   & Europe   & EUREX              & Jan 1997    & 09:00--17:30 \\
 CF & CAC-40                & Europe   & Euronext           & May 2000    & 09:00--17:30 \\
 \hline
+\multicolumn{6}{l}{$^{\dagger}$Start of available data in our sample; several contracts listed earlier (DA: Nov 1990,}\\
+\multicolumn{6}{l}{\phantom{$^{\dagger}$}FT: May 1984, CF: 1988). ER traded on ICE Futures US (then NYBOT) before moving to CME in 2017.}\\
 \end{tabular}
 \label{tab:markets}
 \end{center}
@@ -349,10 +363,7 @@ CF & CAC-40                & Europe   & Euronext           & May 2000    & 09:00
 
 The eight contracts were selected to provide a focused cross-section of
 liquid equity-index futures across geographies rather than on the basis of
-any statistical pre-screening. Three North American equity-index contracts (YM, NQ, ER, ES)
-trade on CME Group venues; one Canadian contract (PT) trades on the Montreal
-Stock Exchange; and three European contracts (FT, DA, CF) cover the major
-continental and UK equity benchmarks.
+any statistical pre-screening. Four North American equity-index contracts trade at major US venues: YM, NQ, and ES on CME Group exchanges, and ER on ICE Futures US (formerly NYBOT); one Canadian contract (PT) trades on the Montr\'{e}al Exchange (MX); and three European contracts (FT, DA, CF) cover the major continental and UK equity benchmarks.
 
 The raw files are stored in ``skip'' format: minutes with no transactions are
 omitted from the file rather than recorded as zero-volume observations. This
@@ -632,10 +643,7 @@ Second, the proportion of zero-increment minutes in the PT sample exceeds 40\%,
 compared with below 5\% for the most liquid contracts (ES, NQ); these zeros
 compress the empirical peak values at short lags and distort the log-log
 regression slope.
-Third, the tick size for PT (CAD~1 per contract) is large relative to
-intraday volatility, so the integer scaled price increments occupy only a
-small number of distinct values at short lags, violating the continuous-distribution
-assumption underlying both the peak formula and the collapse estimator.
+Third, the tick value for PT (CAD~20 per tick, i.e., 0.10 index points \(\times\) CAD~200 per point) is large relative to typical 1-minute price movements, so the integer-scaled price increments occupy only a small number of distinct values at short lags, violating the continuous-distribution assumption underlying both the peak formula and the collapse estimator.
 Taken together, these factors suggest that the PT anomaly is a microstructure
 artifact rather than evidence of a different distributional regime; the
 contract is retained in the cross-section for completeness but its
@@ -737,7 +745,7 @@ The structure-function analysis provides additional evidence for approximate
 rather than exact scaling: the implied exponent $\alpha(q) = q/\hat\zeta(q)$
 is not constant across $q$ but increases monotonically with the moment
 order, consistent with the truncated Lévy flight picture in which exact
-self-similarity fails in the far tails \cite{MantegnaStanley1995,Gopikrishnan1999}.
+self-similarity fails in the far tails \cite{MantegnaStanley1994,MantegnaStanley1995}.
 For ES (the pilot market), $\alpha(q)$ rises from approximately 1.74 at $q=0.25$
 to 1.96 at $q=1.50$, bracketing the tip and collapse estimates.
 Together, these observations motivate treating $\alphah_{\mathrm{tip}}$ as
@@ -868,7 +876,9 @@ PT & 0.537 \\
 \label{sec:results:bias}
 
 Seven of the eight markets exhibit negative first-order autocorrelation of
-1-minute returns; ER is the exception with $\rhoh(1)=+0.001$.
+1-minute returns; ER displays a statistically negligible first-order autocorrelation
+($\rhoh(1)=+0.001\approx 0$), but its long-run variance ratio $\VRh_\infty=0.958<1$
+confirms it is also mean-reverting at longer horizons.
 Table~\ref{tab:bias} reports the estimated first-order autocorrelation
 $\rhoh(1)$, the long-run variance ratio
 $\VRh_\infty = 1 + 2\sum_{k\geq 1}\rhoh(k)$, the uncorrected tip estimate
@@ -926,7 +936,7 @@ ER & $+0.001$ & 0.958 & 1.784 & 1.827 & $-0.043$ \\
 CF & $-0.007$ & 0.974 & 1.730 & 1.695 & $+0.036$ \\
 NQ & $-0.001$ & 0.980 & 1.737 & 1.690 & $+0.046$ \\
 \hline
-\multicolumn{6}{l}{$\varepsilon=0.1$, $N_\tau=20$, $K_{\max}=60$; sorted by $\VRh_\infty\uparrow$.}
+\multicolumn{6}{l}{Single configuration $\varepsilon=0.1$, $N_\tau=20$, $K_{\max}=60$, not averaged across settings; sorted by $\VRh_\infty\uparrow$.}
 \end{tabular}
 \label{tab:bias}
 \end{center}
@@ -950,7 +960,7 @@ NQ & $-0.001$ & 0.980 & 1.737 & 1.690 & $+0.046$ \\
 
 This paper has examined Lévy scaling in short-horizon futures returns across
 eight equity-index contracts spanning North America and Europe, using
-1-minute OHLCV data from exchange inception through January 2026.
+1-minute OHLCV data from the start of available data through January 2026.
 Six findings emerge.
 
 \textbf{(i) Baseline scaling.}
@@ -1011,7 +1021,8 @@ is a reasonable first-order description.
 
 \textbf{(vi) Bias correction.}
 Seven of the eight markets exhibit negative first-order autocorrelation; ER
-is the exception with $\rhoh(1)=+0.001$.
+displays a statistically negligible $\rhoh(1)=+0.001\approx 0$ but is also
+mean-reverting in the long run ($\VRh_\infty=0.958<1$).
 Long-run variance ratios span $\VRh_\infty\in(0.895,\,0.980)$.
 For the seven mean-reverting markets the variance-ratio correction reduces
 $\alphah_{\mathrm{tip}}$ by $\widehat{\Delta\alpha}\in(0.04,\,0.92)$, with
