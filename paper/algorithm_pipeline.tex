@@ -1,0 +1,71 @@
+% Standalone pseudocode for the Lévy Scaling Exponent Estimation pipeline.
+% To include in a LaTeX document, add to preamble:
+%   \usepackage{algorithm}
+%   \usepackage{algpseudocode}
+%   \algrenewcommand\algorithmicrequire{\textbf{Input:}}
+%   \algrenewcommand\algorithmicensure{\textbf{Output:}}
+% Then \input{algorithm_pipeline} at the desired location.
+
+\begin{algorithm}[t]
+\caption{Lévy Scaling Exponent Estimation}
+\label{alg:pipeline}
+\begin{algorithmic}[1]
+\Require Price series $\{P(t)\}$, tick $\Delta$, resolution grid
+         $\varepsilon\in\{0.1,\ldots,0.5\}$, lag grid
+         $\mathcal{T}=\{\tau_1,\ldots,\tau_{N_\tau}\}$,
+         autocorrelation truncation $K_{\max}=60$
+\Ensure $\alphah_{\mathrm{tip}},\;\alphah_{\mathrm{sf}},\;
+         \alphah_{\mathrm{collapse}},\;\alphah_{\mathrm{corr}}$
+
+\Statex \textit{--- Preprocessing ---}
+\State Convert to integer ticks: $p(t) \leftarrow \mathrm{round}(P(t)/\Delta)$
+\State LOCF-fill missing intraday minutes
+\State Estimate intraday profile $\hat\sigma_m$ via
+       Eq.~\eqref{eq:profile}; form deseasonalized series $\tilde{P}(t)$
+
+\Statex \textit{--- Empirical PDF ---}
+\For{each $\tau \in \mathcal{T}$}
+  \State Compute increments $\delta_\tau(t) = p(t) - p(t-\tau)$
+  \State Set bin width $\Delta x = \varepsilon\cdot\Delta$,
+         half-range $x_{\max}$ covering 2\,000 bins
+  \State Build normalised histogram $\Ph(x_j,\tau)$ via
+         Eq.~\eqref{eq:pdf_hat}
+  \State Record peak $\Ph(0,\tau) \leftarrow$ density of bin nearest $x=0$
+\EndFor
+
+\Statex \textit{--- Estimator 1: tip-scaling OLS ---}
+\State Regress $\log\Ph(0,\tau)$ on $\log\tau$;
+       extract slope $\hat{m}$
+\State $\alphah_{\mathrm{tip}} \leftarrow -1/\hat{m}$ \Comment{Eq.~\eqref{eq:tip_ols}}
+
+\Statex \textit{--- Estimator 2: structure functions ---}
+\For{each moment order $q \in \{0.25,\,0.50,\,0.75,\,1.00,\,1.25,\,1.50\}$}
+  \State $\hat{S}_q(\tau) \leftarrow N_\tau^{-1}\sum_t|\delta_\tau(t)|^q$
+         \Comment{Eq.~\eqref{eq:sf}}
+  \State Regress $\log\hat{S}_q(\tau)$ on $\log\tau$;
+         extract $\hat\zeta(q)$
+  \State $\alphah_q \leftarrow q/\hat\zeta(q)$
+\EndFor
+\State $\alphah_{\mathrm{sf}} \leftarrow \mathrm{median}_q(\alphah_q)$
+
+\Statex \textit{--- Estimator 3: collapse quality ---}
+\For{each candidate $\alpha \in [1.2,\,2.8]$ (grid of 160 values)}
+  \State Rescale curves: $\tilde{P}(\tilde{x},\tau)
+         \leftarrow \tau^{1/\alpha}\Ph(\tau^{1/\alpha}\tilde{x},\,\tau)$
+  \State Compute score $\mathrm{Score}(\alpha)$ via
+         Eq.~\eqref{eq:score}
+\EndFor
+\State $\alphah_{\mathrm{collapse}} \leftarrow
+       \arg\min_\alpha\,\mathrm{Score}(\alpha)$
+
+\Statex \textit{--- Bias correction ---}
+\State Estimate $\rhoh(k)$ from 1-min increments,
+       $k=1,\ldots,K_{\max}$
+\State Build $\VRh(\tau)$ via Eq.~\eqref{eq:vr_hat};
+       set $b(\tau) \leftarrow -\tfrac{1}{2}\log\VRh(\tau)$
+\State Regress $\log\Ph(0,\tau)-b(\tau)$ on $\log\tau$;
+       extract $\hat{m}_{\mathrm{corr}}$
+\State $\alphah_{\mathrm{corr}} \leftarrow -1/\hat{m}_{\mathrm{corr}}$
+       \Comment{Eq.~\eqref{eq:corrected_peak}}
+\end{algorithmic}
+\end{algorithm}
