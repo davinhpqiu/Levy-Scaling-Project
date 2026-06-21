@@ -919,7 +919,7 @@ the corrected estimates are $1.673$, $1.714$, $1.674$, and $1.717$ respectively,
 a range of $0.044$ units, well below the inter-estimator spread of $0.196$
 documented in Section~\ref{sec:results:estimators}.
 
-\begin{table}[htbp]
+\begin{table*}[htbp]
 \begin{center}
 \caption{Variance-Ratio Bias Correction by Market}
 \begin{tabular}{lccccc}
@@ -1059,11 +1059,14 @@ sharpen the lower boundary of the self-similar regime.
 
 % ══════════════════════════════════════════════════════════════════════════════
 \FloatBarrier
+\bibliographystyle{IEEEtran}
+\bibliography{references}
 
-% ── Algorithm: full-width float page, matches journal formatting ───────────
-\begin{figure*}[p]
-\centering
-\begin{minipage}{0.82\textwidth}
+% ── Algorithm on a new page after references ──────────────────────────────
+\clearpage
+\onecolumn
+\begin{center}
+\begin{minipage}{0.82\linewidth}
 \begin{algorithm}[H]
 \caption{L\'{e}vy Scaling Exponent Estimation}
 \label{alg:pipeline}
@@ -1118,9 +1121,6 @@ sharpen the lower boundary of the self-similar regime.
 \end{algorithmic}
 \end{algorithm}
 \end{minipage}
-\end{figure*}
-
-\bibliographystyle{IEEEtran}
-\bibliography{references}
+\end{center}
 
 \end{document}

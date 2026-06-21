@@ -931,7 +931,7 @@ The $K_{\max}$ sensitivity analysis on the pilot market (ES) confirms that
 $\alphah_{\mathrm{corr}}$ is stable across a range of truncation choices,
 well below the inter-estimator spread documented in Section~\ref{sec:results:estimators}.
 
-\begin{table}[htbp]
+\begin{table*}[htbp]
 \begin{center}
 \caption{Variance-Ratio Bias Correction by Market}
 \begin{tabular}{lccccc}
@@ -948,11 +948,12 @@ ER & $+0.001$ & 0.958 & 1.725 & 1.718 & $+0.007$ \\
 CF & $-0.007$ & 0.974 & 1.752 & 1.749 & $+0.003$ \\
 NQ & $-0.001$ & 0.980 & 1.746 & 1.743 & $+0.003$ \\
 \hline
-\multicolumn{6}{l}{Single configuration $\varepsilon=0.1$, $N_\tau=20$, $K_{\max}=60$, not averaged across settings; sorted by $\VRh_\infty\uparrow$. See Tables~\ref{tab:seasonality}--\ref{tab:three_way} for averaged values.}
+\multicolumn{6}{l}{Single configuration $\varepsilon=0.1$, $N_\tau=20$, $K_{\max}=60$, not averaged across settings; sorted by $\VRh_\infty\uparrow$.}\\
+\multicolumn{6}{l}{See Tables~\ref{tab:seasonality}--\ref{tab:three_way} for averaged values.}
 \end{tabular}
 \label{tab:bias}
 \end{center}
-\end{table}
+\end{table*}
 
 
 
@@ -1057,11 +1058,14 @@ sharpen the lower boundary of the self-similar regime.
 
 % ══════════════════════════════════════════════════════════════════════════════
 \FloatBarrier
+\bibliographystyle{IEEEtran}
+\bibliography{references}
 
-% ── Algorithm: full-width float page, matches journal formatting ───────────
-\begin{figure*}[p]
-\centering
-\begin{minipage}{0.82\textwidth}
+% ── Algorithm on a new page after references ──────────────────────────────
+\clearpage
+\onecolumn
+\begin{center}
+\begin{minipage}{0.82\linewidth}
 \begin{algorithm}[H]
 \caption{L\'{e}vy Scaling Exponent Estimation}
 \label{alg:pipeline}
@@ -1116,9 +1120,6 @@ sharpen the lower boundary of the self-similar regime.
 \end{algorithmic}
 \end{algorithm}
 \end{minipage}
-\end{figure*}
-
-\bibliographystyle{IEEEtran}
-\bibliography{references}
+\end{center}
 
 \end{document}
