@@ -597,6 +597,8 @@ theory is correct. The constrained approach bypasses this collinearity by
 imposing the theoretical coefficient directly. The sensitivity of
 $\alphah_{\mathrm{corr}}$ to the truncation $K_{\max}$ is assessed as a
 robustness check.
+Algorithm~\ref{alg:pipeline} summarises the complete six-step estimation
+pipeline, from preprocessing through bias-corrected tip estimation.
 
 % ── Estimation pipeline (end of methodology) ─────────────────────────────────
 \begin{algorithm}[t]
@@ -661,6 +663,8 @@ robustness check.
 \subsection{Baseline scaling}
 \label{sec:results:baseline}
 
+Steps~1--3 of Algorithm~\ref{alg:pipeline} yield the baseline
+tip-scaling estimates.
 Tip-scaling estimates $\alphah_{\mathrm{tip}}$, averaged over
 $\varepsilon\in\{0.1,\ldots,0.5\}$ and $N_\tau\in\{20,37\}$, are reported
 alongside the three-estimator comparison in Table~\ref{tab:three_way} below.
@@ -941,6 +945,8 @@ PT & 0.537 \\
 \subsection{Bias correction}
 \label{sec:results:bias}
 
+Step~6 of Algorithm~\ref{alg:pipeline} implements the bias correction
+described in Section~\ref{sec:methodology:bias}.
 Seven of the eight markets exhibit negative first-order autocorrelation of
 1-minute returns; ER displays a statistically negligible first-order autocorrelation
 ($\rhoh(1)=+0.001\approx 0$), but its long-run variance ratio $\VRh_\infty=0.958<1$
