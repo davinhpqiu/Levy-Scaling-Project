@@ -51,7 +51,7 @@
          \alphah_{\mathrm{collapse}},\;\alphah_{\mathrm{corr}}$
 
 \Statex
-\Statex \textit{--- Step 1: Preprocessing ---}
+\Statex \textit{--- Step 1 Preprocessing ---}
 \State Convert to integer ticks: $p(t) \leftarrow \mathrm{round}(P(t)/\Delta)$
 \State LOCF-fill missing intraday minutes (carry last observed price forward)
 \State Estimate intraday volatility profile $\hat\sigma_m$
@@ -60,7 +60,7 @@
 \State Form deseasonalized series $\tilde{P}(t)=\sum_k \delta_k/\hat\sigma_{m(k)}$
 
 \Statex
-\Statex \textit{--- Step 2: Empirical PDF construction ---}
+\Statex \textit{--- Step 2 Empirical PDF construction ---}
 \For{each $\tau \in \mathcal{T}$}
   \State Compute increments $\delta_\tau(t) = p(t) - p(t-\tau)$
   \State Set bin width $\Delta x = \varepsilon\cdot\Delta$;

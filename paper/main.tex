@@ -931,7 +931,7 @@ The $K_{\max}$ sensitivity analysis on the pilot market (ES) confirms that
 $\alphah_{\mathrm{corr}}$ is stable across a range of truncation choices,
 well below the inter-estimator spread documented in Section~\ref{sec:results:estimators}.
 
-\begin{table*}[htbp]
+\begin{table}[htbp]
 \begin{center}
 \caption{Variance-Ratio Bias Correction by Market}
 \begin{tabular}{lccccc}
@@ -948,12 +948,11 @@ ER & $+0.001$ & 0.958 & 1.725 & 1.718 & $+0.007$ \\
 CF & $-0.007$ & 0.974 & 1.752 & 1.749 & $+0.003$ \\
 NQ & $-0.001$ & 0.980 & 1.746 & 1.743 & $+0.003$ \\
 \hline
-\multicolumn{6}{l}{Single configuration $\varepsilon=0.1$, $N_\tau=20$, $K_{\max}=60$, not averaged across settings; sorted by $\VRh_\infty\uparrow$.}\\
-\multicolumn{6}{l}{See Tables~\ref{tab:seasonality}--\ref{tab:three_way} for averaged values.}
+\multicolumn{6}{l}{$\varepsilon=0.1$, $N_\tau=20$, $K_{\max}=60$; sorted by $\VRh_\infty\uparrow$.}
 \end{tabular}
 \label{tab:bias}
 \end{center}
-\end{table*}
+\end{table}
 
 
 
@@ -1079,13 +1078,13 @@ sharpen the lower boundary of the self-similar regime.
         $\alphah_{\mathrm{collapse}}$,\;
         $\alphah_{\mathrm{corr}}$
 \Statex
-\State \textbf{Step 1: Preprocessing}
+\State \textbf{Step 1 Preprocessing}
 \State Convert to integer ticks:\; $p(t)\leftarrow\mathrm{round}(P(t)/\Delta)$
 \State LOCF-fill missing intraday minutes within each trading session
 \State Estimate intraday volatility profile: $\hat{\sigma}_m\leftarrow D_m^{-1}\sum_{d:\,m(k)=m}|\delta_k|$;\; normalize so $\bar{\hat\sigma}=1$
 \State Form deseasonalized series: $\tilde{P}(t)=\textstyle\sum_{k=1}^{t}\delta_k/\hat\sigma_{m(k)}$
 \Statex
-\State \textbf{Step 2: Empirical PDF construction}
+\State \textbf{Step 2 Empirical PDF construction}
 \For{each $\tau\in\mathcal{T}$}
   \State Compute increments $\delta_\tau(t)=p(t)-p(t-\tau)$
   \State Set bin width $\Delta x=\varepsilon\cdot\Delta$;\; use $N_x=2{,}000$ bins centred at $x=0$
@@ -1093,11 +1092,11 @@ sharpen the lower boundary of the self-similar regime.
   \State Record peak: $\Ph(0,\tau)\leftarrow$ density of bin nearest $x=0$
 \EndFor
 \Statex
-\State \textbf{Step 3: Tip-scaling OLS (Estimator 1)}
+\State \textbf{Step 3 Tip-scaling OLS (Estimator 1)}
 \State Regress $\log\Ph(0,\tau)$ on $\log\tau$ by OLS over all $\tau\in\mathcal{T}$;\; extract slope $\hat{m}$
 \State $\alphah_{\mathrm{tip}}\leftarrow -1/\hat{m}$
 \Statex
-\State \textbf{Step 4: Structure-function estimator (Estimator 2)}
+\State \textbf{Step 4 Structure-function estimator (Estimator 2)}
 \For{each moment order $q\in\{0.25,\;0.50,\;0.75,\;1.00,\;1.25,\;1.50\}$}
   \State $\hat{S}_q(\tau)\leftarrow N_\tau^{-1}\sum_t|\delta_\tau(t)|^q$
   \State Regress $\log\hat{S}_q(\tau)$ on $\log\tau$;\; extract slope $\hat\zeta(q)$
@@ -1105,14 +1104,14 @@ sharpen the lower boundary of the self-similar regime.
 \EndFor
 \State $\alphah_{\mathrm{sf}}\leftarrow\mathrm{median}_q\!\left(\alphah_q\right)$
 \Statex
-\State \textbf{Step 5: Collapse-quality estimator (Estimator 3)}
+\State \textbf{Step 5 Collapse-quality estimator (Estimator 3)}
 \For{each candidate $\alpha\in[1.2,\;2.8]$ on a grid of 160 values}
   \State Rescale PDF curves: $\tilde{P}(\tilde{x},\tau)\leftarrow\tau^{1/\alpha}\Ph\!\left(\tau^{1/\alpha}\tilde{x},\,\tau\right)$
   \State Compute cross-$\tau$ log-spread score $\mathrm{Score}(\alpha)$ per Equation~\eqref{eq:score}
 \EndFor
 \State $\alphah_{\mathrm{collapse}}\leftarrow\arg\min_{\alpha}\,\mathrm{Score}(\alpha)$
 \Statex
-\State \textbf{Step 6: Variance-ratio bias correction}
+\State \textbf{Step 6 Variance-ratio bias correction}
 \State Estimate $\rhoh(k)$ from 1-min price increments for $k=1,\ldots,K_{\max}$
 \State Build variance ratio $\VRh(\tau)$ per Equation~\eqref{eq:vr_hat};\; set $b(\tau)\leftarrow-\tfrac{1}{2}\log\VRh(\tau)$
 \State Regress $\log\Ph(0,\tau)-b(\tau)$ on $\log\tau$ (coefficient of $b(\tau)$ constrained to 1);\; extract $\hat{m}_{\mathrm{corr}}$
