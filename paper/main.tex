@@ -598,6 +598,66 @@ imposing the theoretical coefficient directly. The sensitivity of
 $\alphah_{\mathrm{corr}}$ to the truncation $K_{\max}$ is assessed as a
 robustness check.
 
+% ── Estimation pipeline (end of methodology, spans both columns) ─────────────
+\begin{figure*}[!t]
+\centering
+\begin{minipage}{0.92\linewidth}
+\begin{algorithm}[H]
+\caption{L\'{e}vy Scaling Exponent Estimation}
+\label{alg:pipeline}
+\begin{algorithmic}[1]
+\Require Price series $\{P(t)\}$, tick size $\Delta$,
+         resolution grid $\varepsilon\!\in\!\{0.1,0.2,0.3,0.4,0.5\}$,
+         lag grid $\mathcal{T}=\{\tau_1,\ldots,\tau_{N_\tau}\}$,
+         autocorrelation truncation $K_{\max}=60$
+\Ensure $\alphah_{\mathrm{tip}}$,\;
+        $\alphah_{\mathrm{sf}}$,\;
+        $\alphah_{\mathrm{collapse}}$,\;
+        $\alphah_{\mathrm{corr}}$
+\Statex
+\State \textbf{Step 1 Preprocessing}
+\State Convert to integer ticks:\; $p(t)\leftarrow\mathrm{round}(P(t)/\Delta)$
+\State LOCF-fill missing intraday minutes within each trading session
+\State Estimate intraday volatility profile: $\hat{\sigma}_m\leftarrow D_m^{-1}\sum_{d:\,m(k)=m}|\delta_k|$;\; normalize so $\bar{\hat\sigma}=1$
+\State Form deseasonalized series: $\tilde{P}(t)=\textstyle\sum_{k=1}^{t}\delta_k/\hat\sigma_{m(k)}$
+\Statex
+\State \textbf{Step 2 Empirical PDF construction}
+\For{each $\tau\in\mathcal{T}$}
+  \State Compute increments $\delta_\tau(t)=p(t)-p(t-\tau)$
+  \State Set bin width $\Delta x=\varepsilon\cdot\Delta$;\; use $N_x=2{,}000$ bins centred at $x=0$
+  \State Build normalised histogram $\Ph(x_j,\tau)$ per Equation~\eqref{eq:pdf_hat}
+  \State Record peak: $\Ph(0,\tau)\leftarrow$ density of bin nearest $x=0$
+\EndFor
+\Statex
+\State \textbf{Step 3 Tip-scaling OLS (Estimator 1)}
+\State Regress $\log\Ph(0,\tau)$ on $\log\tau$ by OLS over all $\tau\in\mathcal{T}$;\; extract slope $\hat{m}$
+\State $\alphah_{\mathrm{tip}}\leftarrow -1/\hat{m}$
+\Statex
+\State \textbf{Step 4 Structure-function estimator (Estimator 2)}
+\For{each moment order $q\in\{0.25,\;0.50,\;0.75,\;1.00,\;1.25,\;1.50\}$}
+  \State $\hat{S}_q(\tau)\leftarrow N_\tau^{-1}\sum_t|\delta_\tau(t)|^q$
+  \State Regress $\log\hat{S}_q(\tau)$ on $\log\tau$;\; extract slope $\hat\zeta(q)$
+  \State $\alphah_q\leftarrow q/\hat\zeta(q)$
+\EndFor
+\State $\alphah_{\mathrm{sf}}\leftarrow\mathrm{median}_q\!\left(\alphah_q\right)$
+\Statex
+\State \textbf{Step 5 Collapse-quality estimator (Estimator 3)}
+\For{each candidate $\alpha\in[1.2,\;2.8]$ on a grid of 160 values}
+  \State Rescale PDF curves: $\tilde{P}(\tilde{x},\tau)\leftarrow\tau^{1/\alpha}\Ph\!\left(\tau^{1/\alpha}\tilde{x},\,\tau\right)$
+  \State Compute cross-$\tau$ log-spread score $\mathrm{Score}(\alpha)$ per Equation~\eqref{eq:score}
+\EndFor
+\State $\alphah_{\mathrm{collapse}}\leftarrow\arg\min_{\alpha}\,\mathrm{Score}(\alpha)$
+\Statex
+\State \textbf{Step 6 Variance-ratio bias correction}
+\State Estimate $\rhoh(k)$ from 1-min price increments for $k=1,\ldots,K_{\max}$
+\State Build variance ratio $\VRh(\tau)$ per Equation~\eqref{eq:vr_hat};\; set $b(\tau)\leftarrow-\tfrac{1}{2}\log\VRh(\tau)$
+\State Regress $\log\Ph(0,\tau)-b(\tau)$ on $\log\tau$ (coefficient of $b(\tau)$ constrained to 1);\; extract $\hat{m}_{\mathrm{corr}}$
+\State $\alphah_{\mathrm{corr}}\leftarrow-1/\hat{m}_{\mathrm{corr}}$
+\end{algorithmic}
+\end{algorithm}
+\end{minipage}
+\end{figure*}
+
 % ══════════════════════════════════════════════════════════════════════════════
 \section{Results}
 \label{sec:results}
@@ -762,7 +822,7 @@ by tail truncation effects.
 Across all eight markets the inter-estimator spreads are comparable (0.35--0.55 units),
 with no contract serving as an outlier in any of the three estimators.
 
-\begin{table*}[htbp]
+\begin{table*}[!t]
 \begin{center}
 \caption{Three-Way L\'{e}vy Exponent Estimates by Market}
 \begin{tabular}{lccccc}
@@ -796,6 +856,7 @@ YM & 1.760 & 0.998 & 1.882 & 2.150 & 0.390 \\
 \label{fig:three_estimators}
 \end{figure}
 
+\FloatBarrier
 \subsection{Robustness}
 \label{sec:results:robustness}
 
@@ -881,14 +942,7 @@ PT & 0.537 \\
 \end{table}
 
 
-% ── Bias correction figure ─────────────────────────────────────────────────
-\begin{figure*}[!t]
-\centering
-\includegraphics[width=0.92\textwidth]{figures/fig_bias_correction.png}
-\caption{Variance-Ratio Bias Correction by Market.}
-\label{fig:bias_correction}
-\end{figure*}
-
+\FloatBarrier
 \subsection{Bias correction}
 \label{sec:results:bias}
 
@@ -954,7 +1008,13 @@ NQ & $-0.001$ & 0.980 & 1.746 & 1.743 & $+0.003$ \\
 \end{center}
 \end{table}
 
-
+% ── Bias correction figure ─────────────────────────────────────────────────
+\begin{figure*}[!t]
+\centering
+\includegraphics[width=0.92\textwidth]{figures/fig_bias_correction.png}
+\caption{Variance-Ratio Bias Correction by Market.}
+\label{fig:bias_correction}
+\end{figure*}
 
 % ══════════════════════════════════════════════════════════════════════════════
 \section{Conclusion}
@@ -1059,66 +1119,5 @@ sharpen the lower boundary of the self-similar regime.
 \FloatBarrier
 \bibliographystyle{IEEEtran}
 \bibliography{references}
-
-% ── Algorithm on a new page after references ──────────────────────────────
-\clearpage
-\onecolumn
-\begin{center}
-\begin{minipage}{0.82\linewidth}
-\begin{algorithm}[H]
-\caption{L\'{e}vy Scaling Exponent Estimation}
-\label{alg:pipeline}
-\begin{algorithmic}[1]
-\Require Price series $\{P(t)\}$, tick size $\Delta$,
-         resolution grid $\varepsilon\!\in\!\{0.1,0.2,0.3,0.4,0.5\}$,
-         lag grid $\mathcal{T}=\{\tau_1,\ldots,\tau_{N_\tau}\}$,
-         autocorrelation truncation $K_{\max}=60$
-\Ensure $\alphah_{\mathrm{tip}}$,\;
-        $\alphah_{\mathrm{sf}}$,\;
-        $\alphah_{\mathrm{collapse}}$,\;
-        $\alphah_{\mathrm{corr}}$
-\Statex
-\State \textbf{Step 1 Preprocessing}
-\State Convert to integer ticks:\; $p(t)\leftarrow\mathrm{round}(P(t)/\Delta)$
-\State LOCF-fill missing intraday minutes within each trading session
-\State Estimate intraday volatility profile: $\hat{\sigma}_m\leftarrow D_m^{-1}\sum_{d:\,m(k)=m}|\delta_k|$;\; normalize so $\bar{\hat\sigma}=1$
-\State Form deseasonalized series: $\tilde{P}(t)=\textstyle\sum_{k=1}^{t}\delta_k/\hat\sigma_{m(k)}$
-\Statex
-\State \textbf{Step 2 Empirical PDF construction}
-\For{each $\tau\in\mathcal{T}$}
-  \State Compute increments $\delta_\tau(t)=p(t)-p(t-\tau)$
-  \State Set bin width $\Delta x=\varepsilon\cdot\Delta$;\; use $N_x=2{,}000$ bins centred at $x=0$
-  \State Build normalised histogram $\Ph(x_j,\tau)$ per Equation~\eqref{eq:pdf_hat}
-  \State Record peak: $\Ph(0,\tau)\leftarrow$ density of bin nearest $x=0$
-\EndFor
-\Statex
-\State \textbf{Step 3 Tip-scaling OLS (Estimator 1)}
-\State Regress $\log\Ph(0,\tau)$ on $\log\tau$ by OLS over all $\tau\in\mathcal{T}$;\; extract slope $\hat{m}$
-\State $\alphah_{\mathrm{tip}}\leftarrow -1/\hat{m}$
-\Statex
-\State \textbf{Step 4 Structure-function estimator (Estimator 2)}
-\For{each moment order $q\in\{0.25,\;0.50,\;0.75,\;1.00,\;1.25,\;1.50\}$}
-  \State $\hat{S}_q(\tau)\leftarrow N_\tau^{-1}\sum_t|\delta_\tau(t)|^q$
-  \State Regress $\log\hat{S}_q(\tau)$ on $\log\tau$;\; extract slope $\hat\zeta(q)$
-  \State $\alphah_q\leftarrow q/\hat\zeta(q)$
-\EndFor
-\State $\alphah_{\mathrm{sf}}\leftarrow\mathrm{median}_q\!\left(\alphah_q\right)$
-\Statex
-\State \textbf{Step 5 Collapse-quality estimator (Estimator 3)}
-\For{each candidate $\alpha\in[1.2,\;2.8]$ on a grid of 160 values}
-  \State Rescale PDF curves: $\tilde{P}(\tilde{x},\tau)\leftarrow\tau^{1/\alpha}\Ph\!\left(\tau^{1/\alpha}\tilde{x},\,\tau\right)$
-  \State Compute cross-$\tau$ log-spread score $\mathrm{Score}(\alpha)$ per Equation~\eqref{eq:score}
-\EndFor
-\State $\alphah_{\mathrm{collapse}}\leftarrow\arg\min_{\alpha}\,\mathrm{Score}(\alpha)$
-\Statex
-\State \textbf{Step 6 Variance-ratio bias correction}
-\State Estimate $\rhoh(k)$ from 1-min price increments for $k=1,\ldots,K_{\max}$
-\State Build variance ratio $\VRh(\tau)$ per Equation~\eqref{eq:vr_hat};\; set $b(\tau)\leftarrow-\tfrac{1}{2}\log\VRh(\tau)$
-\State Regress $\log\Ph(0,\tau)-b(\tau)$ on $\log\tau$ (coefficient of $b(\tau)$ constrained to 1);\; extract $\hat{m}_{\mathrm{corr}}$
-\State $\alphah_{\mathrm{corr}}\leftarrow-1/\hat{m}_{\mathrm{corr}}$
-\end{algorithmic}
-\end{algorithm}
-\end{minipage}
-\end{center}
 
 \end{document}
