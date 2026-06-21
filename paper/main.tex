@@ -600,11 +600,11 @@ robustness check.
 Algorithm~\ref{alg:pipeline} summarises the complete six-step estimation
 pipeline, from preprocessing through bias-corrected tip estimation.
 
-% ── Estimation pipeline (end of methodology, full-width float) ───────────────
-\begin{figure*}[!t]
-\centering
-\begin{minipage}{0.92\linewidth}
-\begin{algorithm}[H]
+% ── Estimation pipeline (end of methodology) ─────────────────────────────────
+% \clearpage flushes pending floats and starts a fresh page so the algorithm
+% lands at the top of the left column rather than mid-column or spanning both.
+\clearpage
+\begin{algorithm}[t]
 \caption{L\'{e}vy Scaling Exponent Estimation}
 \label{alg:pipeline}
 \begin{algorithmic}[1]
@@ -652,8 +652,6 @@ pipeline, from preprocessing through bias-corrected tip estimation.
 \State $\alphah_{\mathrm{corr}}\leftarrow-1/\hat{m}_{\mathrm{corr}}$
 \end{algorithmic}
 \end{algorithm}
-\end{minipage}
-\end{figure*}
 
 % ══════════════════════════════════════════════════════════════════════════════
 \section{Results}
