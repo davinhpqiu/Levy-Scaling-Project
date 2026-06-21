@@ -1,15 +1,48 @@
-% Standalone pseudocode for the Lévy Scaling Exponent Estimation pipeline.
-% To include in a LaTeX document, add to preamble:
-%   \usepackage{algorithm}
-%   \usepackage{algpseudocode}
-%   \algrenewcommand\algorithmicrequire{\textbf{Input:}}
-%   \algrenewcommand\algorithmicensure{\textbf{Output:}}
-% Then \input{algorithm_pipeline} at the desired location.
+\documentclass[12pt,a4paper]{article}
 
-\begin{algorithm}[t]
+% ── Packages ──────────────────────────────────────────────────────────────────
+\usepackage{amsmath,amssymb}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+
+% ── Custom notation (mirrors preamble.tex) ────────────────────────────────────
+\newcommand{\alphah}{\hat{\alpha}}
+\newcommand{\Ph}{\hat{P}}
+\newcommand{\rhoh}{\hat{\rho}}
+\newcommand{\VRh}{\widehat{VR}}
+\newcommand{\Etau}{\mathbb{E}}
+
+% ── Algorithm keyword style ───────────────────────────────────────────────────
+\algrenewcommand\algorithmicrequire{\textbf{Input:}}
+\algrenewcommand\algorithmicensure{\textbf{Output:}}
+
+% ── Equation labels (referenced in algorithm comments) ────────────────────────
+% Dummy labels so \eqref{} resolves without the main paper.
+% Remove these and replace with actual equation numbers once placement is decided.
+\newcommand{\eqrefprofile}{(profile)}
+\newcommand{\eqrefpdfhat}{(pdf-hat)}
+\newcommand{\eqreftipols}{(tip-OLS)}
+\newcommand{\eqrefsf}{(sf)}
+\newcommand{\eqrefscore}{(score)}
+\newcommand{\eqrefvr}{(VR)}
+\newcommand{\eqrefcorrpeak}{(corrected-peak)}
+
+% ── Title ─────────────────────────────────────────────────────────────────────
+\title{Lévy Scaling Exponent Estimation: Algorithm}
+\author{Haoping Qiu \and Alexei Chekhlov}
+\date{}
+
+% ══════════════════════════════════════════════════════════════════════════════
+\begin{document}
+\maketitle
+
+\begin{algorithm}[H]
 \caption{Lévy Scaling Exponent Estimation}
 \label{alg:pipeline}
 \begin{algorithmic}[1]
+
 \Require Price series $\{P(t)\}$, tick $\Delta$, resolution grid
          $\varepsilon\in\{0.1,\ldots,0.5\}$, lag grid
          $\mathcal{T}=\{\tau_1,\ldots,\tau_{N_\tau}\}$,
@@ -17,55 +50,80 @@
 \Ensure $\alphah_{\mathrm{tip}},\;\alphah_{\mathrm{sf}},\;
          \alphah_{\mathrm{collapse}},\;\alphah_{\mathrm{corr}}$
 
-\Statex \textit{--- Preprocessing ---}
+\Statex
+\Statex \textit{--- Step 1: Preprocessing ---}
 \State Convert to integer ticks: $p(t) \leftarrow \mathrm{round}(P(t)/\Delta)$
-\State LOCF-fill missing intraday minutes
-\State Estimate intraday profile $\hat\sigma_m$ via
-       Eq.~\eqref{eq:profile}; form deseasonalized series $\tilde{P}(t)$
+\State LOCF-fill missing intraday minutes (carry last observed price forward)
+\State Estimate intraday volatility profile $\hat\sigma_m$
+       (cross-day mean absolute increment at each minute-of-session $m$);
+       normalize so $\bar{\hat\sigma}=1$
+\State Form deseasonalized series $\tilde{P}(t)=\sum_k \delta_k/\hat\sigma_{m(k)}$
 
-\Statex \textit{--- Empirical PDF ---}
+\Statex
+\Statex \textit{--- Step 2: Empirical PDF construction ---}
 \For{each $\tau \in \mathcal{T}$}
   \State Compute increments $\delta_\tau(t) = p(t) - p(t-\tau)$
-  \State Set bin width $\Delta x = \varepsilon\cdot\Delta$,
-         half-range $x_{\max}$ covering 2\,000 bins
-  \State Build normalised histogram $\Ph(x_j,\tau)$ via
-         Eq.~\eqref{eq:pdf_hat}
-  \State Record peak $\Ph(0,\tau) \leftarrow$ density of bin nearest $x=0$
+  \State Set bin width $\Delta x = \varepsilon\cdot\Delta$;
+         use $N_x = 2{,}000$ bins centred at $x=0$
+  \State Build normalized histogram:
+         $\Ph(x_j,\tau) = \frac{\#\{\delta_\tau(t)\in\text{bin }j\}}{N_\tau \cdot \Delta x}$
+  \State Record peak: $\Ph(0,\tau) \leftarrow$ density of bin nearest $x=0$
 \EndFor
 
-\Statex \textit{--- Estimator 1: tip-scaling OLS ---}
-\State Regress $\log\Ph(0,\tau)$ on $\log\tau$;
-       extract slope $\hat{m}$
-\State $\alphah_{\mathrm{tip}} \leftarrow -1/\hat{m}$ \Comment{Eq.~\eqref{eq:tip_ols}}
+\Statex
+\Statex \textit{--- Step 3: Estimator 1 — tip-scaling OLS ---}
+\State Regress $\log\Ph(0,\tau)$ on $\log\tau$ by OLS; extract slope $\hat{m}$
+\State $\alphah_{\mathrm{tip}} \leftarrow -1/\hat{m}$
+       \hfill\Comment{slope $\hat{m} = -1/\alpha$ under exact Lévy scaling}
 
-\Statex \textit{--- Estimator 2: structure functions ---}
-\For{each moment order $q \in \{0.25,\,0.50,\,0.75,\,1.00,\,1.25,\,1.50\}$}
-  \State $\hat{S}_q(\tau) \leftarrow N_\tau^{-1}\sum_t|\delta_\tau(t)|^q$
-         \Comment{Eq.~\eqref{eq:sf}}
+\Statex
+\Statex \textit{--- Step 4: Estimator 2 — structure functions ---}
+\For{each moment order $q \in \{0.25,\;0.50,\;0.75,\;1.00,\;1.25,\;1.50\}$}
+  \State $\hat{S}_q(\tau) \leftarrow \frac{1}{N_\tau}\sum_t|\delta_\tau(t)|^q$
   \State Regress $\log\hat{S}_q(\tau)$ on $\log\tau$;
-         extract $\hat\zeta(q)$
+         extract slope $\hat\zeta(q)$
   \State $\alphah_q \leftarrow q/\hat\zeta(q)$
+         \hfill\Comment{Lévy prediction: $S_q(\tau)\propto\tau^{q/\alpha}$}
 \EndFor
-\State $\alphah_{\mathrm{sf}} \leftarrow \mathrm{median}_q(\alphah_q)$
+\State $\alphah_{\mathrm{sf}} \leftarrow \mathrm{median}_q\bigl(\alphah_q\bigr)$
 
-\Statex \textit{--- Estimator 3: collapse quality ---}
-\For{each candidate $\alpha \in [1.2,\,2.8]$ (grid of 160 values)}
-  \State Rescale curves: $\tilde{P}(\tilde{x},\tau)
-         \leftarrow \tau^{1/\alpha}\Ph(\tau^{1/\alpha}\tilde{x},\,\tau)$
-  \State Compute score $\mathrm{Score}(\alpha)$ via
-         Eq.~\eqref{eq:score}
+\Statex
+\Statex \textit{--- Step 5: Estimator 3 — collapse quality ---}
+\For{each candidate $\alpha \in [1.2,\;2.8]$ on a grid of 160 values}
+  \State Rescale PDF curves:
+         $\tilde{P}(\tilde{x},\tau) \leftarrow \tau^{1/\alpha}\Ph\!\left(\tau^{1/\alpha}\tilde{x},\;\tau\right)$
+  \State Compute cross-$\tau$ log-spread score:
+         $\displaystyle\mathrm{Score}(\alpha)
+          = \frac{1}{|\mathcal{G}||\mathcal{T}|}
+            \sum_{\tilde{x}_j\in\mathcal{G}}\sum_{\tau\in\mathcal{T}}
+            \!\bigl[\log\tilde{P}(\tilde{x}_j,\tau)-\mu_j\bigr]^2$
+         \par\hfill where $\mu_j = |\mathcal{T}|^{-1}\sum_\tau\log\tilde{P}(\tilde{x}_j,\tau)$
 \EndFor
-\State $\alphah_{\mathrm{collapse}} \leftarrow
-       \arg\min_\alpha\,\mathrm{Score}(\alpha)$
+\State $\alphah_{\mathrm{collapse}} \leftarrow \arg\min_\alpha\;\mathrm{Score}(\alpha)$
 
-\Statex \textit{--- Bias correction ---}
-\State Estimate $\rhoh(k)$ from 1-min increments,
+\Statex
+\Statex \textit{--- Step 6: Variance-ratio bias correction ---}
+\State Estimate autocorrelations $\rhoh(k)$ from 1-min increments,
        $k=1,\ldots,K_{\max}$
-\State Build $\VRh(\tau)$ via Eq.~\eqref{eq:vr_hat};
-       set $b(\tau) \leftarrow -\tfrac{1}{2}\log\VRh(\tau)$
-\State Regress $\log\Ph(0,\tau)-b(\tau)$ on $\log\tau$;
-       extract $\hat{m}_{\mathrm{corr}}$
+\State Build variance ratio:
+       $\displaystyle\VRh(\tau)
+        = 1 + 2\sum_{k=1}^{\min(\tau-1,\,K_{\max})}
+          \!\left(1 - \frac{k}{\tau}\right)\rhoh(k)$
+\State Set correction term: $b(\tau) \leftarrow -\tfrac{1}{2}\log\VRh(\tau)$
+\State Regress $\log\Ph(0,\tau) - b(\tau)$ on $\log\tau$ (constrained: coefficient
+       of $b(\tau)$ fixed at 1); extract slope $\hat{m}_{\mathrm{corr}}$
 \State $\alphah_{\mathrm{corr}} \leftarrow -1/\hat{m}_{\mathrm{corr}}$
-       \Comment{Eq.~\eqref{eq:corrected_peak}}
+       \hfill\Comment{bias-corrected tip estimate}
+
 \end{algorithmic}
 \end{algorithm}
+
+\bigskip
+\noindent\textbf{Notes.}
+Steps~1--6 are run for both the raw and deseasonalized price series.
+The resolution $\varepsilon$ and lag grid density $N_\tau$ are treated as
+sensitivity dimensions; all estimators are computed at each combination
+$(\varepsilon, N_\tau)$ and the cross-cell variance is decomposed to identify
+dominant sources of uncertainty (Step~4 of the main paper's robustness analysis).
+
+\end{document}
