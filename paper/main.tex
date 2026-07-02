@@ -582,28 +582,14 @@ in Equation~\eqref{eq:vr_rho}:
     \left(1 - \frac{k}{\tau}\right)\rhoh(k).
   \label{eq:vr_hat}
 \end{equation}
+
 The dependence correction term is $b(\tau) = -\tfrac{1}{2}\log\VRh(\tau)$.
 The bias-adjusted response is $y^*(\tau) = \log\Ph(0,\tau) - b(\tau)$, and
 the corrected OLS regression of $y^*(\tau)$ on $\log\tau$ gives
 $\alphah_{\mathrm{corr}} = -1/\hat{m}_{\mathrm{corr}}$, recovering
 Equation~\eqref{eq:corrected_peak}.
 
-The correction is implemented as a constrained fit with the coefficient of
-$b(\tau)$ fixed at 1, rather than a free two-regressor regression. On the
-project lag grid $\log\tau$ and $b(\tau)$ are highly collinear (both are
-nearly monotone functions of $\tau$), so an unconstrained regression would
-produce unstable coefficient estimates regardless of whether the underlying
-theory is correct. The constrained approach bypasses this collinearity by
-imposing the theoretical coefficient directly. The sensitivity of
-$\alphah_{\mathrm{corr}}$ to the truncation $K_{\max}$ is assessed as a
-robustness check.
-Algorithm~\ref{alg:pipeline} summarises the complete six-step estimation
-pipeline, from preprocessing through bias-corrected tip estimation.
-
 % ── Estimation pipeline (end of methodology) ─────────────────────────────────
-% \clearpage flushes pending floats and starts a fresh page so the algorithm
-% lands at the top of the left column rather than mid-column or spanning both.
-\clearpage
 \begin{algorithm}[t]
 \caption{L\'{e}vy Scaling Exponent Estimation}
 \label{alg:pipeline}
@@ -652,6 +638,18 @@ pipeline, from preprocessing through bias-corrected tip estimation.
 \State $\alphah_{\mathrm{corr}}\leftarrow-1/\hat{m}_{\mathrm{corr}}$
 \end{algorithmic}
 \end{algorithm}
+
+The correction is implemented as a constrained fit with the coefficient of
+$b(\tau)$ fixed at 1, rather than a free two-regressor regression. On the
+project lag grid $\log\tau$ and $b(\tau)$ are highly collinear (both are
+nearly monotone functions of $\tau$), so an unconstrained regression would
+produce unstable coefficient estimates regardless of whether the underlying
+theory is correct. The constrained approach bypasses this collinearity by
+imposing the theoretical coefficient directly. The sensitivity of
+$\alphah_{\mathrm{corr}}$ to the truncation $K_{\max}$ is assessed as a
+robustness check.
+Algorithm~\ref{alg:pipeline} summarises the complete six-step estimation
+pipeline, from preprocessing through bias-corrected tip estimation.
 
 % ══════════════════════════════════════════════════════════════════════════════
 \section{Results}
