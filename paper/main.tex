@@ -6,7 +6,7 @@
 \begin{document}
 
 % ── Title block ───────────────────────────────────────────────────────────────
-\title{Empirical L\'{e}vy Scaling in Short-Horizon Futures Returns:
+\title{Empirical L\'{e}vy Scaling in Short-Horizon Futures:
        Estimation, Sensitivity, and Autocorrelation Bias}
 
 \author{
@@ -55,7 +55,7 @@ support for the bias mechanism.
 
 \begin{IEEEkeywords}
 Lévy-stable distributions, peak scaling estimator, equity-index futures,
-variance ratio, intraday returns, self-similarity.
+variance ratio, intraday returns.
 \end{IEEEkeywords}
 
 % ══════════════════════════════════════════════════════════════════════════════
@@ -247,7 +247,7 @@ Fractional orders $q\in(0,1)$ downweight outliers and converge reliably on
 moderate samples \cite{Uchaikin2003}, while $q\in(1,\alpha)$ are
 sensitive to the tail. Systematic concavity of the empirical scaling exponent
 $\hat\zeta(q) = q/\alphah_q$ would signal multifractal corrections beyond
-simple Lévy scaling \cite{Mandelbrot1997,MuzyBacry1993}.
+simple Lévy scaling \cite{Mandelbrot1997,MuzyBacry1993,Jiang2019}.
 
 Weron \cite{Weron2001} and Baru\v{n}\'ik and Va\v{c}ha \cite{Barunik2010} document that all three of
 these semiparametric methods outperform the Hill estimator for $\alpha$ near
@@ -539,7 +539,7 @@ assumption rather than a test for multifractality.
 \label{sec:methodology:seasonality}
 
 Equity-index futures exhibit a well-documented U-shaped intraday volatility
-pattern \cite{WoodMcInishOrd1985,AndersenBollerslev1997}. The
+pattern \cite{WoodMcInishOrd1985,AndersenBollerslev1997,KimShin2023}. The
 seasonality model decomposes the 1-minute increment as $\delta_k =
 \hat\sigma_{m(k)}\cdot\tilde\delta_k$, where $m(k)\in\{1,\ldots,M\}$ is the
 minute-of-session and $\hat\sigma_m$ is the deterministic intraday factor. The
@@ -958,6 +958,29 @@ and the implied correction $\widehat{\Delta\alpha} = \alphah_{\mathrm{tip}}
 For reference the table is sorted by $\VRh_\infty$ in ascending order (strongest
 mean reversion first).
 
+\begin{table}[!t]
+\begin{center}
+\caption{Variance-Ratio Bias Correction by Market}
+\begin{tabular}{lccccc}
+\hline
+Market & $\rhoh(1)$ & $\VRh_\infty$ & $\alphah_{\mathrm{tip}}$
+       & $\alphah_{\mathrm{corr}}$ & $\widehat{\Delta\alpha}$ \\
+\hline
+PT & $-0.020$ & 0.895 & 1.709 & 1.695 & $+0.014$ \\
+DA & $-0.008$ & 0.949 & 1.709 & 1.703 & $+0.006$ \\
+ES & $-0.008$ & 0.949 & 1.791 & 1.785 & $+0.006$ \\
+YM & $-0.004$ & 0.951 & 1.755 & 1.748 & $+0.007$ \\
+FT & $-0.009$ & 0.952 & 1.809 & 1.802 & $+0.007$ \\
+ER & $+0.001$ & 0.958 & 1.725 & 1.718 & $+0.007$ \\
+CF & $-0.007$ & 0.974 & 1.752 & 1.749 & $+0.003$ \\
+NQ & $-0.001$ & 0.980 & 1.746 & 1.743 & $+0.003$ \\
+\hline
+\multicolumn{6}{l}{$\varepsilon=0.1$, $N_\tau=20$, $K_{\max}=60$; sorted by $\VRh_\infty\uparrow$.}
+\end{tabular}
+\label{tab:bias}
+\end{center}
+\end{table}
+
 The correction is positive (downward) for all eight markets, and the markets with
 the smallest $\VRh_\infty$ (strongest net mean reversion) display the largest
 corrections.
@@ -983,37 +1006,6 @@ consistent with microstructure effects at very short horizons being modest.
 The $K_{\max}$ sensitivity analysis on the pilot market (ES) confirms that
 $\alphah_{\mathrm{corr}}$ is stable across a range of truncation choices,
 well below the inter-estimator spread documented in Section~\ref{sec:results:estimators}.
-
-\begin{table}[htbp]
-\begin{center}
-\caption{Variance-Ratio Bias Correction by Market}
-\begin{tabular}{lccccc}
-\hline
-Market & $\rhoh(1)$ & $\VRh_\infty$ & $\alphah_{\mathrm{tip}}$
-       & $\alphah_{\mathrm{corr}}$ & $\widehat{\Delta\alpha}$ \\
-\hline
-PT & $-0.020$ & 0.895 & 1.709 & 1.695 & $+0.014$ \\
-DA & $-0.008$ & 0.949 & 1.709 & 1.703 & $+0.006$ \\
-ES & $-0.008$ & 0.949 & 1.791 & 1.785 & $+0.006$ \\
-YM & $-0.004$ & 0.951 & 1.755 & 1.748 & $+0.007$ \\
-FT & $-0.009$ & 0.952 & 1.809 & 1.802 & $+0.007$ \\
-ER & $+0.001$ & 0.958 & 1.725 & 1.718 & $+0.007$ \\
-CF & $-0.007$ & 0.974 & 1.752 & 1.749 & $+0.003$ \\
-NQ & $-0.001$ & 0.980 & 1.746 & 1.743 & $+0.003$ \\
-\hline
-\multicolumn{6}{l}{$\varepsilon=0.1$, $N_\tau=20$, $K_{\max}=60$; sorted by $\VRh_\infty\uparrow$.}
-\end{tabular}
-\label{tab:bias}
-\end{center}
-\end{table}
-
-% ── Bias correction figure ─────────────────────────────────────────────────
-\begin{figure*}[!t]
-\centering
-\includegraphics[width=0.92\textwidth]{figures/fig_bias_correction.png}
-\caption{Variance-Ratio Bias Correction by Market.}
-\label{fig:bias_correction}
-\end{figure*}
 
 % ══════════════════════════════════════════════════════════════════════════════
 \section{Conclusion}
@@ -1115,6 +1107,16 @@ sharpen the lower boundary of the self-similar regime.
 
 
 % ══════════════════════════════════════════════════════════════════════════════
+% ── Bias correction figure (placed after conclusion to appear on final page) ──
+\begin{figure*}[!t]
+\centering
+\includegraphics[width=0.92\textwidth]{figures/fig_bias_correction.png}
+\caption{Variance-Ratio Bias Correction by Market. Each panel shows the raw
+log~$\hat{P}(0,\tau)$ vs.\ $\log\tau$ (dots) and the bias-corrected regression
+line (solid), for each of the eight equity-index futures contracts.}
+\label{fig:bias_correction}
+\end{figure*}
+
 \FloatBarrier
 \bibliographystyle{IEEEtran}
 \bibliography{references}
