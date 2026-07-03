@@ -1005,6 +1005,16 @@ The $K_{\max}$ sensitivity analysis on the pilot market (ES) confirms that
 $\alphah_{\mathrm{corr}}$ is stable across a range of truncation choices,
 well below the inter-estimator spread documented in Section~\ref{sec:results:estimators}.
 
+% ── Bias correction figure (bottom of p9, spanning both columns) ──────────────
+\begin{figure*}[!b]
+\centering
+\includegraphics[width=0.92\textwidth]{figures/fig_bias_correction.png}
+\caption{Variance-Ratio Bias Correction by Market. Each panel shows the raw
+log~$\hat{P}(0,\tau)$ vs.\ $\log\tau$ (dots) and the bias-corrected regression
+line (solid), for each of the eight equity-index futures contracts.}
+\label{fig:bias_correction}
+\end{figure*}
+
 % ══════════════════════════════════════════════════════════════════════════════
 \section{Conclusion}
 \label{sec:conclusion}
@@ -1103,17 +1113,6 @@ Finally, extending the lag grid to sub-minute frequencies, where Lévy
 scaling is expected to break down due to price-grid discreteness, would
 sharpen the lower boundary of the self-similar regime.
 
-
-% ══════════════════════════════════════════════════════════════════════════════
-% ── Bias correction figure (placed after conclusion to appear on final page) ──
-\begin{figure*}[!t]
-\centering
-\includegraphics[width=0.92\textwidth]{figures/fig_bias_correction.png}
-\caption{Variance-Ratio Bias Correction by Market. Each panel shows the raw
-log~$\hat{P}(0,\tau)$ vs.\ $\log\tau$ (dots) and the bias-corrected regression
-line (solid), for each of the eight equity-index futures contracts.}
-\label{fig:bias_correction}
-\end{figure*}
 
 \FloatBarrier
 \bibliographystyle{IEEEtran}
