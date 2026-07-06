@@ -88,7 +88,7 @@ a qualitative visual test of the Lévy hypothesis. Both the regression and the
 collapse have been applied extensively in the econophysics literature.
 Estimated exponents span a broad range of $\alpha\approx 1.5$--$1.9$ across
 asset classes, frequencies, and estimation methods
-\cite{Gopikrishnan1999,Weron2001,BouchaudPotters2003}; within the narrower
+\cite{Gopikrishnan1999,Weron2001,BouchaudPotters2003,Chakraborti2011}; within the narrower
 setting of equity index instruments analysed by body or peak scaling,
 estimates cluster more tightly around $\alpha\approx 1.7$--$1.8$.
 
@@ -158,7 +158,7 @@ findings, discusses limitations, and suggests extensions.
 
 The Lévy-Khintchine theorem establishes that the class of stable distributions
 is the complete set of non-trivial distributional limits of normalized sums of
-i.i.d.\ random variables \cite{SamorodTaqqu1994,GnedenkoKolmogorov1954}.
+i.i.d.\ random variables \cite{SamorodTaqqu1994,GnedenkoKolmogorov1954,Nolan2020}.
 A symmetric $\alpha$-stable variable $X \sim S_\alpha(\gamma,0,0)$ has
 characteristic function
 \begin{equation}
@@ -215,7 +215,7 @@ $\alpha\approx 1.7$-$1.8$ produces Hill-estimator values of $\zeta\approx 3$
 on samples of realistic size. This reconciliation motivates the
 multi-estimator approach used here and the conservative
 interpretation of $\alphah$ as a central-body parameter. More recent work by
-Masoliver and Perelló \cite{Masoliver2021} and Cont et al.\ \cite{ContMiami2023} confirms that the
+Masoliver and Perelló \cite{Masoliver2021} and Ratliff-Crain et al.\ \cite{ContMiami2023} confirms that the
 central-body Lévy-scaling picture is stable through the 2010s, justifying its
 application to contemporary futures data.
 
@@ -238,7 +238,7 @@ more evenly than a pure-origin regression, providing an independent route to
 $\alphah$ that does not rely on a single histogram bin.
 
 The \textit{fractional structure function} estimator
-\cite{MuzyBacry1993,BouchaudPotters2003} exploits the prediction
+\cite{MuzyBacry1993,BouchaudPotters2003,Jiang2019} exploits the prediction
 $S_q(\tau) = \Etau[|\Delta P_\tau|^q] \propto \tau^{q/\alpha}$ for $q <
 \alpha$. A log-log regression of $\hat{S}_q(\tau)$ on $\tau$ yields
 slope $q/\alphah_q$; the median across moment orders
@@ -539,7 +539,7 @@ assumption rather than a test for multifractality.
 \label{sec:methodology:seasonality}
 
 Equity-index futures exhibit a well-documented U-shaped intraday volatility
-pattern \cite{WoodMcInishOrd1985,AndersenBollerslev1997}. The
+pattern \cite{WoodMcInishOrd1985,AndersenBollerslev1997,Chakraborti2011}. The
 seasonality model decomposes the 1-minute increment as $\delta_k =
 \hat\sigma_{m(k)}\cdot\tilde\delta_k$, where $m(k)\in\{1,\ldots,M\}$ is the
 minute-of-session and $\hat\sigma_m$ is the deterministic intraday factor. The
@@ -667,7 +667,7 @@ alongside the three-estimator comparison in Table~\ref{tab:three_way} below.
 All eight markets yield $\alphah_{\mathrm{tip}}$ lying within the
 interval $(1.72,\,1.83)$, consistent with the truncated Lévy flight picture of
 Mantegna and Stanley \cite{MantegnaStanley1994,MantegnaStanley1995} and with prior estimates for
-equity-index instruments \cite{Gopikrishnan1999,BouchaudPotters2003}.
+equity-index instruments \cite{Gopikrishnan1999,BouchaudPotters2003,Vlasiuk2025}.
 The $R^2$ of the log-log regression (Equation~\eqref{eq:tip_ols}) exceeds
 $0.997$ for every market, confirming that the power-law decay of the
 empirical PDF peak is a very accurate description of the data across the full cross-section.

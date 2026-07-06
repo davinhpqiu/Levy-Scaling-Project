@@ -59,6 +59,11 @@ J.-P. Bouchaud and M.~Potters, \emph{Theory of Financial Risk and Derivative
   Pricing: From Statistical Physics to Risk Management}, 2nd~ed.\hskip 1em plus
   0.5em minus 0.4em\relax Cambridge: Cambridge University Press, 2003.
 
+\bibitem{Chakraborti2011}
+A.~Chakraborti, I.~M. Toke, M.~Patriarca, and F.~Abergel, ``Econophysics
+  review: {I}. {E}mpirical facts,'' \emph{Quantitative Finance}, vol.~11,
+  no.~7, pp. 991--1012, 2011.
+
 \bibitem{Roll1984}
 R.~Roll, ``A simple implicit measure of the effective bid-ask spread in an
   efficient market,'' \emph{Journal of Finance}, vol.~39, no.~4, pp.
@@ -79,17 +84,19 @@ B.~V. Gnedenko and A.~N. Kolmogorov, \emph{Limit Distributions for Sums of
   Independent Random Variables}.\hskip 1em plus 0.5em minus 0.4em\relax
   Cambridge, MA: Addison-Wesley, 1954, translated by K. L. Chung.
 
+\bibitem{Nolan2020}
+J.~P. Nolan, \emph{Univariate Stable Distributions: Models for Heavy Tailed
+  Data}.\hskip 1em plus 0.5em minus 0.4em\relax Cham: Springer International
+  Publishing, 2020.
+
 \bibitem{Masoliver2021}
 J.~Masoliver and J.~Perell{\'o}, ``Financial return distributions: past,
   present, and {COVID-19},'' \emph{Entropy}, vol.~23, no.~7, p. 884, 2021.
 
 \bibitem{ContMiami2023}
-\BIBentryALTinterwordspacing
-R.~Cont, C.~M. Vogt, M.~T.~T. Kamm, B.~F. Tao, and E.~C. Reavis, ``Revisiting
-  {C}ont's stylized facts for modern stock markets,'' arXiv preprint
-  arXiv:2311.07738, 2023. [Online]. Available:
-  \url{https://arxiv.org/abs/2311.07738}
-\BIBentrySTDinterwordspacing
+E.~Ratliff-Crain, C.~M. Van Oort, J.~Bagrow, M.~T.~K. Koehler, and
+  B.~F. Tivnan, ``Revisiting {C}ont's stylized facts for modern stock
+  markets,'' \emph{Quantitative Finance}, vol.~25, no.~9, 2025.
 
 \bibitem{Drozdz2003}
 S.~Dro{\.z}d{\.z}, F.~Gr{\"u}mer, J.~R{\"u}bf, and J.~Speth, ``Towards
@@ -101,6 +108,13 @@ J.-F. Muzy, E.~Bacry, and A.~Arn{\'e}odo, ``Multifractal formalism for fractal
   signals: the structure-function approach versus the wavelet-transform
   modulus-maxima method,'' \emph{Physical Review E}, vol.~47, no.~2, pp.
   875--884, 1993.
+
+\bibitem{Jiang2019}
+\BIBentryALTinterwordspacing
+Z.-Q. Jiang, W.-J. Xie, W.-X. Zhou, and D.~Sornette, ``Multifractal analysis
+  of financial markets: a review,'' \emph{Reports on Progress in Physics},
+  vol.~82, no.~12, p. 125901, 2019.
+\BIBentrySTDinterwordspacing
 
 \bibitem{Uchaikin2003}
 V.~V. Uchaikin and V.~M. Zolotarev, \emph{Chance and Stability: Stable
@@ -139,5 +153,12 @@ R.~A. Wood, T.~H. McInish, and J.~K. Ord, ``An investigation of transactions
 T.~G. Andersen and T.~Bollerslev, ``Intraday periodicity and volatility
   persistence in financial markets,'' \emph{Journal of Empirical Finance},
   vol.~4, no. 2--3, pp. 115--158, 1997.
+
+\bibitem{Vlasiuk2025}
+\BIBentryALTinterwordspacing
+D.~Vlasiuk, ``{L}{\'e}vy-stable scaling of risk and performance functionals,''
+  arXiv preprint arXiv:2511.07834, 2025. [Online]. Available:
+  \url{https://arxiv.org/abs/2511.07834}
+\BIBentrySTDinterwordspacing
 
 \end{thebibliography}
