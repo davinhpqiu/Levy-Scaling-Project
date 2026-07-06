@@ -74,6 +74,11 @@ J.-P. Bouchaud, Y.~Gefen, M.~Potters, and M.~Wyart, ``Fluctuations and response
   in financial markets: the subtle nature of `random' price changes,''
   \emph{Quantitative Finance}, vol.~4, no.~2, pp. 176--190, 2004.
 
+\bibitem{ClinetPotiron2021}
+S.~Clinet and Y.~Potiron, ``Disentangling sources of high frequency market
+  microstructure noise,'' \emph{Journal of Business \& Economic Statistics},
+  vol.~39, no.~1, pp. 18--39, 2021.
+
 \bibitem{SamorodTaqqu1994}
 G.~Samorodnitsky and M.~S. Taqqu, \emph{Stable Non-{G}aussian Random Processes:
   Stochastic Models with Infinite Variance}.\hskip 1em plus 0.5em minus
@@ -90,8 +95,11 @@ J.~P. Nolan, \emph{Univariate Stable Distributions: Models for Heavy Tailed
   Publishing, 2020.
 
 \bibitem{Masoliver2021}
-J.~Masoliver and J.~Perell{\'o}, ``Financial return distributions: past,
-  present, and {COVID-19},'' \emph{Entropy}, vol.~23, no.~7, p. 884, 2021.
+\BIBentryALTinterwordspacing
+M.~W{\k{a}}torek, J.~Kwapie{\'n}, and S.~Dro{\.z}d{\.z}, ``Financial return
+  distributions: past, present, and {COVID-19},'' \emph{Entropy}, vol.~23,
+  no.~7, p. 884, 2021.
+\BIBentrySTDinterwordspacing
 
 \bibitem{ContMiami2023}
 E.~Ratliff-Crain, C.~M. Van Oort, J.~Bagrow, M.~T.~K. Koehler, and
