@@ -930,6 +930,28 @@ the short-term mean-reversion bias is concentrated.
 This observation motivates the bias correction applied in that section.
 
 
+\begin{table}[!t]
+\begin{center}
+\caption{Mean Absolute Asymmetry Ratio by Market}
+\begin{tabular}{lc}
+\hline
+Market & $\bar{A} \equiv \overline{|A(x,\tau)|}_{x>0,\,\tau}$ \\
+\hline
+ER & 0.267 \\
+NQ & 0.324 \\
+YM & 0.346 \\
+ES & 0.397 \\
+CF & 0.443 \\
+DA & 0.450 \\
+FT & 0.513 \\
+PT & 0.537 \\
+\hline
+\multicolumn{2}{l}{$\varepsilon=0.1$, $N_\tau=20$.}
+\end{tabular}
+\label{tab:asymmetry}
+\end{center}
+\end{table}
+
 \subsection{Asymmetry}
 \label{sec:results:asymmetry}
 
@@ -962,30 +984,6 @@ consistent with bid-ask bounce asymmetry and short-term momentum in futures
 order flow; however, its magnitude is small enough that the symmetric Lévy
 approximation remains a reasonable first-order description.
 
-\begin{table}[!t]
-\begin{center}
-\caption{Mean Absolute Asymmetry Ratio by Market}
-\begin{tabular}{lc}
-\hline
-Market & $\bar{A} \equiv \overline{|A(x,\tau)|}_{x>0,\,\tau}$ \\
-\hline
-ER & 0.267 \\
-NQ & 0.324 \\
-YM & 0.346 \\
-ES & 0.397 \\
-CF & 0.443 \\
-DA & 0.450 \\
-FT & 0.513 \\
-PT & 0.537 \\
-\hline
-\multicolumn{2}{l}{$\varepsilon=0.1$, $N_\tau=20$.}
-\end{tabular}
-\label{tab:asymmetry}
-\end{center}
-\end{table}
-
-
-\FloatBarrier
 \subsection{Bias correction}
 \label{sec:results:bias}
 
