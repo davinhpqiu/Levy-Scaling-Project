@@ -18,6 +18,18 @@
 
 % ── Float control ─────────────────────────────────────────────────────────────
 \usepackage{placeins}
+\usepackage{stfloats}   % allows table*/figure* at bottom of two-column pages
+
+% Relax float placement so pages fill before floats are deferred.
+% Defaults (0.7/0.3/0.2/0.5) are too strict for a float-heavy two-column paper
+% and cause large blocks of white space.
+\renewcommand{\topfraction}{0.9}         % max page fraction for top floats
+\renewcommand{\bottomfraction}{0.9}      % max page fraction for bottom floats
+\renewcommand{\textfraction}{0.07}       % min page fraction that must be text
+\renewcommand{\floatpagefraction}{0.75}  % min fill before a float-only page
+\setcounter{topnumber}{3}
+\setcounter{bottomnumber}{2}
+\setcounter{totalnumber}{5}
 
 % ── Pseudocode ────────────────────────────────────────────────────────────────
 \usepackage{algorithm}
