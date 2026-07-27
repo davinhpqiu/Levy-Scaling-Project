@@ -31,11 +31,11 @@ davinhpqiu@outlook.com}
 % ── Abstract ──────────────────────────────────────────────────────────────────
 \begin{abstract}
 Short-horizon price increments in equity-index futures exhibit heavy tails
-and a sharply peaked central body inconsistent with Gaussian dynamics,
+and a sharply peaked central body that is inconsistent with Gaussian dynamics,
 motivating Lévy-stable distributional models.
 This paper examines Lévy scaling across eight equity-index futures contracts
-spanning North America and Europe, using 1-minute OHLCV data from exchange
-inception through January 2026.
+spanning North America and Europe, using 1-minute OHLCV data from the start
+of available data through January 2026.
 Three estimation approaches (peak scaling OLS, collapse quality
 minimisation, and fractional order structure functions) are compared
 across a full factorial sensitivity analysis spanning histogram resolution,
@@ -68,7 +68,7 @@ central concern of financial economics and econophysics since at least
 Bachelier \cite{Bachelier1900}. The Gaussian random-walk model, which predicts
 normally distributed increments and variance scaling linearly with the holding
 period, is a natural first approximation but a poor empirical description of
-intraday returns. High frequency data reveal distributions with heavy tails,
+intraday returns. High-frequency data reveal distributions with heavy tails,
 excess kurtosis, and a central body that is far more peaked than the Gaussian.
 These features, documented across equities, foreign exchange, and derivatives
 markets, motivate the use of Lévy-stable distributions as a richer
@@ -94,7 +94,7 @@ estimates cluster more tightly around $\alpha\approx 1.7$--$1.8$.
 
 Despite this activity, three important gaps remain. First, most existing
 studies focus on a single market or a narrow class of instruments, typically
-US equity indices or individual stocks, and it is unclear how far this consensus extends across different
+US equity indices or individual stocks, and it is unclear how far these results extend across different
 geographies and regulatory environments. Second, the sensitivity of $\alphah$ to methodological
 choices including histogram resolution, lag grid density, intraday
 seasonality removal, and estimator selection has not been systematically
@@ -108,11 +108,11 @@ known qualitatively \cite{BouchaudPotters2003}, but an explicit
 closed-form correction and its cross-market empirical validation
 have not, to our knowledge, been jointly reported.
 
-This paper addresses all three gaps. Using 1-minute OHLCV data for eight
+This paper addresses all three gaps. We use 1-minute OHLCV data for eight
 equity-index futures contracts spanning North America and Europe, sourced from
-TickData (Tick Data, LLC) and processed using the OneTick tick analytics platform,
-covering each market from the start of available data through
-January 2026, we make six contributions organized around the three gaps.
+TickData (Tick Data, LLC) and processed using the OneTick tick analytics
+platform, covering each market from the start of available data through
+January 2026. We make six contributions organized around the three gaps.
 
 \textit{Gap 1 (cross-market coverage):}
 (i)~We establish a baseline peak scaling survey across all eight markets,
@@ -254,6 +254,27 @@ these semiparametric methods outperform the Hill estimator for $\alpha$ near
 2 on finite samples. The comparison of the three estimators across all eight
 markets is central to the robustness analysis of Section~\ref{sec:results:robustness}.
 
+These three semiparametric estimators are preferred over parametric
+maximum-likelihood (MLE) approaches for three reasons.
+First, the Lévy-stable density has no closed-form expression for general
+$\alpha\in(1,2)$, requiring numerical characteristic-function inversion at
+each function evaluation; MLE is therefore computationally intensive and
+numerically sensitive, particularly near $\alpha=2$ where the density
+converges to the Gaussian \cite{Nolan2020}.
+Second, MLE jointly estimates the full four-parameter stable vector
+$(\alpha,\beta,\gamma,\delta)$, introducing estimation uncertainty in the
+nuisance parameters $\beta$ (skewness) and $\delta$ (location) that
+propagates into the target parameter $\alpha$; the three semiparametric
+methods focus entirely on the scaling exponent, treating shape and location
+as nuisances.
+Third, each of the three methods targets a geometrically distinct aspect of
+the self-similar scaling: the peak estimator uses the origin density at each
+lag, the collapse estimator uses the full rescaled shape across all lags
+simultaneously, and the structure-function estimator uses moment scaling.
+Agreement among three geometrically independent routes to $\alphah$
+therefore constitutes stronger evidence for the Lévy hypothesis than any
+single estimator, including MLE.
+
 \subsection{Short-term dependence and the variance-ratio bias}
 \label{sec:background:vr}
 
@@ -273,8 +294,8 @@ to the autocorrelation function is
 which forms the basis for both variance-ratio estimators implemented here.
 
 At 1-minute frequency the dominant effect is mean reversion, not the positive
-correlation found at weekly horizons by Lo and MacKinlay \cite{LoMacKinlay1988}. Two
-mechanisms contribute. Roll \cite{Roll1984} showed that bid-ask bounce
+correlation found at weekly horizons by Lo and MacKinlay \cite{LoMacKinlay1988}.
+Two mechanisms contribute to this mean reversion. Roll \cite{Roll1984} showed that the bid-ask bounce
 generates a spurious first-order autocovariance $\mathrm{Cov}(\Delta p_t,\Delta p_{t-1})\approx -s^2/4$ for effective spread $s$, a purely mechanical effect. Bouchaud et al.\ \cite{Bouchaud2004} and
 Farmer et al.\ \cite{Farmer2006} documented that large market orders move prices but
 this impact partially reverts as the order book replenishes, adding genuine
@@ -372,6 +393,29 @@ CF & CAC-40                & Europe   & Euronext           & May 2000    & 09:00
 The eight contracts were selected to provide a focused cross-section of
 liquid equity-index futures across geographies rather than on the basis of
 any statistical pre-screening. Four North American equity-index contracts trade at major US venues: YM, NQ, and ES on CME Group exchanges, and ER on ICE Futures US (formerly NYBOT); one Canadian contract (PT) trades on the Montr\'{e}al Exchange (MX); and three European contracts (FT, DA, CF) cover the major continental and UK equity benchmarks.
+
+Equity-index futures are chosen over alternative liquid asset classes —
+foreign exchange (FX) and sovereign fixed income — for three reasons.
+First, equity-index futures are the canonical setting of the empirical
+Lévy-scaling literature: the peak scaling approach of Mantegna and Stanley
+\cite{MantegnaStanley1994,MantegnaStanley1995} was developed on S\&P~500
+intraday data, and the present study is most directly interpreted as an
+extension of that literature to an international cross-section.
+Second, equity-index futures trade on regulated, centralized exchanges with
+standardized contract specifications and electronically matched price
+discovery, making microstructure properties — in particular the bid-ask
+bounce mechanism that motivates the bias correction in
+Section~\ref{sec:background:vr} — well-characterized and consistent across
+venues \cite{Roll1984,Bouchaud2004,ClinetPotiron2021}. Foreign exchange
+markets are predominantly over-the-counter; effective spreads and price
+formation mechanisms vary substantially across dealers and platforms,
+complicating systematic cross-market comparison.
+Third, at 1-minute frequency the price dynamics of equity-index futures are
+driven by a single dominant risk factor — aggregate equity market risk —
+whereas fixed-income futures are governed by duration-weighted interest rate
+expectations that produce materially different distributional properties at
+high frequency. The extension of these results to other asset classes is an
+open question noted in Section~\ref{sec:conclusion}.
 
 The raw files are stored in ``skip'' format: minutes with no transactions are
 omitted from the file rather than recorded as zero-volume observations. This
@@ -670,7 +714,7 @@ Mantegna and Stanley \cite{MantegnaStanley1994,MantegnaStanley1995} and with pri
 equity-index instruments \cite{Gopikrishnan1999,BouchaudPotters2003,Vlasiuk2025}.
 The $R^2$ of the log-log regression (Equation~\eqref{eq:tip_ols}) exceeds
 $0.997$ for every market, confirming that the power-law decay of the
-empirical PDF peak is a very accurate description of the data across the full cross-section.
+empirical PDF peak is an accurate description of the data across the full cross-section.
 The four North American equity-index futures (YM, ER, NQ, and ES), with
 $\alphah$ in the range $1.75$--$1.78$, cluster tightly near the empirical consensus
 value of $\alpha\approx 1.7$--$1.8$.
@@ -773,7 +817,7 @@ $\alphah_{\mathrm{tip}} < \alphah_{\mathrm{sf}} < \alphah_{\mathrm{collapse}}$.
 The spread between the smallest and largest estimate within a single market is
 typically 0.35--0.55 exponent units.
 This systematic ordering is not sampling noise; it reflects the distinct
-distributional features each estimator targets.
+distributional features that each estimator targets.
 The tip estimator depends only on the central value of the PDF at each lag
 and is therefore anchored to the best-measured, least-noisy region of the
 empirical distribution.
@@ -867,7 +911,7 @@ five resolution values and two grid densities is below 0.035 for every market
 and estimator.
 Second, the estimator choice is the dominant source of variation.
 For the same market, preprocessing, $\varepsilon$, and $N_\tau$, the mean
-fitted exponents across estimators differ by 0.35--0.55 units.
+estimated exponents across estimators differ by 0.35--0.55 units.
 This inter-estimator gap is substantially larger than the inter-market
 spread ($\alphah_{\mathrm{tip}}$ ranges from 1.72 to 1.82 across all eight markets),
 which implies that reported $\alphah$ values from different
@@ -955,14 +999,14 @@ and the implied correction $\widehat{\Delta\alpha} = \alphah_{\mathrm{tip}}
 For reference the table is sorted by $\VRh_\infty$ in ascending order (strongest
 mean reversion first).
 
-The correction is positive (downward) for all eight markets, and the markets with
+The bias correction reduces $\alphah_{\mathrm{tip}}$ for all eight markets, and the markets with
 the smallest $\VRh_\infty$ (strongest net mean reversion) display the largest
 corrections.
 PT, which has $\VRh_\infty = 0.895$ and $\rhoh(1) = -0.020$, is the most
 mean-reverting contract and shows the largest downward correction
 ($\widehat{\Delta\alpha}\approx 0.014$).
 The corrections are uniformly small (at most 0.014 units), reflecting that the
-sample means are essentially free of the large discreteness-driven bias that
+sample estimates are essentially free of the large discreteness-driven bias that
 affects the uncorrected estimator in illiquid markets.
 Although ER has a marginally positive first-order autocorrelation
 ($\rhoh(1) = +0.001$), its long-run variance ratio $\VRh_\infty = 0.958$
