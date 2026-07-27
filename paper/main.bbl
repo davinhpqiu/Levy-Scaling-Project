@@ -79,6 +79,13 @@ S.~Clinet and Y.~Potiron, ``Disentangling sources of high frequency market
   microstructure noise,'' \emph{Journal of Business \& Economic Statistics},
   vol.~39, no.~1, pp. 18--39, 2021.
 
+\bibitem{Yegon2025}
+\BIBentryALTinterwordspacing
+P.~Yegon, W.~B. Lindquist, and S.~T. Rachev, ``Asset pricing in the presence
+  of market microstructure noise,'' arXiv preprint arXiv:2511.00308, 2025.
+  [Online]. Available: \url{https://arxiv.org/abs/2511.00308}
+\BIBentrySTDinterwordspacing
+
 \bibitem{SamorodTaqqu1994}
 G.~Samorodnitsky and M.~S. Taqqu, \emph{Stable Non-{G}aussian Random Processes:
   Stochastic Models with Infinite Variance}.\hskip 1em plus 0.5em minus
@@ -124,6 +131,14 @@ Z.-Q. Jiang, W.-J. Xie, W.-X. Zhou, and D.~Sornette, ``Multifractal analysis
   vol.~82, no.~12, p. 125901, 2019.
 \BIBentrySTDinterwordspacing
 
+\bibitem{Masoudi2025}
+\BIBentryALTinterwordspacing
+O.~Masoudi, F.~Shahbazi, and M.~Sharifi, ``Complexity of financial time
+  series: multifractal and multiscale entropy analyses,'' arXiv preprint
+  arXiv:2507.23414, 2025. [Online]. Available:
+  \url{https://arxiv.org/abs/2507.23414}
+\BIBentrySTDinterwordspacing
+
 \bibitem{Uchaikin2003}
 V.~V. Uchaikin and V.~M. Zolotarev, \emph{Chance and Stability: Stable
   Distributions and Their Applications}.\hskip 1em plus 0.5em minus 0.4em\relax
@@ -146,11 +161,27 @@ A.~W. Lo and A.~C. MacKinlay, ``Stock market prices do not follow random walks:
   evidence from a simple specification test,'' \emph{Review of Financial
   Studies}, vol.~1, no.~1, pp. 41--66, 1988.
 
+\bibitem{Froseth2026}
+\BIBentryALTinterwordspacing
+A.~G. Fr{\o}seth, ``A spectral generalisation of the variance ratio:
+  eigenstructure of long-horizon portfolio covariance and a multi-memory
+  factor model of {U.S.} equity returns,'' arXiv preprint arXiv:2607.03858,
+  2026. [Online]. Available: \url{https://arxiv.org/abs/2607.03858}
+\BIBentrySTDinterwordspacing
+
 \bibitem{Farmer2006}
 J.~D. Farmer, A.~Gerig, F.~Lillo, and S.~Mike, ``Market efficiency and the
   long-memory of supply and demand: is price impact variable and permanent or
   fixed and temporary?'' \emph{Quantitative Finance}, vol.~6, no.~2, pp.
   107--112, 2006.
+
+\bibitem{Deep2025}
+\BIBentryALTinterwordspacing
+A.~Deep, C.~Monico, W.~B. Lindquist, S.~T. Rachev, and F.~J. Fabozzi, ``Binary
+  tree option pricing under market microstructure effects: a random forest
+  approach,'' arXiv preprint arXiv:2507.16701, 2025. [Online]. Available:
+  \url{https://arxiv.org/abs/2507.16701}
+\BIBentrySTDinterwordspacing
 
 \bibitem{WoodMcInishOrd1985}
 R.~A. Wood, T.~H. McInish, and J.~K. Ord, ``An investigation of transactions

@@ -103,7 +103,7 @@ amounts that matter for practical inference. Third, and most substantively,
 the peak scaling estimator is derived under the assumption of independent
 increments, yet 1-minute futures returns exhibit well-documented short-term
 mean reversion driven by the bid-ask bounce and order-book dynamics
-\cite{Roll1984,Bouchaud2004,ClinetPotiron2021}. The direction of the resulting bias is
+\cite{Roll1984,Bouchaud2004,ClinetPotiron2021,Yegon2025}. The direction of the resulting bias is
 known qualitatively \cite{BouchaudPotters2003}, but an explicit
 closed-form correction and its cross-market empirical validation
 have not, to our knowledge, been jointly reported.
@@ -238,7 +238,7 @@ more evenly than a pure-origin regression, providing an independent route to
 $\alphah$ that does not rely on a single histogram bin.
 
 The \textit{fractional structure function} estimator
-\cite{MuzyBacry1993,BouchaudPotters2003,Jiang2019} exploits the prediction
+\cite{MuzyBacry1993,BouchaudPotters2003,Jiang2019,Masoudi2025} exploits the prediction
 $S_q(\tau) = \Etau[|\Delta P_\tau|^q] \propto \tau^{q/\alpha}$ for $q <
 \alpha$. A log-log regression of $\hat{S}_q(\tau)$ on $\tau$ yields
 slope $q/\alphah_q$; the median across moment orders
@@ -278,7 +278,10 @@ single estimator, including MLE.
 \subsection{Short-term dependence and the variance-ratio bias}
 \label{sec:background:vr}
 
-Lo and MacKinlay \cite{LoMacKinlay1988} introduced the variance ratio
+Lo and MacKinlay \cite{LoMacKinlay1988} introduced the variance ratio, which
+remains the standard tool for characterising horizon-dependent memory in
+returns and has recently been generalised to the multivariate
+cross-section \cite{Froseth2026},
 \begin{equation}
   VR(\tau) = \frac{\mathrm{Var}(\Delta P_\tau)}{\tau\,\mathrm{Var}(\delta_1)},
   \label{eq:vr}
@@ -302,6 +305,8 @@ this impact partially reverts as the order book replenishes, adding genuine
 mean reversion at short horizons. Bouchaud and Potters \cite{BouchaudPotters2003} (Ch.~6)
 report $\rhoh(1)\approx -0.1$ to $-0.2$ at 1-minute frequency in major
 equity index futures, consistent with the values reported here.
+Recent work continues to document these effects at minute-level resolution
+in contemporary equity-index instruments \cite{Deep2025}.
 
 The canonical peak formula~\eqref{eq:peak} is derived under strictly
 independent increments. When $VR(\tau)\neq 1$, the effective Lévy scale at
