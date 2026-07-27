@@ -362,16 +362,6 @@ the specific correction term or validate it across a cross-section of markets.
 \label{sec:data}
 % ══════════════════════════════════════════════════════════════════════════════
 
-\subsection{Markets and sample}
-\label{sec:data:markets}
-
-The dataset consists of 1-minute resolution day-session price histories for
-eight equity-index futures contracts spanning four geographical regions. The
-1-minute OHLCV data were obtained from TickData (Tick Data, LLC) and processed
-using the OneTick tick analytics platform, covering each market from the start
-of available data through 14 January 2026. Table~\ref{tab:markets} provides
-a full description of each contract.
-
 \begin{table*}[!t]
 \begin{center}
 \caption{Sample Futures Contracts}
@@ -394,6 +384,17 @@ CF & CAC-40                & Europe   & Euronext           & May 2000    & 09:00
 \label{tab:markets}
 \end{center}
 \end{table*}
+
+\subsection{Markets and sample}
+\label{sec:data:markets}
+
+The dataset consists of 1-minute resolution day-session price histories for
+eight equity-index futures contracts spanning four geographical regions. The
+1-minute OHLCV data were obtained from TickData (Tick Data, LLC) and processed
+using the OneTick tick analytics platform, covering each market from the start
+of available data through 14 January 2026. Table~\ref{tab:markets} provides
+a full description of each contract.
+
 
 The eight contracts were selected to provide a focused cross-section of
 liquid equity-index futures across geographies rather than on the basis of
@@ -705,6 +706,31 @@ pipeline, from preprocessing through bias-corrected tip estimation.
 \label{sec:results}
 % ══════════════════════════════════════════════════════════════════════════════
 
+\begin{table*}[!t]
+\begin{center}
+\caption{Three-Way L\'{e}vy Exponent Estimates by Market}
+\begin{tabular}{lccccc}
+\hline
+Market & $\alphah_{\mathrm{tip}}$ & $R^2_{\mathrm{tip}}$
+       & $\alphah_{\mathrm{sf}}$ & $\alphah_{\mathrm{collapse}}$ & Spread \\
+\hline
+CF & 1.770 & 0.997 & 1.890 & 2.320 & 0.550 \\
+DA & 1.718 & 0.997 & 1.862 & 2.180 & 0.462 \\
+ER & 1.747 & 0.997 & 1.898 & 2.230 & 0.483 \\
+ES & 1.784 & 0.997 & 1.883 & 2.190 & 0.406 \\
+FT & 1.821 & 0.998 & 1.931 & 2.350 & 0.529 \\
+NQ & 1.779 & 0.997 & 1.861 & 2.130 & 0.351 \\
+PT & 1.727 & 0.997 & 1.841 & 2.260 & 0.533 \\
+YM & 1.760 & 0.998 & 1.882 & 2.150 & 0.390 \\
+\hline
+\multicolumn{6}{l}{$\varepsilon\in\{0.1,\ldots,0.5\}$, $N_\tau\in\{20,37\}$;
+  Spread $\equiv \max(\alphah_{\mathrm{tip}},\alphah_{\mathrm{sf}},\alphah_{\mathrm{collapse}})
+  - \min(\alphah_{\mathrm{tip}},\alphah_{\mathrm{sf}},\alphah_{\mathrm{collapse}})$.}
+\end{tabular}
+\label{tab:three_way}
+\end{center}
+\end{table*}
+
 \subsection{Baseline scaling}
 \label{sec:results:baseline}
 
@@ -866,32 +892,6 @@ by tail truncation effects.
 Across all eight markets the inter-estimator spreads are comparable (0.35--0.55 units),
 with no contract serving as an outlier in any of the three estimators.
 
-\begin{table*}[!t]
-\begin{center}
-\caption{Three-Way L\'{e}vy Exponent Estimates by Market}
-\begin{tabular}{lccccc}
-\hline
-Market & $\alphah_{\mathrm{tip}}$ & $R^2_{\mathrm{tip}}$
-       & $\alphah_{\mathrm{sf}}$ & $\alphah_{\mathrm{collapse}}$ & Spread \\
-\hline
-CF & 1.770 & 0.997 & 1.890 & 2.320 & 0.550 \\
-DA & 1.718 & 0.997 & 1.862 & 2.180 & 0.462 \\
-ER & 1.747 & 0.997 & 1.898 & 2.230 & 0.483 \\
-ES & 1.784 & 0.997 & 1.883 & 2.190 & 0.406 \\
-FT & 1.821 & 0.998 & 1.931 & 2.350 & 0.529 \\
-NQ & 1.779 & 0.997 & 1.861 & 2.130 & 0.351 \\
-PT & 1.727 & 0.997 & 1.841 & 2.260 & 0.533 \\
-YM & 1.760 & 0.998 & 1.882 & 2.150 & 0.390 \\
-\hline
-\multicolumn{6}{l}{$\varepsilon\in\{0.1,\ldots,0.5\}$, $N_\tau\in\{20,37\}$;
-  Spread $\equiv \max(\alphah_{\mathrm{tip}},\alphah_{\mathrm{sf}},\alphah_{\mathrm{collapse}})
-  - \min(\alphah_{\mathrm{tip}},\alphah_{\mathrm{sf}},\alphah_{\mathrm{collapse}})$.}
-\end{tabular}
-\label{tab:three_way}
-\end{center}
-\end{table*}
-
-
 % ── Three-estimator figure ─────────────────────────────────────────────────
 \begin{figure}[!t]
 \centering
@@ -984,6 +984,29 @@ consistent with bid-ask bounce asymmetry and short-term momentum in futures
 order flow; however, its magnitude is small enough that the symmetric Lévy
 approximation remains a reasonable first-order description.
 
+\begin{table}[!t]
+\begin{center}
+\caption{Variance-Ratio Bias Correction by Market}
+\begin{tabular}{lccccc}
+\hline
+Market & $\rhoh(1)$ & $\VRh_\infty$ & $\alphah_{\mathrm{tip}}$
+       & $\alphah_{\mathrm{corr}}$ & $\widehat{\Delta\alpha}$ \\
+\hline
+PT & $-0.020$ & 0.895 & 1.709 & 1.695 & $+0.014$ \\
+DA & $-0.008$ & 0.949 & 1.709 & 1.703 & $+0.006$ \\
+ES & $-0.008$ & 0.949 & 1.791 & 1.785 & $+0.006$ \\
+YM & $-0.004$ & 0.951 & 1.755 & 1.748 & $+0.007$ \\
+FT & $-0.009$ & 0.952 & 1.809 & 1.802 & $+0.007$ \\
+ER & $+0.001$ & 0.958 & 1.725 & 1.718 & $+0.007$ \\
+CF & $-0.007$ & 0.974 & 1.752 & 1.749 & $+0.003$ \\
+NQ & $-0.001$ & 0.980 & 1.746 & 1.743 & $+0.003$ \\
+\hline
+\multicolumn{6}{l}{$\varepsilon=0.1$, $N_\tau=20$, $K_{\max}=60$; sorted by $\VRh_\infty\uparrow$.}
+\end{tabular}
+\label{tab:bias}
+\end{center}
+\end{table}
+
 \subsection{Bias correction}
 \label{sec:results:bias}
 
@@ -1027,29 +1050,6 @@ consistent with microstructure effects at very short horizons being modest.
 The $K_{\max}$ sensitivity analysis on the pilot market (ES) confirms that
 $\alphah_{\mathrm{corr}}$ is stable across a range of truncation choices,
 well below the inter-estimator spread documented in Section~\ref{sec:results:estimators}.
-
-\begin{table}[!t]
-\begin{center}
-\caption{Variance-Ratio Bias Correction by Market}
-\begin{tabular}{lccccc}
-\hline
-Market & $\rhoh(1)$ & $\VRh_\infty$ & $\alphah_{\mathrm{tip}}$
-       & $\alphah_{\mathrm{corr}}$ & $\widehat{\Delta\alpha}$ \\
-\hline
-PT & $-0.020$ & 0.895 & 1.709 & 1.695 & $+0.014$ \\
-DA & $-0.008$ & 0.949 & 1.709 & 1.703 & $+0.006$ \\
-ES & $-0.008$ & 0.949 & 1.791 & 1.785 & $+0.006$ \\
-YM & $-0.004$ & 0.951 & 1.755 & 1.748 & $+0.007$ \\
-FT & $-0.009$ & 0.952 & 1.809 & 1.802 & $+0.007$ \\
-ER & $+0.001$ & 0.958 & 1.725 & 1.718 & $+0.007$ \\
-CF & $-0.007$ & 0.974 & 1.752 & 1.749 & $+0.003$ \\
-NQ & $-0.001$ & 0.980 & 1.746 & 1.743 & $+0.003$ \\
-\hline
-\multicolumn{6}{l}{$\varepsilon=0.1$, $N_\tau=20$, $K_{\max}=60$; sorted by $\VRh_\infty\uparrow$.}
-\end{tabular}
-\label{tab:bias}
-\end{center}
-\end{table}
 
 % ── Bias correction figure ─────────────────────────────────────────────────
 \begin{figure*}[!t]
