@@ -37,7 +37,7 @@ This paper examines Lévy scaling across eight equity-index futures contracts
 spanning North America and Europe, using 1-minute OHLCV data from the start
 of available data through January 2026.
 Three estimation approaches (peak scaling OLS, collapse quality
-minimisation, and fractional order structure functions) are compared
+minimization, and fractional order structure functions) are compared
 across a full factorial sensitivity analysis spanning histogram resolution,
 lag grid density, and intraday seasonality correction.
 All eight markets yield peak scaling exponents consistent with the
@@ -89,7 +89,7 @@ collapse have been applied extensively in the econophysics literature.
 Estimated exponents span a broad range of $\alpha\approx 1.5$--$1.9$ across
 asset classes, frequencies, and estimation methods
 \cite{Gopikrishnan1999,Weron2001,BouchaudPotters2003,Chakraborti2011}; within the narrower
-setting of equity index instruments analysed by body or peak scaling,
+setting of equity-index instruments analyzed by body or peak scaling,
 estimates cluster more tightly around $\alpha\approx 1.7$--$1.8$.
 
 Despite this activity, three important gaps remain. First, most existing
@@ -278,17 +278,16 @@ single estimator, including MLE.
 \subsection{Short-term dependence and the variance-ratio bias}
 \label{sec:background:vr}
 
-Lo and MacKinlay \cite{LoMacKinlay1988} introduced the variance ratio, which
-remains the standard tool for characterising horizon-dependent memory in
-returns and has recently been generalised to the multivariate
-cross-section \cite{Froseth2026},
+Lo and MacKinlay \cite{LoMacKinlay1988} introduced the variance ratio
 \begin{equation}
   VR(\tau) = \frac{\mathrm{Var}(\Delta P_\tau)}{\tau\,\mathrm{Var}(\delta_1)},
   \label{eq:vr}
 \end{equation}
 which equals 1 under i.i.d.\ increments, exceeds 1 under positive serial
-correlation, and falls below 1 under mean reversion. The exact relationship
-to the autocorrelation function is
+correlation, and falls below 1 under mean reversion. It remains the standard
+tool for characterizing horizon-dependent memory in returns and has recently
+been generalized to the multivariate cross-section \cite{Froseth2026}.
+The exact relationship to the autocorrelation function is
 \begin{equation}
   VR(\tau)
   = 1 + 2\sum_{k=1}^{\tau-1}\!\left(1-\frac{k}{\tau}\right)\rho(k),
@@ -304,7 +303,7 @@ Farmer et al.\ \cite{Farmer2006} documented that large market orders move prices
 this impact partially reverts as the order book replenishes, adding genuine
 mean reversion at short horizons. Bouchaud and Potters \cite{BouchaudPotters2003} (Ch.~6)
 report $\rhoh(1)\approx -0.1$ to $-0.2$ at 1-minute frequency in major
-equity index futures, consistent with the values reported here.
+equity-index futures, consistent with the values reported here.
 Recent work continues to document these effects at minute-level resolution
 in contemporary equity-index instruments \cite{Deep2025}.
 
@@ -369,11 +368,11 @@ the specific correction term or validate it across a cross-section of markets.
 \hline
 Symbol & Name & Region & Exchange & Sample Start$^{\dagger}$ & Session \\
 \hline
-YM & Dow Jones E-mini      & Americas & CBOT/CME           & Apr 2002    & 08:30--15:15 \\
-NQ & NASDAQ-100 E-mini     & Americas & CME                & Jun 1999    & 08:30--15:15 \\
+YM & Dow Jones E-mini      & Americas & CBOT/CME           & May 2002    & 08:30--15:15 \\
+NQ & NASDAQ-100 E-mini     & Americas & CME                & Jul 1999    & 08:30--15:15 \\
 ER & Russell 2000 E-mini   & Americas & ICE Futures US     & Jan 2002    & 08:30--15:15 \\
 ES & S\&P 500 E-mini       & Americas & CME                & Sep 1997    & 08:30--15:15 \\
-PT & S\&P/TSX 60           & Americas & MX (Montr\'{e}al) & Sep 1999    & 09:30--16:15 \\
+PT & S\&P/TSX 60           & Americas & MX (Montr\'{e}al) & Oct 1999    & 09:30--16:15 \\
 FT & FTSE 100              & Europe   & ICE Futures        & Jul 1998    & 08:00--16:30 \\
 DA & DAX                   & Europe   & EUREX              & Jan 1997    & 09:00--17:30 \\
 CF & CAC-40                & Europe   & Euronext           & May 2000    & 09:00--17:30 \\
@@ -400,8 +399,9 @@ The eight contracts were selected to provide a focused cross-section of
 liquid equity-index futures across geographies rather than on the basis of
 any statistical pre-screening. Four North American equity-index contracts trade at major US venues: YM, NQ, and ES on CME Group exchanges, and ER on ICE Futures US (formerly NYBOT); one Canadian contract (PT) trades on the Montr\'{e}al Exchange (MX); and three European contracts (FT, DA, CF) cover the major continental and UK equity benchmarks.
 
-Equity-index futures are chosen over alternative liquid asset classes —
-foreign exchange (FX) and sovereign fixed income — for three reasons.
+Equity-index futures are chosen over alternative liquid asset
+classes---foreign exchange (FX) and sovereign fixed income---for three
+reasons.
 First, equity-index futures are the canonical setting of the empirical
 Lévy-scaling literature: the peak scaling approach of Mantegna and Stanley
 \cite{MantegnaStanley1994,MantegnaStanley1995} was developed on S\&P~500
@@ -409,16 +409,16 @@ intraday data, and the present study is most directly interpreted as an
 extension of that literature to an international cross-section.
 Second, equity-index futures trade on regulated, centralized exchanges with
 standardized contract specifications and electronically matched price
-discovery, making microstructure properties — in particular the bid-ask
+discovery, making microstructure properties---in particular the bid-ask
 bounce mechanism that motivates the bias correction in
-Section~\ref{sec:background:vr} — well-characterized and consistent across
+Section~\ref{sec:background:vr}---well-characterized and consistent across
 venues \cite{Roll1984,Bouchaud2004,ClinetPotiron2021}. Foreign exchange
 markets are predominantly over-the-counter; effective spreads and price
 formation mechanisms vary substantially across dealers and platforms,
 complicating systematic cross-market comparison.
 Third, at 1-minute frequency the price dynamics of equity-index futures are
-driven by a single dominant risk factor — aggregate equity market risk —
-whereas fixed-income futures are governed by duration-weighted interest rate
+driven by a single dominant risk factor---aggregate equity market
+risk---whereas fixed-income futures are governed by duration-weighted interest rate
 expectations that produce materially different distributional properties at
 high frequency. The extension of these results to other asset classes is an
 open question noted in Section~\ref{sec:conclusion}.
@@ -470,12 +470,16 @@ CF & 2.61 & 0.50 & 5.23 \\
 Three preprocessing steps are applied uniformly across all markets before any
 statistical analysis.
 
-\textbf{Integer-scale conversion.} Raw prices are quoted in their native tick
-units. To work in integer arithmetic and avoid floating-point accumulation
-errors, each price series is multiplied by the contract-specific scaling
-factor $1/\Delta$ and rounded to the nearest integer, so that one tick
-corresponds to one integer unit. All subsequent price differences are
-therefore integer-valued.
+\textbf{Integer-scale conversion.} To work in integer arithmetic and avoid
+floating-point accumulation errors, each price series is multiplied by a
+contract-specific decimal multiplier $M$ and rounded to the nearest integer.
+The multiplier is the smallest power of ten that renders the quoted prices
+integral ($M=1$ for YM; $M=10$ for ER, PT, FT, DA and CF; $M=100$ for NQ and
+ES), so one integer unit equals one unit in the last quoted decimal place
+rather than one tick. All subsequent price differences are therefore
+integer-valued. The tick size $\Delta$ enters separately, through the
+construction of the histogram grid described in
+Section~\ref{sec:methodology:pdf}.
 
 \textbf{Gap-filling.} The raw files omit minutes with no transactions. Missing
 minutes within a trading session are filled by carrying forward the last
@@ -504,31 +508,42 @@ estimations to assess the sensitivity of $\alphah$ to the choice of $N_\tau$.
 
 For each market and lag $\tau$ on the grid, price increments
 $\Delta P_\tau(t) = P(t) - P(t-\tau)$ are formed from the gap-filled
-integer scaled price series. The histogram bin width is $\Delta x = \varepsilon
-\cdot \Delta$, where $\Delta$ is the contract tick size (Table~\ref{tab:sigma})
-and $\varepsilon$ is a dimensionless resolution parameter. Defining the bin
-width relative to the tick guarantees that bin edges fall on observable price
-levels, so that no bin can straddle a fraction of a quotable increment.
-The normalised histogram density is
+integer-scaled price series and binned on a symmetric grid of $N_x+1 = 2{,}001$
+equally spaced bin centres spanning $[-x_{\max},\,x_{\max}]$, which define
+$N_x = 2{,}000$ intervals of equal width. Following the reference
+implementation, the half-width is set as a tick-relative multiple of the
+typical 1-minute move,
+\begin{equation}
+  x_{\max} = \Delta\cdot N_x\cdot
+             \max\!\left(\left\lfloor\varepsilon\,\frac{\sigma_1}{\Delta}\right\rceil,\,1\right),
+  \label{eq:xmax}
+\end{equation}
+where $\Delta$ is the contract tick size (Table~\ref{tab:sigma}), $\sigma_1$
+is the standard deviation of 1-minute price changes, $\lfloor\cdot\rceil$
+denotes rounding to the nearest integer, and $\varepsilon$ is a dimensionless
+resolution parameter. The resulting bin width is
+$\Delta x = 2x_{\max}/N_x = 2\Delta\lfloor\varepsilon\sigma_1/\Delta\rceil$,
+so bin edges always fall on integer multiples of the tick and no bin can
+straddle a fraction of a quotable increment.
+The normalized histogram density is
 \begin{equation}
   \Ph(x_j,\tau)
   = \frac{\#\{i: \Delta P_\tau(t_i)\in\text{bin }j\}}{M_\tau\cdot\Delta x},
   \label{eq:pdf_hat}
 \end{equation}
-where $M_\tau$ is the number of available increments at lag $\tau$ (distinct from the lag-grid density $N_\tau$). The bin half-width
-$x_{\max}$ is set to cover the bulk of the distribution while maintaining
-$N_x = 2{,}000$ bins. The empirical peak $\Ph(0,\tau)$ is the density of the
-bin whose centre is nearest $x = 0$.
+where $M_\tau$ is the number of available increments at lag $\tau$ (distinct
+from the lag-grid density $N_\tau$). The empirical peak $\Ph(0,\tau)$ is the
+density of the bin whose centre is nearest $x = 0$.
 
 The resolution parameter $\varepsilon$ is treated as a sensitivity dimension:
 all analyses are run at $\varepsilon\in\{0.1,0.2,0.3,0.4,0.5\}$ and the
 sensitivity of $\alphah$ to this choice is quantified in the robustness matrix
 (Section~\ref{sec:methodology:robustness}).
-The lower bound $\varepsilon=0.1$ corresponds to one tick per bin half-width,
-below which counts in the central bin become too sparse at short lags to
-estimate $\Ph(0,\tau)$ reliably; the upper bound $\varepsilon=0.5$ is where
-excessive bin width smooths out the distributional peak and biases the density
-estimate downward.
+At $\varepsilon=0.1$ the rounded factor equals 1 for all eight markets, giving
+a bin half-width of exactly one tick; below this, counts in the central bin
+become too sparse at short lags to estimate $\Ph(0,\tau)$ reliably. At
+$\varepsilon=0.5$ the factor reaches 2--3 and the wider bins begin to smooth
+out the distributional peak, biasing the density estimate downward.
 
 \subsection{Baseline peak scaling estimator}
 \label{sec:methodology:tip}
@@ -576,7 +591,7 @@ distribution for each market and would defeat the scale invariance that the
 collapse test is designed to probe. We therefore define $\mathcal{G}$
 relative to each market's own histogram half-width: 801 equally spaced points
 on $[-x_{\max}/10,\,x_{\max}/10]$. The collapse estimator
-$\alphah_{\mathrm{collapse}}$ is the minimiser of Score($\alpha$) over a grid
+$\alphah_{\mathrm{collapse}}$ is the minimizer of Score($\alpha$) over a grid
 of 161 candidate values spanning $[1.2,2.8]$ in steps of $0.01$.
 
 \subsection{Structure-function estimator}
@@ -658,9 +673,11 @@ Equation~\eqref{eq:corrected_peak}.
 \caption{L\'{e}vy Scaling Exponent Estimation}
 \label{alg:pipeline}
 \begin{algorithmic}[1]
-\Require Price series $\{P(t)\}$, tick size $\Delta$,
+\Require Price series $\{P(t)\}$, tick size $\Delta$, decimal multiplier $M$,
+         1-minute volatility $\sigma_1$,
          resolution grid $\varepsilon\!\in\!\{0.1,0.2,0.3,0.4,0.5\}$,
          lag grid $\mathcal{T}=\{\tau_1,\ldots,\tau_{N_\tau}\}$,
+         bin count $N_x=2{,}000$,
          autocorrelation truncation $K_{\max}=60$
 \Ensure $\alphah_{\mathrm{tip}}$,\;
         $\alphah_{\mathrm{sf}}$,\;
@@ -668,7 +685,7 @@ Equation~\eqref{eq:corrected_peak}.
         $\alphah_{\mathrm{corr}}$
 \Statex
 \State \textbf{Step 1 Preprocessing}
-\State Convert to integer ticks:\; $p(t)\leftarrow\mathrm{round}(P(t)/\Delta)$
+\State Integer-scale prices:\; $p(t)\leftarrow\mathrm{round}(P(t)\cdot M)$, $M$ the decimal multiplier
 \State LOCF-fill missing intraday minutes within each trading session
 \State Estimate volatility profile: $\hat{\sigma}_m\leftarrow D_m^{-1}\sum_{d:\,m(k)=m}|\delta_k|$;\; normalize so $\bar{\hat\sigma}=1$
 \State Deseasonalize: $\tilde{P}(t)=\textstyle\sum_{k=1}^{t}\delta_k/\hat\sigma_{m(k)}$
@@ -676,8 +693,9 @@ Equation~\eqref{eq:corrected_peak}.
 \State \textbf{Step 2 Empirical PDF construction}
 \For{each $\tau\in\mathcal{T}$}
   \State Compute increments $\delta_\tau(t)=p(t)-p(t-\tau)$
-  \State Bin width $\Delta x=\varepsilon\cdot\Delta$;\; $N_x=2{,}000$ bins centred at $x=0$
-  \State Build normalised histogram $\Ph(x_j,\tau)$ per Eq.~\eqref{eq:pdf_hat}
+  \State $x_{\max}\leftarrow\Delta N_x\max(\lfloor\varepsilon\sigma_1/\Delta\rceil,1)$;\; $\Delta x\leftarrow 2x_{\max}/N_x$
+  \State Grid: $N_x+1=2{,}001$ bin centres spanning $[-x_{\max},x_{\max}]$
+  \State Build normalized histogram $\Ph(x_j,\tau)$ per Eq.~\eqref{eq:pdf_hat}
   \State Record peak: $\Ph(0,\tau)\leftarrow$ density of bin nearest $x=0$
 \EndFor
 \Statex
@@ -712,7 +730,7 @@ theory is correct. The constrained approach bypasses this collinearity by
 imposing the theoretical coefficient directly. The sensitivity of
 $\alphah_{\mathrm{corr}}$ to the truncation $K_{\max}$ is assessed as a
 robustness check.
-Algorithm~\ref{alg:pipeline} summarises the complete six-step estimation
+Algorithm~\ref{alg:pipeline} summarizes the complete six-step estimation
 pipeline, from preprocessing through bias-corrected tip estimation.
 
 % ══════════════════════════════════════════════════════════════════════════════
@@ -797,7 +815,7 @@ remains comfortably above unity for every contract
 band.
 The S\&P/TSX~60 contract (PT) is the least actively traded instrument in the
 sample and has the smallest $\sigma_1$ in absolute terms, yet once the
-histogram grid is calibrated to its tick size the peak-scaling regression
+histogram grid is calibrated to its tick size the peak scaling regression
 recovers a Lévy exponent consistent with the rest of the cross-section.
 This illustrates that tick-relative histogram calibration, rather than any
 absolute price scale, is what makes the estimates comparable across markets
@@ -813,7 +831,7 @@ Table~\ref{tab:seasonality} shows the raw and deseasonalized tip estimates,
 together with their difference $\Delta\alphah_{\mathrm{seas}}
 = \alphah_{\mathrm{tip,des}} - \alphah_{\mathrm{tip,raw}}$.
 Across the eight markets the shift is uniformly positive, ranging from $+0.027$ (YM)
-to $+0.095$ (FT), indicating that de-seasonalization consistently raises $\alphah$.
+to $+0.095$ (FT), indicating that deseasonalization consistently raises $\alphah$.
 The effect is largest for FT~($+0.095$), ES~($+0.093$), and CF~($+0.085$), and
 smallest for YM~($+0.027$) and ER~($+0.034$).
 The effect on regression quality is negligible: $\Delta R^2$ is below $0.003$ in
@@ -824,7 +842,7 @@ First, deterministic intraday seasonality is not a dominant driver of the fitted
 Lévy exponent; the broad Lévy scaling picture survives preprocessing.
 Second, the sign of the shift is uniformly positive, consistent with the
 hypothesis that intraday volatility clustering concentrates mass at zero-lag
-increments in the raw series, mildly flattening the peak-scaling slope.
+increments in the raw series, mildly flattening the peak scaling slope.
 For the remaining analyses the raw (unnormalized) series is used as the
 primary input, consistent with the standard in the literature.
 
@@ -871,7 +889,7 @@ and is therefore anchored to the best-measured, least-noisy region of the
 empirical distribution.
 The structure-function estimator weights the entire distribution with
 increasing emphasis on the tails for larger moment orders $q$, making it
-sensitive to the tail behaviour that the tip estimator deliberately ignores.
+sensitive to the tail behavior that the tip estimator deliberately ignores.
 The collapse quality estimator integrates the rescaled PDF over the full
 support, including the far tails where histogram counts are sparse and
 statistical noise is largest; this tail sensitivity pulls
@@ -1121,7 +1139,7 @@ Intraday seasonality is therefore not a dominant confound for Lévy scaling
 estimation at the 1-minute frequency.
 
 \textbf{(iii) Estimator consistency.}
-Three independent estimators (tip-scaling OLS, collapse quality minimisation,
+Three independent estimators (tip-scaling OLS, collapse quality minimization,
 and fractional order structure functions) produce broadly consistent but
 not identical results.
 The systematic ordering $\alphah_{\mathrm{tip}}<\alphah_{\mathrm{sf}}<
@@ -1141,29 +1159,28 @@ The estimator choice, not the tuning parameters, is the dominant source of
 variation in reported $\alphah$ values.
 
 \textbf{(v) Symmetry.}
-The empirical PDFs exhibit mild but detectable asymmetry at short lags,
+The empirical PDFs exhibit mild but detectable asymmetry,
 with mean absolute asymmetry ratios ranging from $0.27$ (NQ) to $0.46$ (PT)
 in aggregate.
 At the lag where each market is most symmetric the ratio falls to between
 $0.09$ (NQ) and $0.33$ (PT), so the asymmetry is moderate but persistent
 across the lag grid rather than confined to the shortest lags.
-Symmetrising the PDFs prior to collapse matching produces at most a marginal
+Symmetrizing the PDFs prior to collapse matching produces at most a marginal
 improvement in collapse score, confirming that the symmetric Lévy approximation
 is a reasonable first-order description.
 
 \textbf{(vi) Bias correction.}
 Seven of the eight markets exhibit negative first-order autocorrelation; ER
-displays a statistically negligible $\rhoh(1)=+0.001\approx 0$ but is also
-mean-reverting in the long run ($\VRh_\infty=0.958<1$).
+displays a statistically negligible $\rhoh(1)=+0.001\approx 0$ but is
+mean-reverting in the long run ($\VRh_\infty=0.958<1$) and therefore
+corrects downward like the rest.
 Long-run variance ratios span $\VRh_\infty\in(0.895,\,0.980)$.
 For all eight markets the variance-ratio correction reduces
 $\alphah_{\mathrm{tip}}$ by $\widehat{\Delta\alpha}\in(0.003,\,0.014)$, and
 the correction magnitude is strongly negatively associated with
 $\VRh_\infty$ (Pearson $-0.98$), a cross-sectional validation of the bias
 mechanism.
-ER, though it has marginally positive $\rhoh(1)=+0.001$, has $\VRh_\infty=0.958<1$
-and corrects downward by $\widehat{\Delta\alpha}=0.007$.
-The corrected estimates fall within the interval $(1.69,\,1.80)$,
+The corrected estimates fall within the interval $(1.695,\,1.802)$,
 consistent with historical Lévy-finance benchmarks.
 
 \subsection{Limitations}
@@ -1184,7 +1201,7 @@ and would permit the cross-market correlation of exponent estimates to be
 studied as a possible systemic risk indicator.
 Applying the same framework to GARCH-filtered residuals would separate the
 contribution of conditional heteroscedasticity from the unconditional tail
-behaviour.
+behavior.
 Finally, extending the lag grid to sub-minute frequencies, where Lévy
 scaling is expected to break down due to price-grid discreteness, would
 sharpen the lower boundary of the self-similar regime.
