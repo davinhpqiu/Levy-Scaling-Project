@@ -405,14 +405,14 @@ reasons.
 First, equity-index futures are the canonical setting of the empirical
 Lévy-scaling literature. The peak scaling approach of Mantegna and Stanley
 \cite{MantegnaStanley1994,MantegnaStanley1995} was developed on S\&P~500
-intraday data and the present study is most directly interpreted as an
+intraday data, and the present study is most directly interpreted as an
 extension of that literature to an international cross-section.
 Second, equity-index futures trade on regulated, centralized exchanges with
 standardized contract specifications and electronically matched price
 discovery, making microstructure properties, in particular the bid-ask
 bounce mechanism that motivates the bias correction in
 Section~\ref{sec:background:vr}, well-characterized and consistent across
-venues \cite{Roll1984,Bouchaud2004,ClinetPotiron2021}. In comparison foreign exchange
+venues \cite{Roll1984,Bouchaud2004,ClinetPotiron2021}. In comparison, foreign exchange
 markets are predominantly over-the-counter; effective spreads and price
 formation mechanisms vary substantially across dealers and platforms,
 complicating systematic cross-market comparison.
@@ -431,34 +431,45 @@ To justify the use of 1-minute price changes as the elementary increment,
 Table~\ref{tab:sigma} reports the standard deviation of 1-minute price
 changes $\sigma_1$ and the tick size $\Delta$ (the minimum quotable price
 increment) for each market.
-A necessary condition for 1-minute returns to carry genuine price information
-is $\sigma_1 / \Delta > 1$; otherwise the typical 1-minute move is smaller
-than the smallest observable price change, and a substantial fraction of
-recorded increments reflects price discreteness and the bid-ask bounce
-rather than true price movement \cite{Roll1984}. The ratio exceeds 1 for all
-eight markets, ranging from $2.71$ (ES) to $9.31$ (NQ), confirming that the
-1-minute frequency is informative across the full cross-section.
-The tick size also sets the resolution of the histogram grid used throughout
-Section~\ref{sec:methodology}, where the bin width is defined as a multiple
-of $\Delta$.
+Two distinct conditions must hold for 1-minute returns to carry genuine price
+information, and Table~\ref{tab:sigma} reports both.
+The first concerns \textit{resolution}: no price change smaller than one tick
+is observable, so $\sigma_1/\Delta > 1$ is required for the typical 1-minute
+move to exceed the quotation grid. The ratio ranges from $2.71$ (ES) to
+$9.31$ (NQ).
+The second concerns the \textit{bid-ask bounce}: when successive trades
+arrive alternately at the bid and the ask, they generate a spurious price
+change of one effective spread $s$ with no movement in the underlying price
+\cite{Roll1984}. Genuine price variation therefore has to dominate the bounce
+amplitude, which requires $\sigma_1/s > 1$. This ratio is the tighter of the
+two, ranging from $1.11$ (FT) to $4.90$ (NQ).
+Both conditions are satisfied by all eight contracts, confirming that the
+1-minute frequency is informative across the full cross-section. The bounce
+mechanism is not merely a screening criterion here: it is the source of the
+short-term mean reversion for which Section~\ref{sec:background:vr} derives an
+explicit correction.
+Note that the tick size, not the spread, sets the resolution of the histogram
+grid used throughout Section~\ref{sec:methodology}, where the bin width is
+defined as a multiple of $\Delta$.
 
 \begin{table}[!t]
 \begin{center}
-\caption{Market Volatility and Tick Size}
-\begin{tabular}{lrrr}
+\caption{Market Volatility, Tick Size and Effective Spread}
+\begin{tabular}{lrrrrr}
 \hline
-Market & $\sigma_1$ & $\Delta$ (tick) & $\sigma_1/\Delta$ \\
+Market & $\sigma_1$ & $\Delta$ (tick) & $\sigma_1/\Delta$ & $s$ (spread) & $\sigma_1/s$ \\
 \hline
-YM & 6.15 & 1.00 & 6.15 \\
-NQ & 2.33 & 0.25 & 9.31 \\
-ER & 0.51 & 0.10 & 5.11 \\
-ES & 0.68 & 0.25 & 2.71 \\
-PT & 0.46 & 0.10 & 4.59 \\
-FT & 2.78 & 0.50 & 5.56 \\
-DA & 3.48 & 0.50 & 6.97 \\
-CF & 2.61 & 0.50 & 5.23 \\
+YM & 6.15 & 1.00 & 6.15 & 1.30 & 4.73 \\
+NQ & 2.33 & 0.25 & 9.31 & 0.48 & 4.90 \\
+ER & 0.51 & 0.10 & 5.11 & 0.22 & 2.32 \\
+ES & 0.68 & 0.25 & 2.71 & 0.25 & 2.71 \\
+PT & 0.46 & 0.10 & 4.59 & 0.22 & 2.09 \\
+FT & 2.78 & 0.50 & 5.56 & 2.50 & 1.11 \\
+DA & 3.48 & 0.50 & 6.97 & 1.20 & 2.90 \\
+CF & 2.61 & 0.50 & 5.23 & 2.00 & 1.31 \\
 \hline
-\multicolumn{4}{l}{\small $\sigma_1$ and $\Delta$ in native contract price units (index points).}\\
+\multicolumn{6}{l}{\small $\sigma_1$, $\Delta$ and $s$ in native contract price units (index points);}\\
+\multicolumn{6}{l}{\small $s$ is the average quoted bid-ask spread.}\\
 \end{tabular}
 \label{tab:sigma}
 \end{center}
@@ -509,7 +520,7 @@ estimations to assess the sensitivity of $\alphah$ to the choice of $N_\tau$.
 For each market and lag $\tau$ on the grid, price increments
 $\Delta P_\tau(t) = P(t) - P(t-\tau)$ are formed from the gap-filled
 integer-scaled price series and binned on a symmetric grid of $N_x+1 = 2{,}001$
-equally spaced bin centres spanning $[-x_{\max},\,x_{\max}]$, which define
+equally spaced bin centers spanning $[-x_{\max},\,x_{\max}]$, which define
 $N_x = 2{,}000$ intervals of equal width. Following the reference
 implementation, the half-width is set as a tick-relative multiple of the
 typical 1-minute move,
@@ -533,7 +544,7 @@ The normalized histogram density is
 \end{equation}
 where $M_\tau$ is the number of available increments at lag $\tau$ (distinct
 from the lag-grid density $N_\tau$). The empirical peak $\Ph(0,\tau)$ is the
-density of the bin whose centre is nearest $x = 0$.
+density of the bin whose center is nearest $x = 0$.
 
 The resolution parameter $\varepsilon$ is treated as a sensitivity dimension:
 all analyses are run at $\varepsilon\in\{0.1,0.2,0.3,0.4,0.5\}$ and the
@@ -694,7 +705,7 @@ Equation~\eqref{eq:corrected_peak}.
 \For{each $\tau\in\mathcal{T}$}
   \State Compute increments $\delta_\tau(t)=p(t)-p(t-\tau)$
   \State $x_{\max}\leftarrow\Delta N_x\max(\lfloor\varepsilon\sigma_1/\Delta\rceil,1)$;\; $\Delta x\leftarrow 2x_{\max}/N_x$
-  \State Grid: $N_x+1=2{,}001$ bin centres spanning $[-x_{\max},x_{\max}]$
+  \State Grid: $N_x+1=2{,}001$ bin centers spanning $[-x_{\max},x_{\max}]$
   \State Build normalized histogram $\Ph(x_j,\tau)$ per Eq.~\eqref{eq:pdf_hat}
   \State Record peak: $\Ph(0,\tau)\leftarrow$ density of bin nearest $x=0$
 \EndFor
@@ -809,8 +820,8 @@ The cross-section spans a wide range of contract specifications: tick sizes
 differ by an order of magnitude (from $0.10$ index points for ER and PT to
 $1.00$ for YM) and $\sigma_1$ by a factor of roughly thirteen (from $0.46$
 for PT to $6.15$ for YM).
-Despite this heterogeneity, the informativeness ratio $\sigma_1/\Delta$
-remains comfortably above unity for every contract
+Despite this heterogeneity, both informativeness ratios $\sigma_1/\Delta$ and
+$\sigma_1/s$ remain above unity for every contract
 (Table~\ref{tab:sigma}), and the fitted exponents are confined to a narrow
 band.
 The S\&P/TSX~60 contract (PT) is the least actively traded instrument in the
