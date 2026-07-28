@@ -428,29 +428,35 @@ omitted from the file rather than recorded as zero-volume observations. This
 is further addressed in preprocessing (Section~\ref{sec:data:preprocessing}).
 
 To justify the use of 1-minute price changes as the elementary increment,
-Table~\ref{tab:sigma} reports the standard deviation of 1-minute price
-changes $\sigma_1$ and the tick size $\Delta$ (the minimum quotable price
-increment) for each market.
-Two distinct conditions must hold for 1-minute returns to carry genuine price
-information, and Table~\ref{tab:sigma} reports both.
-The first concerns \textit{resolution}: no price change smaller than one tick
-is observable, so $\sigma_1/\Delta > 1$ is required for the typical 1-minute
-move to exceed the quotation grid. The ratio ranges from $2.71$ (ES) to
-$9.31$ (NQ).
-The second concerns the \textit{bid-ask bounce}: when successive trades
-arrive alternately at the bid and the ask, they generate a spurious price
-change of one effective spread $s$ with no movement in the underlying price
-\cite{Roll1984}. Genuine price variation therefore has to dominate the bounce
-amplitude, which requires $\sigma_1/s > 1$. This ratio is the tighter of the
-two, ranging from $1.11$ (FT) to $4.90$ (NQ).
-Both conditions are satisfied by all eight contracts, confirming that the
-1-minute frequency is informative across the full cross-section. The bounce
-mechanism is not merely a screening criterion here: it is the source of the
-short-term mean reversion for which Section~\ref{sec:background:vr} derives an
-explicit correction.
-Note that the tick size, not the spread, sets the resolution of the histogram
-grid used throughout Section~\ref{sec:methodology}, where the bin width is
-defined as a multiple of $\Delta$.
+Table~\ref{tab:sigma} reports, for each market, the standard deviation of
+1-minute price changes $\sigma_1$, the average effective bid-ask spread $s$,
+and the tick size $\Delta$ (the minimum quotable price increment).
+The relevant criterion concerns the \textit{bid-ask bounce}: when successive
+trades arrive alternately at the bid and the ask, they generate a spurious
+price change of one effective spread with no movement in the underlying price
+\cite{Roll1984}. Genuine price variation must therefore dominate the bounce
+amplitude, which requires $\sigma_1/s > 1$; below unity, a substantial
+fraction of recorded increments would reflect the bounce rather than true
+price movement. The ratio exceeds 1 for all eight contracts, ranging from
+$1.11$ (FT) to $4.90$ (NQ), confirming that the 1-minute frequency is
+informative across the full cross-section.
+The bounce is not merely a screening criterion here: it is the mechanism
+generating the short-term mean reversion for which
+Section~\ref{sec:background:vr} derives an explicit correction, and the
+markets with the smallest $\sigma_1/s$ are those for which that correction
+matters most.
+The tick size is reported for a separate reason: it sets the resolution of
+the histogram grid used throughout Section~\ref{sec:methodology}, where the
+bin width is defined as a multiple of $\Delta$. It is also relevant to the
+scaling analysis itself. Curato and Lillo \cite{CuratoLillo2015} show that
+when the tick-to-price ratio is large, price discreteness induces clustering
+in the return distribution that distorts its high-frequency scaling, an
+effect that attenuates as the observation scale increases and therefore acts
+on the lag dependence that the peak scaling estimator exploits. All eight
+contracts here sit in the small-tick regime, with $\sigma_1$ exceeding
+$\Delta$ by factors of $2.7$ to $9.3$, so the increment distributions are not
+dominated by an atom at the origin and $\Ph(0,\tau)$ is estimated from a
+genuinely populated central bin.
 
 \begin{table}[!t]
 \begin{center}
@@ -820,10 +826,9 @@ The cross-section spans a wide range of contract specifications: tick sizes
 differ by an order of magnitude (from $0.10$ index points for ER and PT to
 $1.00$ for YM) and $\sigma_1$ by a factor of roughly thirteen (from $0.46$
 for PT to $6.15$ for YM).
-Despite this heterogeneity, both informativeness ratios $\sigma_1/\Delta$ and
-$\sigma_1/s$ remain above unity for every contract
-(Table~\ref{tab:sigma}), and the fitted exponents are confined to a narrow
-band.
+Despite this heterogeneity, the informativeness ratio $\sigma_1/s$ remains
+above unity for every contract (Table~\ref{tab:sigma}), and the fitted
+exponents are confined to a narrow band.
 The S\&P/TSX~60 contract (PT) is the least actively traded instrument in the
 sample and has the smallest $\sigma_1$ in absolute terms, yet once the
 histogram grid is calibrated to its tick size the peak scaling regression

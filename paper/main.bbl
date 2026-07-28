@@ -183,6 +183,12 @@ A.~Deep, C.~Monico, W.~B. Lindquist, S.~T. Rachev, and F.~J. Fabozzi, ``Binary
   \url{https://arxiv.org/abs/2507.16701}
 \BIBentrySTDinterwordspacing
 
+\bibitem{CuratoLillo2015}
+G.~Curato and F.~Lillo, ``How tick size affects the high frequency scaling of
+  stock return distributions,'' in \emph{Financial Econometrics and Empirical
+  Market Microstructure}, A.~K. Bera, S.~Ivliev, and F.~Lillo, Eds.\hskip 1em
+  plus 0.5em minus 0.4em\relax Cham: Springer, 2015, pp. 55--76.
+
 \bibitem{WoodMcInishOrd1985}
 R.~A. Wood, T.~H. McInish, and J.~K. Ord, ``An investigation of transactions
   data for {NYSE} stocks,'' \emph{Journal of Finance}, vol.~40, no.~3, pp.
