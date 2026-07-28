@@ -400,38 +400,38 @@ The eight contracts were selected to provide a focused cross-section of
 liquid equity-index futures across geographies rather than on the basis of
 any statistical pre-screening. Four North American equity-index contracts trade at major US venues: YM, NQ, and ES on CME Group exchanges, and ER on ICE Futures US (formerly NYBOT); one Canadian contract (PT) trades on the Montr\'{e}al Exchange (MX); and three European contracts (FT, DA, CF) cover the major continental and UK equity benchmarks.
 
-Equity-index futures are chosen over alternative liquid asset classes —
-foreign exchange (FX) and sovereign fixed income — for three reasons.
+Equity-index futures are chosen over alternative liquid asset classes such as
+foreign exchange (FX) and sovereign fixed income for three reasons.
 First, equity-index futures are the canonical setting of the empirical
-Lévy-scaling literature: the peak scaling approach of Mantegna and Stanley
+Lévy-scaling literature. The peak scaling approach of Mantegna and Stanley
 \cite{MantegnaStanley1994,MantegnaStanley1995} was developed on S\&P~500
 intraday data, and the present study is most directly interpreted as an
 extension of that literature to an international cross-section.
 Second, equity-index futures trade on regulated, centralized exchanges with
 standardized contract specifications and electronically matched price
-discovery, making microstructure properties — in particular the bid-ask
+discovery, making microstructure properties, in particular the bid-ask
 bounce mechanism that motivates the bias correction in
-Section~\ref{sec:background:vr} — well-characterized and consistent across
+Section~\ref{sec:background:vr}, well-characterized and consistent across
 venues \cite{Roll1984,Bouchaud2004,ClinetPotiron2021}. Foreign exchange
-markets are predominantly over-the-counter; effective spreads and price
-formation mechanisms vary substantially across dealers and platforms,
-complicating systematic cross-market comparison.
+markets are predominantly over-the-counter with effective spreads and price
+formation mechanisms varying substantially across dealers and platforms which
+complicates systematic cross-market comparison.
 Third, at 1-minute frequency the price dynamics of equity-index futures are
-driven by a single dominant risk factor — aggregate equity market risk —
+driven by aggregate equity market risk. This constitues a single dominant risk factor
 whereas fixed-income futures are governed by duration-weighted interest rate
 expectations that produce materially different distributional properties at
 high frequency. The extension of these results to other asset classes is an
 open question noted in Section~\ref{sec:conclusion}.
 
-The raw files are stored in ``skip'' format: minutes with no transactions are
+The raw data files are stored in ``skip'' format: minutes with no transactions are
 omitted from the file rather than recorded as zero-volume observations. This
-is addressed in preprocessing (Section~\ref{sec:data:preprocessing}).
+is further addressed in preprocessing (Section~\ref{sec:data:preprocessing}).
 
 To justify the use of 1-minute price changes as the elementary increment,
 Table~\ref{tab:sigma} reports the standard deviation of 1-minute price
 changes $\sigma_1$ and the average bid-ask spread $\Delta$ for each market.
 A necessary condition for 1-minute returns to carry genuine price information
-is $\sigma_1 / \Delta > 1$; otherwise a substantial fraction of observed
+is $\sigma_1 / \Delta > 1$. Otherwise a substantial fraction of observed
 changes reflects the bid-ask bounce rather than true price movement
 \cite{Roll1984}. The ratio exceeds 1 for seven of the eight markets,
 confirming that the 1-minute frequency is appropriate for those contracts.
