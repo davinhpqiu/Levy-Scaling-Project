@@ -682,23 +682,16 @@ $\alphah_{\mathrm{corr}} = -1/\hat{m}_{\mathrm{corr}}$, recovering
 Equation~\eqref{eq:corrected_peak}.
 
 % ── Estimation pipeline (end of methodology) ─────────────────────────────────
-\begin{algorithm}[t]
+\begin{algorithm*}[!t]
 \caption{L\'{e}vy Scaling Exponent Estimation}
 \label{alg:pipeline}
 \begin{algorithmic}[1]
-\Require Price series $\{P(t)\}$, tick size $\Delta$, decimal multiplier $M$,
-         1-minute volatility $\sigma_1$,
-         resolution grid $\varepsilon\!\in\!\{0.1,0.2,0.3,0.4,0.5\}$,
-         lag grid $\mathcal{T}=\{\tau_1,\ldots,\tau_{N_\tau}\}$,
-         bin count $N_x=2{,}000$,
-         autocorrelation truncation $K_{\max}=60$
-\Ensure $\alphah_{\mathrm{tip}}$,\;
-        $\alphah_{\mathrm{sf}}$,\;
-        $\alphah_{\mathrm{collapse}}$,\;
-        $\alphah_{\mathrm{corr}}$
+\Require Price series $\{P(t)\}$; tick $\Delta$; multiplier $M$; volatility $\sigma_1$;
+         $\varepsilon\!\in\!\{0.1,\ldots,0.5\}$; lag grid $\mathcal{T}$; $N_x=2{,}000$; $K_{\max}=60$
+\Ensure $\alphah_{\mathrm{tip}}$,\; $\alphah_{\mathrm{sf}}$,\; $\alphah_{\mathrm{collapse}}$,\; $\alphah_{\mathrm{corr}}$
 \Statex
 \State \textbf{Step 1 Preprocessing}
-\State Integer-scale prices:\; $p(t)\leftarrow\mathrm{round}(P(t)\cdot M)$, $M$ the decimal multiplier
+\State Integer-scale prices:\; $p(t)\leftarrow\mathrm{round}(P(t)\cdot M)$
 \State LOCF-fill missing intraday minutes within each trading session
 \State Estimate volatility profile: $\hat{\sigma}_m\leftarrow D_m^{-1}\sum_{d:\,m(k)=m}|\delta_k|$;\; normalize so $\bar{\hat\sigma}=1$
 \State Deseasonalize: $\tilde{P}(t)=\textstyle\sum_{k=1}^{t}\delta_k/\hat\sigma_{m(k)}$
@@ -706,8 +699,7 @@ Equation~\eqref{eq:corrected_peak}.
 \State \textbf{Step 2 Empirical PDF construction}
 \For{each $\tau\in\mathcal{T}$}
   \State Compute increments $\delta_\tau(t)=p(t)-p(t-\tau)$
-  \State $x_{\max}\leftarrow\Delta N_x\max(\lfloor\varepsilon\sigma_1/\Delta\rceil,1)$;\; $\Delta x\leftarrow 2x_{\max}/N_x$
-  \State Grid: $N_x+1=2{,}001$ bin centers spanning $[-x_{\max},x_{\max}]$
+  \State $x_{\max}\leftarrow\Delta N_x\max(\lfloor\varepsilon\sigma_1/\Delta\rceil,1)$;\; $\Delta x\leftarrow 2x_{\max}/N_x$;\; $N_x{+}1$ bin centers on $[-x_{\max},x_{\max}]$
   \State Build normalized histogram $\Ph(x_j,\tau)$ per Eq.~\eqref{eq:pdf_hat}
   \State Record peak: $\Ph(0,\tau)\leftarrow$ density of bin nearest $x=0$
 \EndFor
@@ -732,7 +724,7 @@ Equation~\eqref{eq:corrected_peak}.
 \State Set $b(\tau)\leftarrow-\tfrac{1}{2}\log\VRh(\tau)$;\; regress $\log\Ph(0,\tau)-b(\tau)$ on $\log\tau$ (coeff.\ of $b(\tau)$ fixed at 1)
 \State $\alphah_{\mathrm{corr}}\leftarrow-1/\hat{m}_{\mathrm{corr}}$
 \end{algorithmic}
-\end{algorithm}
+\end{algorithm*}
 
 The correction is implemented as a constrained fit with the coefficient of
 $b(\tau)$ fixed at 1, rather than a free two-regressor regression. On the

@@ -38,6 +38,16 @@
 \algrenewcommand\algorithmicensure{\textbf{Output:}}
 \algrenewcommand\alglinenumber[1]{{\footnotesize#1}}
 
+% Some versions of algorithm.sty do not provide the starred (double-column)
+% variant. Define it only if absent, so Algorithm 1 can span both columns;
+% as a single-column float it is too tall to share a page with body text and
+% is pushed onto a float page of its own.
+\makeatletter
+\@ifundefined{algorithm*}{%
+  \newenvironment{algorithm*}{\@dblfloat{algorithm}}{\end@dblfloat}%
+}{}
+\makeatother
+
 % ── Custom notation ───────────────────────────────────────────────────────────
 \newcommand{\alphah}{\hat{\alpha}}          % estimated alpha
 \newcommand{\Ph}{\hat{P}}                   % empirical PDF
