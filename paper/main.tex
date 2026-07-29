@@ -440,23 +440,20 @@ fraction of recorded increments would reflect the bounce rather than true
 price movement. The ratio exceeds 1 for all eight contracts, ranging from
 $1.11$ (FT) to $4.90$ (NQ), confirming that the 1-minute frequency is
 informative across the full cross-section.
-The bounce is not merely a screening criterion here: it is the mechanism
+Note that the bounce is additionally the mechanism
 generating the short-term mean reversion for which
-Section~\ref{sec:background:vr} derives an explicit correction, and the
-markets with the smallest $\sigma_1/s$ are those for which that correction
-matters most.
-The tick size is reported for a separate reason: it sets the resolution of
+Section~\ref{sec:background:vr} derives an explicit correction.
+The tick size is reported as it sets the resolution of
 the histogram grid used throughout Section~\ref{sec:methodology}, where the
 bin width is defined as a multiple of $\Delta$. It is also relevant to the
 scaling analysis itself. Curato and Lillo \cite{CuratoLillo2015} show that
 when the tick-to-price ratio is large, price discreteness induces clustering
-in the return distribution that distorts its high-frequency scaling, an
-effect that attenuates as the observation scale increases and therefore acts
+in the return distribution that distorts its high-frequency scaling. This
+effect attenuates as the observation scale increases and therefore acts
 on the lag dependence that the peak scaling estimator exploits. All eight
 contracts here sit in the small-tick regime, with $\sigma_1$ exceeding
 $\Delta$ by factors of $2.7$ to $9.3$, so the increment distributions are not
-dominated by an atom at the origin and $\Ph(0,\tau)$ is estimated from a
-genuinely populated central bin.
+dominated by an atom at the origin.
 
 \begin{table}[!t]
 \begin{center}
@@ -487,7 +484,7 @@ CF & 2.61 & 0.50 & 5.23 & 2.00 & 1.31 \\
 Three preprocessing steps are applied uniformly across all markets before any
 statistical analysis.
 
-\textbf{Integer-scale conversion.} To work in integer arithmetic and avoid
+\textit{Integer-scale conversion.} To work in integer arithmetic and avoid
 floating-point accumulation errors, each price series is multiplied by a
 contract-specific decimal multiplier $M$ and rounded to the nearest integer.
 The multiplier is the smallest power of ten that renders the quoted prices
@@ -498,14 +495,14 @@ integer-valued. The tick size $\Delta$ enters separately, through the
 construction of the histogram grid described in
 Section~\ref{sec:methodology:pdf}.
 
-\textbf{Gap-filling.} The raw files omit minutes with no transactions. Missing
+\textit{Gap-filling.} The raw files omit minutes with no transactions. Missing
 minutes within a trading session are filled by carrying forward the last
 observed price (last-observation-carried-forward, LOCF). This preserves the
 equal-spacing of the 1-minute grid required for the lag-$\tau$ increment
 construction while recording zero price change during illiquid periods, which
 is consistent with the true mid-price behavior in the absence of transactions.
 
-\textbf{Lag grid construction.} Price increments $\delta_\tau(t) = P(t) -
+\textit{Lag grid construction.} Price increments $\delta_\tau(t) = P(t) -
 P(t-\tau)$ are formed for each lag $\tau$ on two log-spaced grids. The coarse
 grid ($N_\tau = 20$) spans $\tau \in \{1, 2, 3, 6, \ldots, 56{,}234\}$
 minutes; the fine grid ($N_\tau = 37$) spans the same range with higher
@@ -540,7 +537,7 @@ is the standard deviation of 1-minute price changes, $\lfloor\cdot\rceil$
 denotes rounding to the nearest integer, and $\varepsilon$ is a dimensionless
 resolution parameter. The resulting bin width is
 $\Delta x = 2x_{\max}/N_x = 2\Delta\lfloor\varepsilon\sigma_1/\Delta\rceil$,
-so bin edges always fall on integer multiples of the tick and no bin can
+so bin edges fall on integer multiples of the tick and no bin
 straddle a fraction of a quotable increment.
 The normalized histogram density is
 \begin{equation}
@@ -552,8 +549,8 @@ where $M_\tau$ is the number of available increments at lag $\tau$ (distinct
 from the lag-grid density $N_\tau$). The empirical peak $\Ph(0,\tau)$ is the
 density of the bin whose center is nearest $x = 0$.
 
-The resolution parameter $\varepsilon$ is treated as a sensitivity dimension:
-all analyses are run at $\varepsilon\in\{0.1,0.2,0.3,0.4,0.5\}$ and the
+The resolution parameter $\varepsilon$ is treated as a sensitivity dimension.
+All analyses are run at $\varepsilon\in\{0.1,0.2,0.3,0.4,0.5\}$ and the
 sensitivity of $\alphah$ to this choice is quantified in the robustness matrix
 (Section~\ref{sec:methodology:robustness}).
 At $\varepsilon=0.1$ the rounded factor equals 1 for all eight markets, giving
@@ -600,13 +597,12 @@ the cross-$\tau$ log-mean at grid point $\tilde{x}_j$ and $\mathcal{G}$ is a
 common evaluation grid in $\tilde{x}$, shared across all lags so that $\mu_j$
 is well defined. Rescaled densities are interpolated linearly onto
 $\mathcal{G}$ and grid points falling outside the observed support at a given
-lag are excluded from the sum.
-Because $\tilde{x}$ inherits the contract's price scale through $x_{\max}$,
+lag are excluded from the sum. Since $\tilde{x}$ inherits the contract's price scale through $x_{\max}$
 which varies by two orders of magnitude across the cross-section, a grid
-fixed in absolute price units would sample a different portion of the
+fixed in absolute price units would then sample a different portion of the
 distribution for each market and would defeat the scale invariance that the
 collapse test is designed to probe. We therefore define $\mathcal{G}$
-relative to each market's own histogram half-width: 801 equally spaced points
+relative to each market's own histogram half-width with 801 equally spaced points
 on $[-x_{\max}/10,\,x_{\max}/10]$. The collapse estimator
 $\alphah_{\mathrm{collapse}}$ is the minimizer of Score($\alpha$) over a grid
 of 161 candidate values spanning $[1.2,2.8]$ in steps of $0.01$.
