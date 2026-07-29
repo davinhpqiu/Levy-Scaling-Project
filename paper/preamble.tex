@@ -28,14 +28,6 @@
 \algrenewcommand\algorithmicensure{\textbf{Output:}}
 \algrenewcommand\alglinenumber[1]{{\footnotesize#1}}
 
-% Algorithm 1 spans both columns. Some versions of algorithm.sty do not define
-% the starred variant, so provide it only if absent.
-\makeatletter
-\@ifundefined{algorithm*}{%
-  \newenvironment{algorithm*}{\@dblfloat{algorithm}}{\end@dblfloat}%
-}{}
-\makeatother
-
 % ── Custom notation ───────────────────────────────────────────────────────────
 \newcommand{\alphah}{\hat{\alpha}}          % estimated alpha
 \newcommand{\Ph}{\hat{P}}                   % empirical PDF

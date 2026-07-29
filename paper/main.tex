@@ -681,7 +681,8 @@ $\alphah_{\mathrm{corr}} = -1/\hat{m}_{\mathrm{corr}}$, recovering
 Equation~\eqref{eq:corrected_peak}.
 
 % ── Estimation pipeline (end of methodology) ─────────────────────────────────
-\begin{algorithm*}[!t]
+\begin{algorithm}[!t]
+\small
 \caption{L\'{e}vy Scaling Exponent Estimation}
 \label{alg:pipeline}
 \begin{algorithmic}[1]
@@ -691,39 +692,39 @@ Equation~\eqref{eq:corrected_peak}.
 \Statex
 \State \textbf{Step 1 Preprocessing}
 \State Integer-scale prices:\; $p(t)\leftarrow\mathrm{round}(P(t)\cdot M)$
-\State LOCF-fill missing intraday minutes within each trading session
-\State Estimate volatility profile: $\hat{\sigma}_m\leftarrow D_m^{-1}\sum_{d:\,m(k)=m}|\delta_k|$;\; normalize so $\bar{\hat\sigma}=1$
+\State LOCF-fill missing minutes within each session
+\State Profile $\hat{\sigma}_m\leftarrow D_m^{-1}\sum_{d:\,m(k)=m}|\delta_k|$, normalized to mean 1
 \State Deseasonalize: $\tilde{P}(t)=\textstyle\sum_{k=1}^{t}\delta_k/\hat\sigma_{m(k)}$
 \Statex
 \State \textbf{Step 2 Empirical PDF construction}
 \For{each $\tau\in\mathcal{T}$}
   \State Compute increments $\delta_\tau(t)=p(t)-p(t-\tau)$
   \State $x_{\max}\leftarrow\Delta N_x\max(\lfloor\varepsilon\sigma_1/\Delta\rceil,1)$;\; $\Delta x\leftarrow 2x_{\max}/N_x$;\; $N_x{+}1$ bin centers on $[-x_{\max},x_{\max}]$
-  \State Build normalized histogram $\Ph(x_j,\tau)$ per Eq.~\eqref{eq:pdf_hat}
-  \State Record peak: $\Ph(0,\tau)\leftarrow$ density of bin nearest $x=0$
+  \State Histogram $\Ph(x_j,\tau)$ per Eq.~\eqref{eq:pdf_hat}
+  \State Peak $\Ph(0,\tau)\leftarrow$ density of bin nearest $x=0$
 \EndFor
 \Statex
-\State \textbf{Step 3 Tip-scaling OLS (Estimator 1)}
+\State \textbf{Step 3 Tip-scaling OLS}
 \State Regress $\log\Ph(0,\tau)$ on $\log\tau$;\; extract slope $\hat{m}$;\; $\alphah_{\mathrm{tip}}\leftarrow -1/\hat{m}$
 \Statex
-\State \textbf{Step 4 Structure-function estimator (Estimator 2)}
+\State \textbf{Step 4 Structure functions}
 \For{each $q\in\{0.25,\;0.50,\;0.75,\;1.00,\;1.25,\;1.50\}$}
   \State $\hat{S}_q(\tau)\leftarrow M_\tau^{-1}\sum_t|\delta_\tau(t)|^q$;\; regress on $\log\tau$;\; $\alphah_q\leftarrow q/\hat\zeta(q)$
 \EndFor
 \State $\alphah_{\mathrm{sf}}\leftarrow\mathrm{median}_q\!\left(\alphah_q\right)$
 \Statex
-\State \textbf{Step 5 Collapse-quality estimator (Estimator 3)}
+\State \textbf{Step 5 Collapse quality}
 \For{each $\alpha\in[1.2,\;2.8]$ on a grid of 161 values}
   \State Rescale $\tilde{P}(\tilde{x},\tau)\leftarrow\tau^{1/\alpha}\Ph\!\left(\tau^{1/\alpha}\tilde{x},\,\tau\right)$;\; compute $\mathrm{Score}(\alpha)$ per Eq.~\eqref{eq:score}
 \EndFor
 \State $\alphah_{\mathrm{collapse}}\leftarrow\arg\min_{\alpha}\,\mathrm{Score}(\alpha)$
 \Statex
 \State \textbf{Step 6 Variance-ratio bias correction}
-\State Estimate $\rhoh(k)$ from 1-min increments, $k=1,\ldots,K_{\max}$;\; build $\VRh(\tau)$ per Eq.~\eqref{eq:vr_hat}
-\State Set $b(\tau)\leftarrow-\tfrac{1}{2}\log\VRh(\tau)$;\; regress $\log\Ph(0,\tau)-b(\tau)$ on $\log\tau$ (coeff.\ of $b(\tau)$ fixed at 1)
+\State $\rhoh(k)$, $k\le K_{\max}$;\; build $\VRh(\tau)$ per Eq.~\eqref{eq:vr_hat}
+\State $b(\tau)\leftarrow-\tfrac{1}{2}\log\VRh(\tau)$;\; regress $\log\Ph(0,\tau)-b(\tau)$ on $\log\tau$
 \State $\alphah_{\mathrm{corr}}\leftarrow-1/\hat{m}_{\mathrm{corr}}$
 \end{algorithmic}
-\end{algorithm*}
+\end{algorithm}
 
 The correction is implemented as a constrained fit with the coefficient of
 $b(\tau)$ fixed at 1, rather than a free two-regressor regression. On the
