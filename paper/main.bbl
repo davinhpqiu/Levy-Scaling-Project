@@ -116,7 +116,7 @@ M.~W{\k{a}}torek, J.~Kwapie{\'n}, and S.~Dro{\.z}d{\.z}, ``Financial return
 \bibitem{ContMiami2023}
 E.~Ratliff-Crain, C.~M. Van Oort, J.~Bagrow, M.~T.~K. Koehler, and
   B.~F. Tivnan, ``Revisiting {C}ont's stylized facts for modern stock
-  markets,'' \emph{Quantitative Finance}, vol.~25, no.~9, 2025.
+  markets,'' \emph{Quantitative Finance}, vol.~25, no.~9, pp. 1343--1373, 2025.
 
 \bibitem{MuzyBacry1993}
 J.-F. Muzy, E.~Bacry, and A.~Arn{\'e}odo, ``Multifractal formalism for fractal
@@ -159,7 +159,7 @@ B.~B. Mandelbrot, A.~J. Fisher, and L.~E. Calvet, ``A multifractal model of
 \BIBentrySTDinterwordspacing
 
 \bibitem{Barunik2010}
-J.~Baru{\v{n}}{\'\i}k and L.~Va{\v{c}}ha, ``Monte {C}arlo-based tail exponent
+J.~Barun{\'\i}k and L.~V{\'a}cha, ``Monte {C}arlo-based tail exponent
   estimator,'' \emph{Physica A}, vol. 389, no.~21, pp. 4863--4874, 2010.
 
 \bibitem{LoMacKinlay1988}

@@ -2,7 +2,9 @@
 \input{preamble}
 \usepackage{cite}       % BibTeX citations (\cite{})
 
-\begin{document}
+\begin{document}git add paper/main.tex paper/references.bib paper/main.bbl
+git commit -m "Fix citation attributions and systematic hyphenation audit"
+git pull --rebase && git push
 
 % ── Title block ───────────────────────────────────────────────────────────────
 \title{Empirical L\'{e}vy Scaling in Short-Horizon Futures Returns:
@@ -40,16 +42,16 @@ minimization, and fractional order structure functions) are compared
 across a full factorial sensitivity analysis spanning histogram resolution,
 lag grid density, and intraday seasonality correction.
 All eight markets yield peak scaling exponents consistent with the
-truncated Lévy-flight consensus, spanning $\alphah_{\mathrm{tip}}\in(1.718,\,1.821)$
+truncated Lévy-flight consensus, spanning $\alphah_{\mathrm{tip}}\in[1.718,\,1.821]$
 with $R^2\geq0.997$ in every case.
 The estimator choice is found to be the dominant source of variation in
 reported exponents, substantially exceeding the sensitivity to tuning
 parameters or intraday seasonality correction.
 Finally, a closed form variance-ratio bias correction is derived for the
-peak scaling estimator under short-term mean reversion and validated
+peak scaling estimator under short-term mean reversion and checked
 cross-sectionally. The correction magnitude is found to be strongly negatively
-associated with the variance ratio across markets, providing empirical
-support for the bias mechanism.
+associated with the variance ratio across markets, as the correction formula
+implies.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -104,7 +106,7 @@ increments, yet 1-minute futures returns exhibit well-documented short-term
 mean reversion driven by the bid-ask bounce and order-book dynamics
 \cite{Roll1984,Bouchaud2004,ClinetPotiron2021,Yegon2025}. The direction of the resulting bias is
 known qualitatively \cite{BouchaudPotters2003}, but an explicit
-closed-form correction and its cross-market empirical validation
+closed form correction and its cross-market empirical assessment
 have not, to our knowledge, been jointly reported.
 
 This paper addresses all three gaps. We use 1-minute OHLCV data for eight
@@ -124,7 +126,7 @@ improves collapse quality.
 (ii)~We test the effect of intraday seasonality removal on $\alphah$, running
 the full PDF analysis on both raw and deseasonalized price series and
 comparing the resulting estimates.
-(iii)~We compare three independent estimators (tip-scaling OLS,
+(iii)~We compare three distinct estimators (tip scaling OLS,
 collapse quality minimization, and fractional order structure functions)
 across all markets to assess their mutual consistency.
 (iv)~We construct a full factorial robustness matrix spanning all combinations
@@ -133,10 +135,10 @@ estimator, and decompose the variance of $\alphah$ across these factors to
 identify which choices matter most.
 
 \textit{Gap 3 (bias correction):}
-(vi)~We derive a closed-form bias correction for the peak scaling estimator
+(vi)~We derive a closed form bias correction for the peak scaling estimator
 under short-term mean reversion, express it in terms of the
-Campbell--Lo--MacKinlay variance ratio, and validate the correction across
-all eight markets.
+Campbell--Lo--MacKinlay variance ratio, and evaluate it across all eight
+markets.
 
 The paper is organized as follows. Section~\ref{sec:background} provides
 the theoretical background on Lévy-stable distributions, peak scaling
@@ -155,9 +157,9 @@ findings, discusses limitations, and suggests extensions.
 \subsection{Lévy-stable distributions and the peak scaling formula}
 \label{sec:background:levy}
 
-The Lévy-Khintchine theorem establishes that the class of stable distributions
-is the complete set of non-trivial distributional limits of normalized sums of
-i.i.d.\ random variables \cite{SamorodTaqqu1994,GnedenkoKolmogorov1954,Nolan2020}.
+The generalized central limit theorem establishes that the stable
+distributions are the complete set of non-degenerate distributional limits of
+normalized sums of i.i.d.\ random variables \cite{SamorodTaqqu1994,GnedenkoKolmogorov1954,Nolan2020}.
 A symmetric $\alpha$-stable variable $X \sim S_\alpha(\gamma,0,0)$ has
 characteristic function
 \begin{equation}
@@ -169,8 +171,8 @@ The Gaussian ($\alpha = 2$) is the unique finite-variance special case; for
 $\alpha < 2$ the tails decay algebraically as $P(|X|>u)\sim C_\alpha u^{-\alpha}$,
 so all moments of order $\geq\alpha$ are infinite.
 
-For i.i.d.\ increments drawn from $S_\alpha(\gamma_1,0,0)$, the $\tau$-step sum
-has scale $\gamma = \gamma_1^\alpha\tau$, yielding the self-similarity property
+For i.i.d.\ increments drawn from $S_\alpha(\gamma,0,0)$, the $\tau$-step sum
+has coefficient $\gamma\tau$, yielding the self-similarity property
 \begin{equation}
   P_{\alpha,\gamma}(x,\tau)
   = (\gamma\tau)^{-1/\alpha}
@@ -188,7 +190,7 @@ Setting $x=0$ and using $F_\alpha(0) = \Gamma(1/\alpha)/(\pi\alpha)$ gives the
   \label{eq:peak}
 \end{equation}
 The log-log regression of $\Ph(0,\tau)$ on $\tau$ therefore has slope
-$-1/\alpha$, independent of the scale parameter $\gamma$.
+$-1/\alpha$, independent of the scale coefficient $\gamma$.
 
 Mandelbrot \cite{Mandelbrot1963} first proposed that asset-price increments lie in
 the domain of attraction of a stable law with $\alpha\in(1,2)$.
@@ -261,7 +263,7 @@ markets is central to the robustness analysis of Section~\ref{sec:results:robust
 
 These three semiparametric estimators are preferred over parametric
 maximum-likelihood (MLE) approaches for three reasons.
-First, the Lévy-stable density has no closed-form expression for general
+First, the Lévy-stable density has no closed form expression for general
 $\alpha\in(1,2)$, requiring numerical characteristic-function inversion at
 each function evaluation; MLE is therefore computationally intensive and
 numerically sensitive, particularly near $\alpha=2$ where the density
@@ -275,7 +277,7 @@ as nuisances.
 Third, each of the three methods targets a geometrically distinct aspect of
 the self-similar scaling: the peak estimator uses the origin density at each
 lag, the collapse estimator uses the full rescaled shape across all lags
-simultaneously, and the structure-function estimator uses moment scaling.
+simultaneously, and the structure function estimator uses moment scaling.
 Agreement among three geometrically independent routes to $\alphah$
 therefore constitutes stronger evidence for the Lévy hypothesis than any
 single estimator, including MLE.
@@ -369,21 +371,23 @@ the specific correction term or validate it across a cross section of markets.
 \begin{table*}[!t]
 \begin{center}
 \caption{Sample Futures Contracts}
-\begin{tabular}{llllll}
+\footnotesize
+\begin{tabular}{lllllrrr}
 \hline
-Symbol & Name & Region & Exchange & Sample Start$^{\dagger}$ & Session \\
+Symbol & Name & Exchange & Sample Start$^{\dagger}$ & Session & Days & Records & Filled (\%) \\
 \hline
-YM & Dow Jones E-mini      & Americas & CBOT/CME           & May 2002    & 08:30--15:15 \\
-NQ & NASDAQ-100 E-mini     & Americas & CME                & Jul 1999    & 08:30--15:15 \\
-ER & Russell 2000 E-mini   & Americas & ICE Futures US     & Jan 2002    & 08:30--15:15 \\
-ES & S\&P 500 E-mini       & Americas & CME                & Sep 1997    & 08:30--15:15 \\
-PT & S\&P/TSX 60           & Americas & MX (Montr\'{e}al) & Oct 1999    & 09:30--16:15 \\
-FT & FTSE 100              & Europe   & ICE Futures        & Jul 1998    & 08:00--16:30 \\
-DA & DAX                   & Europe   & EUREX              & Jan 1997    & 09:00--17:30 \\
-CF & CAC-40                & Europe   & Euronext           & May 2000    & 09:00--17:30 \\
+YM & Dow Jones E-mini      & CBOT/CME          & May 2002 & 08:30--15:15 & 6{,}078 & 2{,}422{,}689 & 0.2 \\
+NQ & NASDAQ-100 E-mini     & CME               & Jul 1999 & 08:30--15:15 & 6{,}811 & 2{,}710{,}209 & 0.2 \\
+ER & Russell 2000 E-mini   & ICE Futures US    & Jan 2002 & 08:30--15:15 & 6{,}190 & 2{,}379{,}137 & 3.8 \\
+ES & S\&P 500 E-mini       & CME               & Sep 1997 & 08:30--15:15 & 7{,}266 & 2{,}895{,}667 & 0.1 \\
+PT & S\&P/TSX 60           & MX (Montr\'{e}al) & Oct 1999 & 09:30--16:15 & 6{,}586 & 2{,}328{,}757 & 12.5 \\
+FT & FTSE 100              & ICE Futures       & Jul 1998 & 08:00--16:30 & 6{,}954 & 3{,}489{,}481 & 1.2 \\
+DA & DAX                   & EUREX             & Jan 1997 & 09:00--17:30 & 7{,}370 & 3{,}721{,}908 & 0.4 \\
+CF & CAC-40                & Euronext          & May 2000 & 09:00--17:30 & 6{,}578 & 3{,}328{,}132 & 0.5 \\
 \hline
-\multicolumn{6}{l}{$^{\dagger}$Start of available data in our sample; several contracts listed earlier (DA: Nov 1990,}\\
-\multicolumn{6}{l}{\phantom{$^{\dagger}$}FT: May 1984, CF: 1988). ER traded on ICE Futures US (then NYBOT) before moving to CME in 2017.}\\
+\multicolumn{8}{l}{$^{\dagger}$Start of available data in our sample; several contracts listed earlier (DA: Nov 1990,}\\
+\multicolumn{8}{l}{\phantom{$^{\dagger}$}FT: May 1984, CF: 1988). ER: CME to 2008, ICE Futures US (then NYBOT) 2008--2017, CME from Jul 2017.}\\
+\multicolumn{8}{l}{Records: observed 1-minute bars. Filled: share of the session-minute grid supplied by LOCF.}\\
 \end{tabular}
 \label{tab:markets}
 \end{center}
@@ -396,8 +400,13 @@ The dataset consists of 1-minute resolution day-session price histories for
 eight equity-index futures contracts spanning four geographical regions. The
 1-minute OHLCV data were obtained from TickData (Tick Data, LLC) and processed
 using the OneTick tick analytics platform, covering each market from the start
-of available data through 14 January 2026. Table~\ref{tab:markets} provides
-a full description of each contract.
+of available data through 14 January 2026. The files are supplied as
+preconstructed continuous day-session series; the vendor's ``skip'' option
+omits any minute with no recorded transaction, which motivates the gap-filling
+step below. The contract-month selection and roll convention underlying the
+continuous series are fixed by the vendor and are not exposed in the
+delivered files. Table~\ref{tab:markets} provides a full description of each
+contract.
 
 
 The eight contracts were selected to provide a focused cross section of
@@ -505,15 +514,23 @@ minutes within a trading session are filled by carrying forward the last
 observed price (last-observation-carried-forward, LOCF). This preserves the
 equal spacing of the 1-minute grid required for the lag-$\tau$ increment
 construction while recording zero price change during illiquid periods, which
-is consistent with the true mid-price behavior in the absence of transactions.
+imposes a zero recorded increment during the missing interval. Sessions are
+concatenated on a continuous session-minute index, so consecutive trading days
+are adjacent in the series and each day-to-day transition contributes one
+increment at every lag; overnight price changes therefore enter the $\tau=1$
+distribution as single-minute increments. The robustness check excluding
+$\tau\in\{1,2,3\}$ (Section~\ref{sec:results:bias}) bounds the influence of
+this treatment.
 
 \textit{Lag grid construction.} Price increments $\delta_\tau(t) = P(t) -
-P(t-\tau)$ are formed for each lag $\tau$ on two log-spaced grids. The coarse
+P(t-\tau)$ are formed for each lag $\tau$ on two log-spaced grids. Following
+the econophysics convention, ``return'' is used throughout for the price
+increment $\delta_\tau$ measured in native index points; no proportional or
+logarithmic transformation is applied at any stage. The coarse
 grid ($N_\tau = 20$) spans $\tau \in \{1, 2, 3, 6, \ldots, 56{,}234\}$
 minutes; the fine grid ($N_\tau = 37$) spans the same range with higher
 density. The maximum lag of 56,234 minutes corresponds to approximately six
-months of trading for a 405-minute session, well beyond the scale at which
-convergence to Gaussian behavior is expected. Both grids are used in all
+months of trading for a 405-minute session. Both grids are used in all
 estimations to assess the sensitivity of $\alphah$ to the choice of $N_\tau$.
 
 
@@ -533,17 +550,20 @@ $N_x = 2{,}000$ intervals of equal width. Following the reference
 implementation, the half-width is set as a tick-relative multiple of the
 typical 1-minute move,
 \begin{equation}
-  x_{\max} = \Delta\cdot N_x\cdot
+  x_{\max} = M\,\Delta\cdot N_x\cdot
              \max\!\left(\left\lfloor\varepsilon\,\frac{\sigma_1}{\Delta}\right\rceil,\,1\right),
   \label{eq:xmax}
 \end{equation}
-where $\Delta$ is the contract tick size (Table~\ref{tab:sigma}), $\sigma_1$
-is the standard deviation of 1-minute price changes, $\lfloor\cdot\rceil$
+where $M$ is the decimal multiplier of Section~\ref{sec:data:preprocessing},
+which converts the native-unit product $\Delta N_x$ into the integer units of
+the scaled price series, $\Delta$ is the contract tick size
+(Table~\ref{tab:sigma}), $\sigma_1$ is the standard deviation of 1-minute
+price changes, $\lfloor\cdot\rceil$
 denotes rounding to the nearest integer, and $\varepsilon$ is a dimensionless
 resolution parameter. The resulting bin width is
-$\Delta x = 2x_{\max}/N_x = 2\Delta\lfloor\varepsilon\sigma_1/\Delta\rceil$,
-so bin edges fall on integer multiples of the tick and no bin
-straddle a fraction of a quotable increment.
+$\Delta x = 2x_{\max}/N_x = 2M\Delta\max(\lfloor\varepsilon\sigma_1/\Delta\rceil,1)$,
+so bin edges fall on integer multiples of the tick and no bin straddles a
+fraction of a quotable increment.
 The normalized histogram density is
 \begin{equation}
   \Ph(x_j,\tau)
@@ -558,10 +578,11 @@ The resolution parameter $\varepsilon$ is treated as a sensitivity dimension.
 All analyses are run at $\varepsilon\in\{0.1,0.2,0.3,0.4,0.5\}$ and the
 sensitivity of $\alphah$ to this choice is quantified in the robustness matrix
 (Section~\ref{sec:methodology:robustness}).
-At $\varepsilon=0.1$ the rounded factor equals 1 for all eight markets, giving
-a bin half-width of exactly one tick; below this, counts in the central bin
-become too sparse at short lags to estimate $\Ph(0,\tau)$ reliably. At
-$\varepsilon=0.5$ the factor reaches 2--3 and the wider bins begin to smooth
+At $\varepsilon=0.1$ the rounded factor equals 1 for all eight markets
+(for ES and PT only after the unit floor is applied), giving a bin half-width
+of exactly one tick; below this, counts in the central bin become too sparse
+at short lags to estimate $\Ph(0,\tau)$ reliably. At $\varepsilon=0.5$ the
+factor ranges from 1 for ES to 5 for NQ, and the wider bins begin to smooth
 out the distributional peak, biasing the density estimate downward.
 
 \subsection{Baseline peak scaling estimator}
@@ -577,11 +598,16 @@ where $c = \log[\Gamma(1/\alpha)/(\pi\alpha)] - \log(\gamma)/\alpha$ is a
 nuisance intercept and $u_\tau$ is a residual. Ordinary least squares on
 Equation~\eqref{eq:tip_ols} over the full $\tau$ grid yields the slope
 $\hat{m}$ and the baseline estimate $\alphah_{\mathrm{tip}} = -1/\hat{m}$.
+Increments at a given lag overlap, so although the nominal count $M_\tau$
+falls only from $n$ to $n-\tau$ across the grid, the number of effectively
+independent increments falls as $n/\tau$: at the longest lag it is of order
+$40$ per market. The regression is unweighted, so the shortest and longest
+lags contribute equally despite this disparity.
 The coefficient of determination $R^2$ is reported as a diagnostic for the
 power-law linearity assumption; a high $R^2$ is necessary but not sufficient
 for the Lévy model.
 
-\subsection{Collapse-quality estimator}
+\subsection{Collapse quality estimator}
 \label{sec:methodology:collapse}
 
 For a trial exponent $\alpha$, define the rescaled coordinate
@@ -591,28 +617,36 @@ self-similarity all rescaled curves collapse onto the common function
 $F_\alpha$. Collapse quality is measured by
 \begin{equation}
   \mathrm{Score}(\alpha)
-  = \frac{1}{|\mathcal{G}||\mathcal{T}|}
-    \sum_{\tilde{x}_j\in\mathcal{G}}
-    \sum_{\tau\in\mathcal{T}}
+  = \frac{1}{N_{\mathrm{valid}}(\alpha)}
+    \sum_{(j,\tau)\in\mathcal{V}(\alpha)}
     \!\left[\log\tilde{P}(\tilde{x}_j,\tau) - \mu_j\right]^2,
   \label{eq:score}
 \end{equation}
-where $\mu_j = |\mathcal{T}|^{-1}\sum_\tau\log\tilde{P}(\tilde{x}_j,\tau)$ is
-the cross-$\tau$ log-mean at grid point $\tilde{x}_j$ and $\mathcal{G}$ is a
-common evaluation grid in $\tilde{x}$, shared across all lags so that $\mu_j$
-is well defined. Rescaled densities are interpolated linearly onto
-$\mathcal{G}$ and grid points falling outside the observed support at a given
-lag are excluded from the sum. Since $\tilde{x}$ inherits the contract's price scale through $x_{\max}$
+where $\mathcal{G}$ is a common evaluation grid in $\tilde{x}$, shared across
+all lags. Rescaled densities are interpolated linearly onto $\mathcal{G}$, and
+a pair $(j,\tau)$ enters the valid set $\mathcal{V}(\alpha)$ only if
+$\tilde{x}_j$ falls inside the observed support at lag $\tau$;
+$N_{\mathrm{valid}}(\alpha)=|\mathcal{V}(\alpha)|$ is the resulting count.
+The reference level $\mu_j = |\mathcal{T}_j|^{-1}
+\sum_{\tau\in\mathcal{T}_j}\log\tilde{P}(\tilde{x}_j,\tau)$ averages only
+over the lags $\mathcal{T}_j$ valid at $\tilde{x}_j$. Normalizing by the
+realized count rather than by $|\mathcal{G}||\mathcal{T}|$ prevents candidate
+exponents from lowering the score merely by excluding grid points. Since $\tilde{x}$ inherits the contract's price scale through $x_{\max}$
 which varies by two orders of magnitude across the cross section, a grid
 fixed in absolute price units would then sample a different portion of the
 distribution for each market and would defeat the scale invariance that the
 collapse test is designed to probe. We therefore define $\mathcal{G}$
 relative to each market's own histogram half-width with 801 equally spaced points
 on $[-x_{\max}/10,\,x_{\max}/10]$. The collapse estimator
-$\alphah_{\mathrm{collapse}}$ is the minimizer of Score($\alpha$) over a grid
-of 161 candidate values spanning $[1.2,2.8]$ in steps of $0.01$.
+$\tilde{\alpha}_{\mathrm{collapse}}$ is the minimizer of Score($\alpha$) over a grid
+of 161 candidate values spanning $[1.2,2.8]$ in steps of $0.01$. Because the
+search is not restricted to the admissible stable range $\alpha\in(0,2]$, the
+minimizer is written $\tilde{\alpha}$ rather than $\alphah$ and is termed the
+\textit{effective collapse exponent}: it is the self-similarity index that best
+collapses the rescaled densities under criterion~\eqref{eq:score}, and it
+coincides with a stable exponent only when it falls at or below two.
 
-\subsection{Structure-function estimator}
+\subsection{Structure function estimator}
 \label{sec:methodology:sf}
 
 The empirical structure function at moment order $q$ is
@@ -665,8 +699,8 @@ $\varepsilon\in\{0.1,0.2,0.3,0.4,0.5\}$, lag grid density $N_\tau\in\{20,37\}$,
 preprocessing (raw or deseasonalized), and estimator (tip, collapse,
 structure functions). Every combination is run for all eight markets, producing
 a robustness matrix of $\alphah$ estimates. The contribution of each factor to
-the cross-cell variance of $\alphah$ is quantified by a variance decomposition,
-identifying which methodological choices drive the most estimation uncertainty.
+the cross-cell variance of $\alphah$ is compared descriptively across factors,
+indicating which methodological choices drive the most estimation uncertainty.
 
 \subsection{Bias correction}
 \label{sec:methodology:bias}
@@ -681,6 +715,10 @@ in Equation~\eqref{eq:vr_rho}:
     \left(1 - \frac{k}{\tau}\right)\rhoh(k).
   \label{eq:vr_hat}
 \end{equation}
+The summary statistic $\VRh_{60} = 1 + 2\sum_{k=1}^{K_{\max}}\rhoh(k)$
+reported below aggregates net mean reversion over the estimated
+autocorrelation window. It is truncated at $K_{\max}=60$ rather than
+asymptotic, and is not a consistent long-run variance estimator.
 
 The dependence correction term is $b(\tau) = -\tfrac{1}{2}\log\VRh(\tau)$.
 The bias-adjusted response is $y^*(\tau) = \log\Ph(0,\tau) - b(\tau)$, and
@@ -696,7 +734,7 @@ Equation~\eqref{eq:corrected_peak}.
 \begin{algorithmic}[1]
 \Require Price series $\{P(t)\}$; tick $\Delta$; multiplier $M$; volatility $\sigma_1$;
          $\varepsilon\!\in\!\{0.1,\ldots,0.5\}$; lag grid $\mathcal{T}$; $N_x=2{,}000$; $K_{\max}=60$
-\Ensure $\alphah_{\mathrm{tip}}$,\; $\alphah_{\mathrm{sf}}$,\; $\alphah_{\mathrm{collapse}}$,\; $\alphah_{\mathrm{corr}}$
+\Ensure $\alphah_{\mathrm{tip}}$,\; $\alphah_{\mathrm{sf}}$,\; $\tilde{\alpha}_{\mathrm{collapse}}$,\; $\alphah_{\mathrm{corr}}$
 \Statex
 \State \textbf{Step 1 Preprocessing}
 \State Integer-scale prices:\; $p(t)\leftarrow\mathrm{round}(P(t)\cdot M)$
@@ -707,12 +745,12 @@ Equation~\eqref{eq:corrected_peak}.
 \State \textbf{Step 2 Empirical PDF construction}
 \For{each $\tau\in\mathcal{T}$}
   \State Compute increments $\delta_\tau(t)=p(t)-p(t-\tau)$
-  \State $x_{\max}\leftarrow\Delta N_x\max(\lfloor\varepsilon\sigma_1/\Delta\rceil,1)$;\; $\Delta x\leftarrow 2x_{\max}/N_x$;\; $N_x{+}1$ bin centers on $[-x_{\max},x_{\max}]$
+  \State $x_{\max}\leftarrow M\Delta N_x\max(\lfloor\varepsilon\sigma_1/\Delta\rceil,1)$;\; $\Delta x\leftarrow 2x_{\max}/N_x$;\; $N_x{+}1$ bin centers on $[-x_{\max},x_{\max}]$
   \State Histogram $\Ph(x_j,\tau)$ per Eq.~\eqref{eq:pdf_hat}
   \State Peak $\Ph(0,\tau)\leftarrow$ density of bin nearest $x=0$
 \EndFor
 \Statex
-\State \textbf{Step 3 Tip-scaling OLS}
+\State \textbf{Step 3 Tip scaling OLS}
 \State Regress $\log\Ph(0,\tau)$ on $\log\tau$;\; extract slope $\hat{m}$;\; $\alphah_{\mathrm{tip}}\leftarrow -1/\hat{m}$
 \Statex
 \State \textbf{Step 4 Structure functions}
@@ -725,7 +763,7 @@ Equation~\eqref{eq:corrected_peak}.
 \For{each $\alpha\in[1.2,\;2.8]$ on a grid of 161 values}
   \State Rescale $\tilde{P}(\tilde{x},\tau)\leftarrow\tau^{1/\alpha}\Ph\!\left(\tau^{1/\alpha}\tilde{x},\,\tau\right)$;\; compute $\mathrm{Score}(\alpha)$ per Eq.~\eqref{eq:score}
 \EndFor
-\State $\alphah_{\mathrm{collapse}}\leftarrow\arg\min_{\alpha}\,\mathrm{Score}(\alpha)$
+\State $\tilde{\alpha}_{\mathrm{collapse}}\leftarrow\arg\min_{\alpha}\,\mathrm{Score}(\alpha)$
 \Statex
 \State \textbf{Step 6 Variance-ratio bias correction}
 \State $\rhoh(k)$, $k\le K_{\max}$;\; build $\VRh(\tau)$ per Eq.~\eqref{eq:vr_hat}
@@ -753,11 +791,11 @@ pipeline, from preprocessing through bias-corrected tip estimation.
 
 \begin{table*}[!t]
 \begin{center}
-\caption{Three-Way L\'{e}vy Exponent Estimates by Market}
+\caption{Three-Way Scaling Exponent Estimates by Market}
 \begin{tabular}{lccccc}
 \hline
 Market & $\alphah_{\mathrm{tip}}$ & $R^2_{\mathrm{tip}}$
-       & $\alphah_{\mathrm{sf}}$ & $\alphah_{\mathrm{collapse}}$ & Spread \\
+       & $\alphah_{\mathrm{sf}}$ & $\tilde{\alpha}_{\mathrm{collapse}}$ & Spread \\
 \hline
 CF & 1.770 & 0.997 & 1.892 & 2.111 & 0.341 \\
 DA & 1.718 & 0.997 & 1.862 & 2.074 & 0.356 \\
@@ -769,8 +807,8 @@ PT & 1.727 & 0.997 & 1.843 & 2.091 & 0.364 \\
 YM & 1.760 & 0.998 & 1.883 & 2.054 & 0.294 \\
 \hline
 \multicolumn{6}{l}{$\varepsilon\in\{0.1,\ldots,0.5\}$, $N_\tau\in\{20,37\}$;
-  Spread $\equiv \max(\alphah_{\mathrm{tip}},\alphah_{\mathrm{sf}},\alphah_{\mathrm{collapse}})
-  - \min(\alphah_{\mathrm{tip}},\alphah_{\mathrm{sf}},\alphah_{\mathrm{collapse}})$.}
+  Spread $\equiv \max(\alphah_{\mathrm{tip}},\alphah_{\mathrm{sf}},\tilde{\alpha}_{\mathrm{collapse}})
+  - \min(\alphah_{\mathrm{tip}},\alphah_{\mathrm{sf}},\tilde{\alpha}_{\mathrm{collapse}})$.}
 \end{tabular}
 \label{tab:three_way}
 \end{center}
@@ -780,12 +818,12 @@ YM & 1.760 & 0.998 & 1.883 & 2.054 & 0.294 \\
 \label{sec:results:baseline}
 
 Steps~1--3 of Algorithm~\ref{alg:pipeline} yield the baseline
-tip-scaling estimates.
-Tip-scaling estimates $\alphah_{\mathrm{tip}}$, averaged over
+tip scaling estimates.
+Tip scaling estimates $\alphah_{\mathrm{tip}}$, averaged over
 $\varepsilon\in\{0.1,\ldots,0.5\}$ and $N_\tau\in\{20,37\}$, are reported
 alongside the three-estimator comparison in Table~\ref{tab:three_way} below.
 All eight markets yield $\alphah_{\mathrm{tip}}$ lying within the
-interval $(1.718,\,1.821)$, consistent with the truncated Lévy flight picture of
+interval $[1.718,\,1.821]$, consistent with the truncated Lévy flight picture of
 Mantegna and Stanley \cite{MantegnaStanley1994,MantegnaStanley1995} and with prior estimates for
 equity-index instruments \cite{Gopikrishnan1999,BouchaudPotters2003,Vlasiuk2025}.
 The $R^2$ of the log-log regression (Equation~\eqref{eq:tip_ols}) is at least
@@ -826,7 +864,9 @@ Despite this heterogeneity, the ratio $\sigma_1/s$ remains
 above unity for every contract (Table~\ref{tab:sigma}), and the fitted
 exponents are confined to a narrow band.
 The S\&P/TSX~60 contract (PT) is the least actively traded instrument in the
-sample and has the smallest $\sigma_1$ in absolute terms, yet once the
+sample, with $12.5\%$ of its session-minute grid supplied by gap-filling
+against $0.1$--$3.8\%$ elsewhere (Table~\ref{tab:markets}), and has the
+smallest $\sigma_1$ in absolute terms, yet once the
 histogram grid is calibrated to its tick size the peak scaling regression
 recovers a Lévy exponent consistent with the rest of the cross section.
 This illustrates that tick-relative histogram calibration, rather than any
@@ -887,11 +927,11 @@ YM & 1.760 & 1.787 & $+$0.027 & $-$0.002 \\
 \label{sec:results:estimators}
 
 Table~\ref{tab:three_way} compares $\alphah_{\mathrm{tip}}$,
-$\alphah_{\mathrm{sf}}$, and $\alphah_{\mathrm{collapse}}$ for all eight markets.
+$\alphah_{\mathrm{sf}}$, and $\tilde{\alpha}_{\mathrm{collapse}}$ for all eight markets.
 The three estimation principles produce broadly consistent but not identical
 results.
 Across all eight markets the estimates are systematically ordered with
-$\alphah_{\mathrm{tip}} < \alphah_{\mathrm{sf}} < \alphah_{\mathrm{collapse}}$.
+$\alphah_{\mathrm{tip}} < \alphah_{\mathrm{sf}} < \tilde{\alpha}_{\mathrm{collapse}}$.
 The spread between the smallest and largest estimate within a single market is
 typically 0.23--0.36 exponent units.
 This systematic ordering reflects the distinct
@@ -899,19 +939,21 @@ distributional features that each estimator targets.
 The tip estimator depends only on the central value of the PDF at each lag
 and is therefore anchored to the best measured, least noisy region of the
 empirical distribution.
-The structure-function estimator weights the entire distribution with
+The structure function estimator weights the entire distribution with
 increasing emphasis on the tails for larger moment orders $q$, making it
 sensitive to the tail behavior that the tip estimator deliberately ignores.
-The collapse quality estimator integrates the rescaled PDF over the full
-support, including the far tails where histogram counts are sparse and
-statistical noise is largest; this tail sensitivity pulls
-$\alphah_{\mathrm{collapse}}$ systematically upward.
+The collapse quality estimator weights every grid point of the rescaled PDF
+on $[-x_{\max}/10,\,x_{\max}/10]$ equally in log space, so it draws on regions
+where histogram counts are sparse and statistical noise is largest. One
+plausible reading of the ordering is that this sensitivity pulls
+$\tilde{\alpha}_{\mathrm{collapse}}$ upward; the mechanism is not separately
+demonstrated here.
 
 The collapse estimator carries two additional limitations.
 First, it has no likelihood interpretation: the score function
 (Equation~\eqref{eq:score}) is a heuristic measure of
 cross-$\tau$ spread so there is no theory bounding its bias.
-Second, every estimated value ($\alphah_{\mathrm{collapse}}
+Second, every estimated value ($\tilde{\alpha}_{\mathrm{collapse}}
 \in 2.01$--$2.15$, Table~\ref{tab:three_way}) lies above the
 boundary $\alpha=2$ of the stable-law parameter space.
 For a pure $\alpha$-stable law this boundary is the Gaussian, so values
@@ -922,7 +964,7 @@ The upward drift reported here is a finding of the present study; we are
 not aware of a simulation benchmark for collapse-based exponent estimators
 against which it can be calibrated.
 
-The structure-function analysis provides additional evidence for approximate
+The structure function analysis provides additional evidence for approximate
 rather than exact scaling. The implied exponent $\alpha(q) = q/\hat\zeta(q)$
 is not constant across $q$ but increases monotonically with the moment
 order, consistent with the truncated Lévy flight picture in which exact
@@ -940,7 +982,10 @@ with no contract serving as an outlier in any of the three estimators.
 \begin{figure}[!t]
 \centering
 \includegraphics[width=\columnwidth]{figures/fig_three_estimators.png}
-\caption{Three-Estimator L\'{e}vy Exponent Comparison by Market.}
+\caption{Three-Estimator Scaling Exponent Comparison by Market. Error bars
+show the standard deviation of $\alphah$ across the ten
+$(\varepsilon,N_\tau)$ design cells; they measure sensitivity to tuning
+choices, not sampling uncertainty.}
 \label{fig:three_estimators}
 \end{figure}
 
@@ -1038,7 +1083,7 @@ approximation remains a reasonable first-order description.
 \caption{Variance-Ratio Bias Correction by Market}
 \begin{tabular}{lccccc}
 \hline
-Market & $\rhoh(1)$ & $\VRh_\infty$ & $\alphah_{\mathrm{tip}}$
+Market & $\rhoh(1)$ & $\VRh_{60}$ & $\alphah_{\mathrm{tip}}$
        & $\alphah_{\mathrm{corr}}$ & $\widehat{\Delta\alpha}$ \\
 \hline
 PT & $-0.020$ & 0.895 & 1.709 & 1.695 & $+0.014$ \\
@@ -1050,7 +1095,7 @@ ER & $+0.001$ & 0.958 & 1.725 & 1.718 & $+0.007$ \\
 CF & $-0.007$ & 0.974 & 1.752 & 1.749 & $+0.003$ \\
 NQ & $-0.001$ & 0.980 & 1.746 & 1.743 & $+0.003$ \\
 \hline
-\multicolumn{6}{l}{$\varepsilon=0.1$, $N_\tau=20$, $K_{\max}=60$; sorted by $\VRh_\infty\uparrow$.}
+\multicolumn{6}{l}{$\varepsilon=0.1$, $N_\tau=20$, $K_{\max}=60$; sorted by $\VRh_{60}\uparrow$.}
 \end{tabular}
 \label{tab:bias}
 \end{center}
@@ -1063,41 +1108,45 @@ Step~6 of Algorithm~\ref{alg:pipeline} implements the bias correction
 described in Section~\ref{sec:methodology:bias}.
 Seven of the eight markets exhibit negative first-order autocorrelation of
 1-minute returns; ER displays a statistically negligible first-order autocorrelation
-($\rhoh(1)=+0.001\approx 0$), but its long-run variance ratio $\VRh_\infty=0.958<1$
+($\rhoh(1)=+0.001\approx 0$), but its long-run variance ratio $\VRh_{60}=0.958<1$
 confirms it is also mean reverting at longer horizons.
 Table~\ref{tab:bias} reports the estimated first-order autocorrelation
 $\rhoh(1)$, the long-run variance ratio
-$\VRh_\infty = 1 + 2\sum_{k\geq 1}\rhoh(k)$, the uncorrected tip estimate
+$\VRh_{60} = 1 + 2\sum_{k=1}^{K_{\max}}\rhoh(k)$, the uncorrected tip estimate
 $\alphah_{\mathrm{tip}}$, the bias-corrected estimate $\alphah_{\mathrm{corr}}$,
 and the implied correction $\widehat{\Delta\alpha} = \alphah_{\mathrm{tip}}
 - \alphah_{\mathrm{corr}}$.
-For reference the table is sorted by $\VRh_\infty$ in ascending order (strongest
+For reference the table is sorted by $\VRh_{60}$ in ascending order (strongest
 mean reversion first).
 
 The bias correction reduces $\alphah_{\mathrm{tip}}$ for all eight markets, and the markets with
-the smallest $\VRh_\infty$ (strongest net mean reversion) display the largest
+the smallest $\VRh_{60}$ (strongest net mean reversion) display the largest
 corrections.
-PT, which has $\VRh_\infty = 0.895$ and $\rhoh(1) = -0.020$, is the most
+PT, which has $\VRh_{60} = 0.895$ and $\rhoh(1) = -0.020$, is the most
 mean-reverting contract and shows the largest downward correction
 ($\widehat{\Delta\alpha}\approx 0.014$).
-The corrections are uniformly small (at most 0.014 units), reflecting that the
-sample estimates are essentially free of the large discreteness-driven bias that
-affects the uncorrected estimator in illiquid markets.
+The corrections are uniformly small: at most $0.014$ units, against a
+dispersion of up to $0.032$ induced in $\alphah_{\mathrm{tip}}$ by varying
+$\varepsilon$ and $N_\tau$ alone (Section~\ref{sec:results:robustness}).
+The adjustment is therefore systematic in sign and ordering but smaller than
+the estimator's own sensitivity to design choices, so it should be read as
+below the practical resolution of the method on this sample rather than as
+evidence that discreteness-driven bias is absent.
 Although ER has a marginally positive first-order autocorrelation
-($\rhoh(1) = +0.001$), its long-run variance ratio $\VRh_\infty = 0.958$
+($\rhoh(1) = +0.001$), its long-run variance ratio $\VRh_{60} = 0.958$
 remains below 1, indicating that negative autocorrelations at longer lags
 dominate; the correction is therefore downward, with magnitude
 $\widehat{\Delta\alpha} = 0.007$.
 Across the cross section $\widehat{\Delta\alpha}$ decreases with
-$\VRh_\infty$, with a Pearson correlation of $-0.98$ between the two
+$\VRh_{60}$, with a Pearson correlation of $-0.98$ between the two
 quantities: the markets furthest from the martingale benchmark receive the
 largest corrections, and those closest to it the smallest. The ordering is
 not strictly monotone at the market level, as the four contracts with
-$\VRh_\infty$ between $0.949$ and $0.958$ are separated by less than
+$\VRh_{60}$ between $0.949$ and $0.958$ are separated by less than
 $0.01$ in variance ratio and their corrections differ by under
 $0.002$ exponent units, which is within the estimation noise of
-$\widehat{\Delta\alpha}$. The systematic negative association nonetheless
-constitutes a cross-sectional validation of the bias mechanism derived in
+$\widehat{\Delta\alpha}$. The systematic negative association is nonetheless
+consistent with the bias mechanism derived in
 Section~\ref{sec:background:vr}.
 
 The robustness check that excludes the three shortest lags ($\tau\in\{1,2,3\}$)
@@ -1129,7 +1178,7 @@ Six findings emerge.
 
 \textbf{(i) Baseline scaling.}
 All eight markets yield peak scaling exponents lying within
-$\alphah_{\mathrm{tip}}\in(1.718,\,1.821)$, with $R^2\geq0.997$ for the log-log
+$\alphah_{\mathrm{tip}}\in[1.718,\,1.821]$, with $R^2\geq0.997$ for the log-log
 regression in every case.
 The cross-market mean is $\bar\alpha\approx 1.76$, consistent with the
 Mantegna--Stanley consensus and with prior estimates for equity-index
@@ -1148,11 +1197,11 @@ Intraday seasonality is therefore not a dominant confound for Lévy scaling
 estimation at the 1-minute frequency.
 
 \textbf{(iii) Estimator consistency.}
-Three independent estimators (tip-scaling OLS, collapse quality minimization,
+Three distinct estimators (tip scaling OLS, collapse quality minimization,
 and fractional order structure functions) produce broadly consistent but
 not identical results.
 The systematic ordering $\alphah_{\mathrm{tip}}<\alphah_{\mathrm{sf}}<
-\alphah_{\mathrm{collapse}}$ holds for all eight markets, with
+\tilde{\alpha}_{\mathrm{collapse}}$ holds for all eight markets, with
 inter-estimator spreads of $0.23$--$0.36$ units.
 This gap is substantially larger than the inter-market spread, implying that
 reported $\alphah$ values from different studies cannot be directly compared
@@ -1181,15 +1230,18 @@ is a reasonable first-order description.
 \textbf{(vi) Bias correction.}
 Seven of the eight markets exhibit negative first-order autocorrelation; ER
 displays a statistically negligible $\rhoh(1)=+0.001\approx 0$ but is
-mean reverting in the long run ($\VRh_\infty=0.958<1$) and therefore
+mean reverting in the long run ($\VRh_{60}=0.958<1$) and therefore
 corrects downward like the rest.
-Long-run variance ratios span $\VRh_\infty\in(0.895,\,0.980)$.
+Long-run variance ratios span $\VRh_{60}\in[0.895,\,0.980]$.
 For all eight markets the variance-ratio correction reduces
-$\alphah_{\mathrm{tip}}$ by $\widehat{\Delta\alpha}\in(0.003,\,0.014)$, and
+$\alphah_{\mathrm{tip}}$ by $\widehat{\Delta\alpha}\in[0.003,\,0.014]$, and
 the correction magnitude is strongly negatively associated with
-$\VRh_\infty$ (Pearson $-0.98$), a cross-sectional validation of the bias
-mechanism.
-The corrected estimates fall within the interval $(1.695,\,1.802)$,
+$\VRh_{60}$ (Pearson $-0.98$ across eight markets, from which no significance
+is claimed). Since $b(\tau)$ and $\VRh_{60}$ are both
+functions of the same estimated autocorrelations, this association is largely
+mechanical and is reported as a cross-sectional consistency check rather than
+as independent validation of the bias mechanism.
+The corrected estimates fall within the interval $[1.695,\,1.802]$,
 consistent with historical Lévy-finance benchmarks.
 
 \subsection{Limitations}
@@ -1203,6 +1255,18 @@ truncated Lévy flights.
 The bias correction is derived under covariance-stationarity; at the very
 shortest lags, microstructure effects such as bid-ask bounce and price
 discreteness can introduce deviations that the correction does not fully absorb.
+Sampling uncertainty is not quantified: every dispersion reported here is
+variation across design choices, and no standard errors or confidence
+intervals are attached to $\alphah$. Constructing them is awkward on this
+grid, since the longest lag spans roughly $139$ trading days and any block
+resampling scheme must use blocks far longer than that.
+Two properties of the underlying series also warrant caution. First, the
+increments are unnormalized changes in index points, so a fixed move carries a
+different proportional meaning at the start and end of samples spanning two to
+three decades of index growth; the pooled distribution is therefore not
+strictly stationary. Second, the roll convention of the vendor's continuous
+series is not disclosed, so increments spanning a contract transition cannot be
+identified and excluded.
 
 \subsection{Extensions}
 Longer samples would allow the temporal stability of $\alphah$ to be assessed
@@ -1217,8 +1281,8 @@ sharpen the lower boundary of the self-similar regime.
 
 
 % ══════════════════════════════════════════════════════════════════════════════
-\section*{Authors Contribution}
-All authors contributed equally and their names are listed in alphabetical order.
+\section*{Author Contributions}
+All authors contributed equally, and their names are listed in alphabetical order.
 
 \bibliographystyle{IEEEtran}
 \bibliography{references}
