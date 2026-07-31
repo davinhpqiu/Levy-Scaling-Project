@@ -101,6 +101,11 @@ J.~P. Nolan, \emph{Univariate Stable Distributions: Models for Heavy Tailed
   Data}.\hskip 1em plus 0.5em minus 0.4em\relax Cham: Springer International
   Publishing, 2020.
 
+\bibitem{Plerou1999}
+V.~Plerou, P.~Gopikrishnan, L.~A.~N. Amaral, M.~Meyer, and H.~E. Stanley,
+  ``Scaling of the distribution of price fluctuations of individual
+  companies,'' \emph{Physical Review E}, vol.~60, no.~6, pp. 6519--6529, 1999.
+
 \bibitem{Masoliver2021}
 \BIBentryALTinterwordspacing
 M.~W{\k{a}}torek, J.~Kwapie{\'n}, and S.~Dro{\.z}d{\.z}, ``Financial return
@@ -112,11 +117,6 @@ M.~W{\k{a}}torek, J.~Kwapie{\'n}, and S.~Dro{\.z}d{\.z}, ``Financial return
 E.~Ratliff-Crain, C.~M. Van Oort, J.~Bagrow, M.~T.~K. Koehler, and
   B.~F. Tivnan, ``Revisiting {C}ont's stylized facts for modern stock
   markets,'' \emph{Quantitative Finance}, vol.~25, no.~9, 2025.
-
-\bibitem{Drozdz2003}
-S.~Dro{\.z}d{\.z}, F.~Gr{\"u}mer, J.~R{\"u}bf, and J.~Speth, ``Towards
-  identifying the world's strongest financial earthquakes,'' \emph{Physica A},
-  vol. 324, no. 1--2, pp. 174--182, 2003.
 
 \bibitem{MuzyBacry1993}
 J.-F. Muzy, E.~Bacry, and A.~Arn{\'e}odo, ``Multifractal formalism for fractal
@@ -130,6 +130,12 @@ Z.-Q. Jiang, W.-J. Xie, W.-X. Zhou, and D.~Sornette, ``Multifractal analysis
   of financial markets: a review,'' \emph{Reports on Progress in Physics},
   vol.~82, no.~12, p. 125901, 2019.
 \BIBentrySTDinterwordspacing
+
+\bibitem{Saadaoui2024}
+F.~Sa{\^a}daoui and H.~Rabbouch, ``Structured multifractal scaling of the
+  principal cryptocurrencies: examination using a self-explainable machine
+  learning,'' \emph{Journal of Forecasting}, vol.~43, no.~7, pp. 2917--2934,
+  2024.
 
 \bibitem{Masoudi2025}
 \BIBentryALTinterwordspacing
@@ -146,7 +152,7 @@ V.~V. Uchaikin and V.~M. Zolotarev, \emph{Chance and Stability: Stable
 
 \bibitem{Mandelbrot1997}
 \BIBentryALTinterwordspacing
-B.~B. Mandelbrot, L.~E. Calvet, and A.~J. Fisher, ``The multifractal model of
+B.~B. Mandelbrot, A.~J. Fisher, and L.~E. Calvet, ``A multifractal model of
   asset returns,'' \emph{Cowles Foundation Discussion Paper 1164}, 1997.
   [Online]. Available:
   \url{https://cowles.yale.edu/sites/default/files/files/pub/d11/d1164.pdf}
@@ -198,6 +204,16 @@ R.~A. Wood, T.~H. McInish, and J.~K. Ord, ``An investigation of transactions
 T.~G. Andersen and T.~Bollerslev, ``Intraday periodicity and volatility
   persistence in financial markets,'' \emph{Journal of Empirical Finance},
   vol.~4, no. 2--3, pp. 115--158, 1997.
+
+\bibitem{Liang2023}
+F.~Liang, L.~Du, and Z.~Huang, ``Option pricing with overnight and intraday
+  volatility,'' \emph{Journal of Futures Markets}, vol.~43, no.~11, pp.
+  1576--1614, 2023.
+
+\bibitem{Zhang2024}
+C.~Zhang, Y.~Zhang, M.~Cucuringu, and Z.~Qian, ``Volatility forecasting with
+  machine learning and intraday commonality,'' \emph{Journal of Financial
+  Econometrics}, vol.~22, no.~2, pp. 492--530, 2024.
 
 \bibitem{Vlasiuk2025}
 \BIBentryALTinterwordspacing

@@ -201,14 +201,16 @@ follows the stable power law over intermediate scales but is exponentially
 cut off in the far tail, producing finite variance while preserving
 Lévy-like body scaling over the observable range
 \cite{MantegnaStanley1994,BouchaudPotters2003}. Weron \cite{Weron2001}
-showed that samples of $10^6$ or more are required before the true stable tail
-emerges, far beyond the practical size of intraday datasets, so empirical
+showed that even samples on the order of $10^6$ can still yield seriously
+upward-biased tail-index estimates when $\alpha$ is close to 2, with the
+severity depending on the estimator and the tail cutoff, so empirical
 $\alphah$ estimates are best interpreted as body-scaling parameters rather
 than tail-index claims.
 
-Gopikrishnan et al.\ \cite{Gopikrishnan1999} extended the analysis to individual US stocks and
-found power-law tails with exponent $\zeta\approx 3$, outside the Lévy-stable
-regime in the strict sense. Weron \cite{Weron2001} showed this apparent
+Plerou et al.\ \cite{Plerou1999} extended the analysis to individual US
+companies and found power-law tails with exponent $\zeta\approx 3$, outside
+the Lévy-stable regime in the strict sense, matching the index-level result
+of Gopikrishnan et al.\ \cite{Gopikrishnan1999}. Weron \cite{Weron2001} showed this apparent
 discrepancy is a finite-sample artifact: a Lévy-stable distribution with
 $\alpha\approx 1.7$-$1.8$ produces Hill-estimator values of $\zeta\approx 3$
 on samples of realistic size. This reconciliation motivates the
@@ -229,7 +231,9 @@ recovers $\alphah_{\mathrm{tip}} = -1/\hat{m}$ from the slope $\hat{m}$.
 The estimator is semiparametric: it uses only the value of the distribution
 at the origin and makes no assumption about the shape elsewhere.
 
-The \textit{collapse quality} estimator \cite{Drozdz2003} chooses
+The \textit{collapse quality} estimator, formulated here as an operational
+criterion for the visual PDF-collapse test used throughout the econophysics
+literature \cite{MantegnaStanley1995,Gopikrishnan1999}, chooses
 $\alpha$ to minimize the spread of the rescaled empirical curves
 $\tau^{1/\alpha}\Ph(\tau^{1/\alpha}\tilde{x},\tau)$ around a common function.
 A mean-squared log-deviation score weights the central body and the tails
@@ -237,7 +241,7 @@ more evenly than a pure-origin regression, providing an independent route to
 $\alphah$ that does not rely on a single histogram bin.
 
 The \textit{fractional structure function} estimator
-\cite{MuzyBacry1993,BouchaudPotters2003,Jiang2019,Masoudi2025} exploits the prediction
+\cite{MuzyBacry1993,BouchaudPotters2003,Jiang2019,Saadaoui2024,Masoudi2025} exploits the prediction
 $S_q(\tau) = \Etau[|\Delta P_\tau|^q] \propto \tau^{q/\alpha}$ for $q <
 \alpha$. A log-log regression of $\hat{S}_q(\tau)$ on $\tau$ yields
 slope $q/\alphah_q$; the median across moment orders
@@ -248,9 +252,11 @@ sensitive to the tail. Systematic concavity of the empirical scaling exponent
 $\hat\zeta(q) = q/\alphah_q$ would signal multifractal corrections beyond
 simple Lévy scaling \cite{Mandelbrot1997,MuzyBacry1993}.
 
-Weron \cite{Weron2001} and Baru\v{n}\'ik and Va\v{c}ha \cite{Barunik2010} document that all three of
-these semiparametric methods outperform the Hill estimator for $\alpha$ near
-2 on finite samples. The comparison of the three estimators across all eight
+Weron \cite{Weron2001} and Baru\v{n}\'ik and Va\v{c}ha \cite{Barunik2010}
+document severe finite-sample upward bias in Hill-type tail-index estimates
+when $\alpha$ is near 2, which motivates the use of body-based semiparametric
+estimators such as the three adopted here in place of direct tail-index
+estimation. The comparison of the three estimators across all eight
 markets is central to the robustness analysis of Section~\ref{sec:results:robustness}.
 
 These three semiparametric estimators are preferred over parametric
@@ -304,7 +310,7 @@ mean reversion at short horizons. Bouchaud and Potters \cite{BouchaudPotters2003
 report $\rhoh(1)\approx -0.1$ to $-0.2$ at 1-minute frequency in major
 equity-index futures, consistent with the values reported here.
 Recent work continues to document these effects at minute-level resolution
-in contemporary equity-index instruments \cite{Deep2025}.
+in a contemporary equity-index ETF \cite{Deep2025}.
 
 The canonical peak formula~\eqref{eq:peak} is derived under strictly
 independent increments. When $VR(\tau)\neq 1$, the effective Lévy scale at
@@ -630,7 +636,9 @@ assumption rather than a test for multifractality.
 \label{sec:methodology:seasonality}
 
 Equity-index futures exhibit a well-documented U-shaped intraday volatility
-pattern \cite{WoodMcInishOrd1985,AndersenBollerslev1997,Chakraborti2011}. The
+pattern \cite{WoodMcInishOrd1985,AndersenBollerslev1997,Chakraborti2011}, a
+feature that remains central to contemporary intraday volatility
+modelling \cite{Liang2023,Zhang2024}. The
 seasonality model decomposes the 1-minute increment as $\delta_k =
 \hat\sigma_{m(k)}\cdot\tilde\delta_k$, where $m(k)\in\{1,\ldots,M\}$ is the
 minute-of-session and $\hat\sigma_m$ is the deterministic intraday factor. The
@@ -910,10 +918,9 @@ For a pure $\alpha$-stable law this boundary is the Gaussian, so values
 near 2 indicate that the estimator is responding to the exponential
 truncation of the far tails rather than to the central Lévy scaling
 regime \cite{MantegnaStanley1994,Weron2001}.
-Weron \cite{Weron2001} demonstrated in simulation that collapse-based
-methods produce unreliable exponent estimates on finite samples relative
-to regression-based alternatives, a finding consistent with the upward
-drift observed here.
+The upward drift reported here is a finding of the present study; we are
+not aware of a simulation benchmark for collapse-based exponent estimators
+against which it can be calibrated.
 
 The structure-function analysis provides additional evidence for approximate
 rather than exact scaling. The implied exponent $\alpha(q) = q/\hat\zeta(q)$
