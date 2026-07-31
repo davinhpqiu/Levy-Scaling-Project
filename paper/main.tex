@@ -341,8 +341,13 @@ log-peak regression
     + \mathrm{const}.
   \label{eq:corrected_peak}
 \end{equation}
-For a mean-reverting process ($VR(\tau)<1$) the omission of the second term
-causes the raw OLS slope to underestimate $-1/\alpha$ in magnitude, biasing
+The resulting slope bias is
+$\mathrm{Cov}(\log\tau,\,-\tfrac12\log VR(\tau))/\mathrm{Var}(\log\tau)$,
+so its direction is governed by how $VR(\tau)$ varies with the aggregation
+horizon rather than by its level: a constant variance ratio, however far below
+unity, shifts only the intercept. In the estimated profiles $VR(\tau)$
+declines with $\tau$, so $-\tfrac12\log VR(\tau)$ is positively associated
+with $\log\tau$; omitting it makes the raw OLS slope less negative and biases
 $\alphah_{\mathrm{tip}}$ upward toward the Gaussian boundary.
 
 \textit{Remark (heuristic nature of the correction).}
@@ -411,7 +416,7 @@ contract.
 
 The eight contracts were selected to provide a focused cross section of
 liquid equity-index futures across geographies rather than on the basis of
-any statistical pre-screening. Four North American equity-index contracts trade at major US venues: YM, NQ, and ES on CME Group exchanges, and ER on ICE Futures US (formerly NYBOT); one Canadian contract (PT) trades on the Montr\'{e}al Exchange (MX); and three European contracts (FT, DA, CF) cover the major continental and UK equity benchmarks.
+any statistical pre-screening. Four North American equity-index contracts trade at major US venues: YM, NQ, and ES on CME Group exchanges, and ER on CME and ICE Futures US at different points in the sample (Table~\ref{tab:markets}); one Canadian contract (PT) trades on the Montr\'{e}al Exchange (MX); and three European contracts (FT, DA, CF) cover the major continental and UK equity benchmarks.
 
 Equity-index futures are chosen over alternative liquid asset
 classes such as foreign exchange (FX) and sovereign fixed income for three main
@@ -465,9 +470,11 @@ when the tick-to-price ratio is large, price discreteness induces clustering
 in the return distribution that distorts its high-frequency scaling. This
 effect attenuates as the observation scale increases and therefore acts
 on the lag dependence that the peak scaling estimator exploits. All eight
-contracts here sit in the small-tick regime, with $\sigma_1$ exceeding
-$\Delta$ by factors of $2.7$ to $9.3$, so the increment distributions are not
-dominated by an atom at the origin.
+contracts have 1-minute volatility exceeding one tick, with $\sigma_1/\Delta$
+between $2.7$ and $9.3$, which reduces but does not eliminate the possibility
+that discreteness dominates the central bin. Gap-filling contributes zero
+increments directly, so the atom at the origin is largest for the markets with
+the highest fill rates (Table~\ref{tab:markets}).
 
 \begin{table}[!t]
 \begin{center}
@@ -515,12 +522,19 @@ observed price (last-observation-carried-forward, LOCF). This preserves the
 equal spacing of the 1-minute grid required for the lag-$\tau$ increment
 construction while recording zero price change during illiquid periods, which
 imposes a zero recorded increment during the missing interval. Sessions are
-concatenated on a continuous session-minute index, so consecutive trading days
-are adjacent in the series and each day-to-day transition contributes one
-increment at every lag; overnight price changes therefore enter the $\tau=1$
-distribution as single-minute increments. The robustness check excluding
-$\tau\in\{1,2,3\}$ (Section~\ref{sec:results:bias}) bounds the influence of
-this treatment.
+concatenated on a continuous session-minute index, so $\tau$ throughout this
+paper counts \emph{session} minutes rather than elapsed clock minutes: nights,
+weekends and holidays are removed from the time axis, and each overnight price
+change is compressed into a single index step. Two consequences follow. At
+short lags the increment population is a mixture: a fraction $\min(\tau/J,1)$ of
+$\tau$-step increments straddles an overnight boundary, rising from about
+$0.2\%$ at $\tau=1$ to unity at one full session ($J=405$ or $510$ minutes), so the identically distributed assumption
+underlying Equation~\eqref{eq:scaling} holds only approximately. At lags
+beyond one session every increment spans at least one overnight period, which
+is the intended meaning of a multi-day price change but makes the aggregation
+horizon a business-time rather than a calendar-time quantity. Excluding the
+shortest lags does not remove this feature, and it is retained as a limitation
+rather than corrected.
 
 \textit{Lag grid construction.} Price increments $\delta_\tau(t) = P(t) -
 P(t-\tau)$ are formed for each lag $\tau$ on two log-spaced grids. Following
@@ -579,8 +593,8 @@ All analyses are run at $\varepsilon\in\{0.1,0.2,0.3,0.4,0.5\}$ and the
 sensitivity of $\alphah$ to this choice is quantified in the robustness matrix
 (Section~\ref{sec:methodology:robustness}).
 At $\varepsilon=0.1$ the rounded factor equals 1 for all eight markets
-(for ES and PT only after the unit floor is applied), giving a bin half-width
-of exactly one tick; below this, counts in the central bin become too sparse
+(for ES and PT only after the unit floor is applied), so the central bin is
+two ticks wide, extending one tick either side of zero; below this, counts in the central bin become too sparse
 at short lags to estimate $\Ph(0,\tau)$ reliably. At $\varepsilon=0.5$ the
 factor ranges from 1 for ES to 5 for NQ, and the wider bins begin to smooth
 out the distributional peak, biasing the density estimate downward.
@@ -599,9 +613,8 @@ nuisance intercept and $u_\tau$ is a residual. Ordinary least squares on
 Equation~\eqref{eq:tip_ols} over the full $\tau$ grid yields the slope
 $\hat{m}$ and the baseline estimate $\alphah_{\mathrm{tip}} = -1/\hat{m}$.
 Increments at a given lag overlap, so although the nominal count $M_\tau$
-falls only from $n$ to $n-\tau$ across the grid, the number of effectively
-independent increments falls as $n/\tau$: at the longest lag it is of order
-$40$ per market. The regression is unweighted, so the shortest and longest
+falls only from $n$ to $n-\tau$ across the grid, a rough non-overlapping
+increment count is $n/\tau$: of order $40$ at the longest lag. The regression is unweighted, so the shortest and longest
 lags contribute equally despite this disparity.
 The coefficient of determination $R^2$ is reported as a diagnostic for the
 power-law linearity assumption; a high $R^2$ is necessary but not sufficient
@@ -674,8 +687,8 @@ pattern \cite{WoodMcInishOrd1985,AndersenBollerslev1997,Chakraborti2011}, a
 feature that remains central to contemporary intraday volatility
 modelling \cite{Liang2023,Zhang2024}. The
 seasonality model decomposes the 1-minute increment as $\delta_k =
-\hat\sigma_{m(k)}\cdot\tilde\delta_k$, where $m(k)\in\{1,\ldots,M\}$ is the
-minute-of-session and $\hat\sigma_m$ is the deterministic intraday factor. The
+\hat\sigma_{m(k)}\cdot\tilde\delta_k$, where $m(k)\in\{1,\ldots,J\}$ is the
+minute-of-session, $J$ is the session length in minutes ($405$ for the North American contracts, $510$ for the European ones), and $\hat\sigma_m$ is the deterministic intraday factor. The
 profile is estimated as the cross-day mean absolute increment at each
 minute-of-session:
 \begin{equation}
@@ -863,8 +876,8 @@ for PT to $6.15$ for YM).
 Despite this heterogeneity, the ratio $\sigma_1/s$ remains
 above unity for every contract (Table~\ref{tab:sigma}), and the fitted
 exponents are confined to a narrow band.
-The S\&P/TSX~60 contract (PT) is the least actively traded instrument in the
-sample, with $12.5\%$ of its session-minute grid supplied by gap-filling
+The S\&P/TSX~60 contract (PT) has the highest proportion of missing 1-minute
+transaction bars in the delivered sample, $12.5\%$ of its session-minute grid
 against $0.1$--$3.8\%$ elsewhere (Table~\ref{tab:markets}), and has the
 smallest $\sigma_1$ in absolute terms, yet once the
 histogram grid is calibrated to its tick size the peak scaling regression
@@ -893,8 +906,10 @@ Two implications follow.
 First, deterministic intraday seasonality is not a dominant driver of the fitted
 Lévy exponent; the broad Lévy scaling picture survives preprocessing.
 Second, the sign of the shift is uniformly positive, consistent with the
-hypothesis that intraday volatility clustering concentrates mass at zero-lag
-increments in the raw series, mildly flattening the peak scaling slope.
+hypothesis that pooling minutes of differing deterministic volatility alters
+the central density of short-horizon increments differently across aggregation
+horizons, mildly flattening the raw peak scaling slope. This remains an
+interpretation rather than a separately tested mechanism.
 For the remaining analyses the raw (unnormalized) series is used as the
 primary input, consistent with the standard in the literature.
 
@@ -928,8 +943,16 @@ YM & 1.760 & 1.787 & $+$0.027 & $-$0.002 \\
 
 Table~\ref{tab:three_way} compares $\alphah_{\mathrm{tip}}$,
 $\alphah_{\mathrm{sf}}$, and $\tilde{\alpha}_{\mathrm{collapse}}$ for all eight markets.
-The three estimation principles produce broadly consistent but not identical
-results.
+The comparison separates into two parts. The two regression-based estimators
+are broadly consistent: $\alphah_{\mathrm{sf}}$ exceeds
+$\alphah_{\mathrm{tip}}$ by $0.082$--$0.153$ units (mean $0.119$), a gap
+comparable to the $0.103$ cross-market spread of $\alphah_{\mathrm{tip}}$
+itself, so the two agree to within the variation they are being used to
+measure. The collapse criterion stands apart: it lies a further
+$0.145$--$0.248$ units above $\alphah_{\mathrm{sf}}$ (mean $0.194$) and
+selects effective exponents above the stable-law boundary
+$\alpha=2$ in every market, so it does not return an admissible stable
+parameter on these data.
 Across all eight markets the estimates are systematically ordered with
 $\alphah_{\mathrm{tip}} < \alphah_{\mathrm{sf}} < \tilde{\alpha}_{\mathrm{collapse}}$.
 The spread between the smallest and largest estimate within a single market is
@@ -1008,10 +1031,12 @@ standard deviations up to $0.107$, reflecting its dependence on the sparsely
 populated tails of the rescaled densities.
 Second, the estimator choice is the dominant source of variation.
 For the same market, preprocessing, $\varepsilon$, and $N_\tau$, the mean
-estimated exponents across estimators differ by 0.23--0.36 units.
-This inter-estimator gap is substantially larger than the inter-market
-spread ($\alphah_{\mathrm{tip}}$ ranges from 1.72 to 1.82 across all eight markets),
-which implies that reported $\alphah$ values from different
+estimated exponents across estimators differ by 0.23--0.36 units, of which
+roughly two thirds separates the collapse criterion from the two
+regression-based estimators.
+Even the narrower gap between the latter two exceeds the inter-market
+spread ($\alphah_{\mathrm{tip}}$ ranges from 1.72 to 1.82 across all eight
+markets), which implies that reported $\alphah$ values from different
 studies using different estimators cannot be directly compared without
 controlling for the estimation principle.
 
@@ -1067,9 +1092,9 @@ mean $|A|$ falls to between $0.09$ (NQ) and $0.33$ (PT), and the cross-market
 ordering is preserved; the asymmetry is therefore a persistent but moderate
 feature rather than an artefact of a single lag.
 
-The symmetrized collapse, in which the empirical PDF is replaced by
-$\Ph_{\mathrm{sym}}(x,\tau) = [\Ph(x,\tau)+\Ph(-x,\tau)]/2$, matches or
-marginally improves on the raw collapse for all markets.
+In unreported checks the symmetrized collapse, in which the empirical PDF is
+replaced by $\Ph_{\mathrm{sym}}(x,\tau) = [\Ph(x,\tau)+\Ph(-x,\tau)]/2$,
+matches or marginally improves on the raw collapse for all markets.
 The improvement in collapse score is small, confirming that the asymmetric
 component of the distribution does not materially affect the self-similar
 scaling structure.
@@ -1108,10 +1133,10 @@ Step~6 of Algorithm~\ref{alg:pipeline} implements the bias correction
 described in Section~\ref{sec:methodology:bias}.
 Seven of the eight markets exhibit negative first-order autocorrelation of
 1-minute returns; ER displays a statistically negligible first-order autocorrelation
-($\rhoh(1)=+0.001\approx 0$), but its long-run variance ratio $\VRh_{60}=0.958<1$
+($\rhoh(1)=+0.001\approx 0$), but its 60-lag cumulative variance ratio $\VRh_{60}=0.958<1$
 confirms it is also mean reverting at longer horizons.
 Table~\ref{tab:bias} reports the estimated first-order autocorrelation
-$\rhoh(1)$, the long-run variance ratio
+$\rhoh(1)$, the 60-lag cumulative variance ratio
 $\VRh_{60} = 1 + 2\sum_{k=1}^{K_{\max}}\rhoh(k)$, the uncorrected tip estimate
 $\alphah_{\mathrm{tip}}$, the bias-corrected estimate $\alphah_{\mathrm{corr}}$,
 and the implied correction $\widehat{\Delta\alpha} = \alphah_{\mathrm{tip}}
@@ -1133,7 +1158,7 @@ the estimator's own sensitivity to design choices, so it should be read as
 below the practical resolution of the method on this sample rather than as
 evidence that discreteness-driven bias is absent.
 Although ER has a marginally positive first-order autocorrelation
-($\rhoh(1) = +0.001$), its long-run variance ratio $\VRh_{60} = 0.958$
+($\rhoh(1) = +0.001$), its 60-lag cumulative variance ratio $\VRh_{60} = 0.958$
 remains below 1, indicating that negative autocorrelations at longer lags
 dominate; the correction is therefore downward, with magnitude
 $\widehat{\Delta\alpha} = 0.007$.
@@ -1149,11 +1174,13 @@ $\widehat{\Delta\alpha}$. The systematic negative association is nonetheless
 consistent with the bias mechanism derived in
 Section~\ref{sec:background:vr}.
 
-The robustness check that excludes the three shortest lags ($\tau\in\{1,2,3\}$)
-leaves the ordering unchanged and produces comparable correction magnitudes,
-consistent with microstructure effects at very short horizons being modest.
-The $K_{\max}$ sensitivity analysis on the pilot market (ES) confirms that
-$\alphah_{\mathrm{corr}}$ is stable across a range of truncation choices,
+In further unreported checks, excluding the three shortest lags
+($\tau\in\{1,2,3\}$) leaves the ordering unchanged and produces comparable
+correction magnitudes, consistent with microstructure effects at very short
+horizons being modest; this check bears on discreteness and bounce, not on the
+session-index construction discussed in Section~\ref{sec:data:preprocessing}.
+A $K_{\max}$ sensitivity analysis on the pilot market (ES) leaves
+$\alphah_{\mathrm{corr}}$ stable across truncation choices,
 well below the inter-estimator spread documented in Section~\ref{sec:results:estimators}.
 
 % ── Bias correction figure ─────────────────────────────────────────────────
@@ -1196,10 +1223,12 @@ The shift is uniformly positive across all eight markets.
 Intraday seasonality is therefore not a dominant confound for Lévy scaling
 estimation at the 1-minute frequency.
 
-\textbf{(iii) Estimator consistency.}
-Three distinct estimators (tip scaling OLS, collapse quality minimization,
-and fractional order structure functions) produce broadly consistent but
-not identical results.
+\textbf{(iii) Estimator comparison.}
+Of the three distinct estimators applied (tip scaling OLS, collapse quality
+minimization, and fractional order structure functions), the two
+regression-based methods are broadly consistent, differing by $0.082$--$0.153$
+units, whereas the collapse criterion sits a further $0.145$--$0.248$ units
+higher and exceeds the stable-law boundary in every market.
 The systematic ordering $\alphah_{\mathrm{tip}}<\alphah_{\mathrm{sf}}<
 \tilde{\alpha}_{\mathrm{collapse}}$ holds for all eight markets, with
 inter-estimator spreads of $0.23$--$0.36$ units.
@@ -1230,9 +1259,9 @@ is a reasonable first-order description.
 \textbf{(vi) Bias correction.}
 Seven of the eight markets exhibit negative first-order autocorrelation; ER
 displays a statistically negligible $\rhoh(1)=+0.001\approx 0$ but is
-mean reverting in the long run ($\VRh_{60}=0.958<1$) and therefore
+mean reverting over the 60-lag window ($\VRh_{60}=0.958<1$) and therefore
 corrects downward like the rest.
-Long-run variance ratios span $\VRh_{60}\in[0.895,\,0.980]$.
+The 60-lag cumulative variance ratios span $\VRh_{60}\in[0.895,\,0.980]$.
 For all eight markets the variance-ratio correction reduces
 $\alphah_{\mathrm{tip}}$ by $\widehat{\Delta\alpha}\in[0.003,\,0.014]$, and
 the correction magnitude is strongly negatively associated with
