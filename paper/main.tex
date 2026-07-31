@@ -814,7 +814,7 @@ The cross-section spans a wide range of contract specifications: tick sizes
 differ by an order of magnitude (from $0.10$ index points for ER and PT to
 $1.00$ for YM) and $\sigma_1$ by a factor of roughly thirteen (from $0.46$
 for PT to $6.15$ for YM).
-Despite this heterogeneity, the informativeness ratio $\sigma_1/s$ remains
+Despite this heterogeneity, the ratio $\sigma_1/s$ remains
 above unity for every contract (Table~\ref{tab:sigma}), and the fitted
 exponents are confined to a narrow band.
 The S\&P/TSX~60 contract (PT) is the least actively traded instrument in the
@@ -882,14 +882,14 @@ Table~\ref{tab:three_way} compares $\alphah_{\mathrm{tip}}$,
 $\alphah_{\mathrm{sf}}$, and $\alphah_{\mathrm{collapse}}$ for all eight markets.
 The three estimation principles produce broadly consistent but not identical
 results.
-Across all eight markets the estimates are systematically ordered:
+Across all eight markets the estimates are systematically ordered with
 $\alphah_{\mathrm{tip}} < \alphah_{\mathrm{sf}} < \alphah_{\mathrm{collapse}}$.
 The spread between the smallest and largest estimate within a single market is
 typically 0.23--0.36 exponent units.
-This systematic ordering is not sampling noise; it reflects the distinct
+This systematic ordering reflects the distinct
 distributional features that each estimator targets.
 The tip estimator depends only on the central value of the PDF at each lag
-and is therefore anchored to the best-measured, least-noisy region of the
+and is therefore anchored to the best measured, least noisy region of the
 empirical distribution.
 The structure-function estimator weights the entire distribution with
 increasing emphasis on the tails for larger moment orders $q$, making it
@@ -902,8 +902,7 @@ $\alphah_{\mathrm{collapse}}$ systematically upward.
 The collapse estimator carries two additional limitations.
 First, it has no likelihood interpretation: the score function
 (Equation~\eqref{eq:score}) is a heuristic measure of
-cross-$\tau$ spread, not a statistical objective with known finite-sample
-properties, so there is no theory bounding its bias.
+cross-$\tau$ spread so there is no theory bounding its bias.
 Second, every estimated value ($\alphah_{\mathrm{collapse}}
 \in 2.01$--$2.15$, Table~\ref{tab:three_way}) lies above the
 boundary $\alpha=2$ of the stable-law parameter space.
@@ -917,14 +916,13 @@ to regression-based alternatives, a finding consistent with the upward
 drift observed here.
 
 The structure-function analysis provides additional evidence for approximate
-rather than exact scaling: the implied exponent $\alpha(q) = q/\hat\zeta(q)$
+rather than exact scaling. The implied exponent $\alpha(q) = q/\hat\zeta(q)$
 is not constant across $q$ but increases monotonically with the moment
 order, consistent with the truncated Lévy flight picture in which exact
 self-similarity fails in the far tails \cite{MantegnaStanley1994,MantegnaStanley1995}.
 For ES (the pilot market), $\alpha(q)$ rises from approximately 1.74 at $q=0.25$
-to 1.96 at $q=1.50$, bracketing the tip and collapse estimates.
-Together, these observations motivate treating $\alphah_{\mathrm{tip}}$ as
-the primary estimate throughout the paper: it targets the central scaling
+to 1.96 at $q=1.50$. These observations motivate treating $\alphah_{\mathrm{tip}}$ as
+the primary estimate throughout the paper as it targets the central scaling
 regime, has a transparent OLS interpretation, and is the least contaminated
 by tail truncation effects.
 
