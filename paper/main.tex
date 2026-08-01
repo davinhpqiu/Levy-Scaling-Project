@@ -33,7 +33,7 @@ Short-horizon price increments in equity-index futures exhibit heavy tails
 and a sharply peaked central body that is inconsistent with Gaussian dynamics,
 motivating Lévy-stable distributional models.
 This paper examines Lévy scaling across eight equity-index futures contracts
-spanning North America and Europe, using 1-minute OHLCV data from the start
+spanning North America and Europe, using 1-minute closing prices from the start
 of available data through January 2026.
 Three estimation approaches (peak scaling OLS, collapse quality
 minimization, and fractional order structure functions) are compared
@@ -94,7 +94,11 @@ estimates cluster more tightly around $\alpha\approx 1.7$--$1.8$.
 Despite this activity, three important gaps remain. First, most existing
 studies focus on a single market or a narrow class of instruments, typically
 US equity indices or individual stocks, and it is unclear how far these results extend across different
-geographies and regulatory environments. Second, the sensitivity of $\alphah$ to methodological
+geographies and regulatory environments. The canonical central-body estimates
+also rest on samples drawn from the 1980s and 1990s. Recent work confirms that
+heavy-tailed, non-Gaussian intraday distributions persist
+\cite{Masoliver2021,ContMiami2023}, but to our knowledge the scaling exponents
+themselves have not been re-measured on contemporary data. Second, the sensitivity of $\alphah$ to methodological
 choices including histogram resolution, lag grid density, intraday
 seasonality removal, and estimator selection has not been systematically
 quantified in a single study; different choices can shift estimates by
@@ -107,7 +111,7 @@ known qualitatively \cite{BouchaudPotters2003}, but an explicit
 closed form correction and its cross-market empirical assessment
 have not, to our knowledge, been jointly reported.
 
-This paper addresses all three gaps. We use 1-minute OHLCV data for eight
+This paper addresses all three gaps. We use 1-minute closing prices for eight
 equity-index futures contracts spanning North America and Europe, sourced from
 TickData (Tick Data, LLC) and processed using the OneTick tick analytics
 platform, covering each market from the start of available data through
@@ -215,10 +219,12 @@ discrepancy is a finite-sample artifact: a Lévy-stable distribution with
 $\alpha\approx 1.7$-$1.8$ produces Hill-estimator values of $\zeta\approx 3$
 on samples of realistic size. This reconciliation motivates the
 multi-estimator approach used here and the conservative
-interpretation of $\alphah$ as a central-body parameter. More recent work by
-W{\k{a}}torek et al.\ \cite{Masoliver2021} and Ratliff-Crain et al.\ \cite{ContMiami2023} confirms that the
-central-body Lévy-scaling picture is stable through the 2010s, justifying its
-application to contemporary futures data.
+interpretation of $\alphah$ as a central-body parameter. More recent work
+supports continued application of this framework to contemporary data:
+W{\k{a}}torek et al.\ \cite{Masoliver2021} document persistent heavy-tailed,
+non-Gaussian return distributions through the COVID period, and Ratliff-Crain
+et al.\ \cite{ContMiami2023} find Cont's stylized facts largely intact in
+2018--2019 intraday US equity data.
 
 \subsection{Estimation of the scaling exponent}
 \label{sec:background:estimation}
@@ -399,9 +405,11 @@ CF & CAC-40                & Euronext          & May 2000 & 09:00--17:30 & 6{,}5
 
 The dataset consists of 1-minute resolution day-session price histories for
 eight equity-index futures contracts spanning four geographical regions. The
-1-minute OHLCV data were obtained from TickData (Tick Data, LLC) and processed
+1-minute OHLCV bars were obtained from TickData (Tick Data, LLC) and processed
 using the OneTick tick analytics platform, covering each market from the start
-of available data through 14 January 2026. The files are supplied as
+of available data through 14 January 2026. Only the closing price of each
+1-minute bar enters the analysis; the open, high, low and volume fields are
+not used. The files are supplied as
 preconstructed continuous day-session series; the vendor's ``skip'' option
 omits any minute with no recorded transaction, which motivates the gap-filling
 step below. The contract-month selection and roll convention underlying the
@@ -412,7 +420,7 @@ contract.
 
 The eight contracts were selected to provide a focused cross section of
 liquid equity-index futures across geographies rather than on the basis of
-any statistical pre-screening. Four North American equity-index contracts trade at major US venues: YM, NQ, and ES on CME Group exchanges, and ER on CME and ICE Futures US at different points in the sample (Table~\ref{tab:markets}); one Canadian contract (PT) trades on the Montr\'{e}al Exchange (MX); and three European contracts (FT, DA, CF) cover the major continental and UK equity benchmarks.
+any statistical pre-screening. Four contracts trade at major US venues: YM, NQ, and ES on CME Group exchanges, and ER on CME and ICE Futures US at different points in the sample (Table~\ref{tab:markets}); one Canadian contract (PT) trades on the Montr\'{e}al Exchange (MX); and three European contracts (FT, DA, CF) cover the major continental and UK equity benchmarks.
 
 Equity-index futures are chosen over alternative liquid asset
 classes such as foreign exchange (FX) and sovereign fixed income for three main
@@ -525,8 +533,10 @@ weekends and holidays are removed from the time axis, and each overnight price
 change is compressed into a single index step. Two consequences follow. At
 short lags the increment population is a mixture: a fraction $\min(\tau/J,1)$ of
 $\tau$-step increments straddles an overnight boundary, rising from about
-$0.2\%$ at $\tau=1$ to unity at one full session ($J=405$ or $510$ minutes), so the identically distributed assumption
-underlying Equation~\eqref{eq:scaling} holds only approximately. At lags
+$0.2\%$ at $\tau=1$ to unity at one full session, where $J$ denotes the
+session length in minutes ($405$ for the five North American contracts, $510$
+for the three European ones). The identically distributed assumption
+underlying Equation~\eqref{eq:scaling} therefore holds only approximately. At lags
 beyond one session every increment spans at least one overnight period, which
 is the intended meaning of a multi-day price change but makes the aggregation
 horizon a business-time rather than a calendar-time quantity. Excluding the
@@ -684,7 +694,9 @@ feature that remains central to contemporary intraday volatility
 modelling \cite{Liang2023,Zhang2024}. The
 seasonality model decomposes the 1-minute increment as $\delta_k =
 \hat\sigma_{m(k)}\cdot\tilde\delta_k$, where $m(k)\in\{1,\ldots,J\}$ is the
-minute-of-session, $J$ is the session length in minutes ($405$ for the North American contracts, $510$ for the European ones), and $\hat\sigma_m$ is the deterministic intraday factor. The
+minute-of-session, $J$ is the session length defined in
+Section~\ref{sec:data:preprocessing}, and $\hat\sigma_m$ is the deterministic
+intraday factor. The
 profile is estimated as the cross-day mean absolute increment at each
 minute-of-session:
 \begin{equation}
@@ -815,9 +827,8 @@ NQ & 1.779 & 0.997 & 1.861 & 2.006 & 0.227 \\
 PT & 1.727 & 0.997 & 1.843 & 2.091 & 0.364 \\
 YM & 1.760 & 0.998 & 1.883 & 2.054 & 0.294 \\
 \hline
-\multicolumn{6}{l}{$\varepsilon\in\{0.1,\ldots,0.5\}$, $N_\tau\in\{20,37\}$;
-  Spread $\equiv \max(\alphah_{\mathrm{tip}},\alphah_{\mathrm{sf}},\tilde{\alpha}_{\mathrm{collapse}})
-  - \min(\alphah_{\mathrm{tip}},\alphah_{\mathrm{sf}},\tilde{\alpha}_{\mathrm{collapse}})$.}
+\multicolumn{6}{@{}l@{}}{$\varepsilon\in\{0.1,\ldots,0.5\}$, $N_\tau\in\{20,37\}$; Spread is the range of the}\\
+\multicolumn{6}{@{}l@{}}{three estimates within a market.}
 \end{tabular}
 \label{tab:three_way}
 \end{center}
@@ -838,7 +849,7 @@ equity-index instruments \cite{Gopikrishnan1999,BouchaudPotters2003,Vlasiuk2025}
 The $R^2$ of the log-log regression (Equation~\eqref{eq:tip_ols}) is at least
 $0.997$ for every market, confirming that the power-law decay of the
 empirical PDF peak is an accurate description of the data across the full cross section.
-The four North American equity-index futures (YM, ER, NQ, and ES), with
+The four US equity-index futures (YM, ER, NQ, and ES), with
 $\alphah$ in the range $1.75$--$1.78$, cluster tightly near the empirical consensus
 value of $\alpha\approx 1.7$--$1.8$.
 The European contracts are slightly more dispersed:
@@ -846,6 +857,10 @@ CAC-40~(CF) sits at $\alphah\approx 1.77$, DAX~(DA) at the lower end
 ($\alphah\approx 1.72$), and FTSE~100~(FT) at the top of the range ($\alphah\approx 1.82$).
 The S\&P/TSX~60 contract (PT), with $\alphah\approx 1.73$, falls near the
 lower bound of the cross-sectional distribution.
+Figure~\ref{fig:collapse} shows the corresponding rescaled densities: for
+every market the curves for different lags fall close to a common shape over
+the plotted range, which is the qualitative signature the peak scaling
+regression quantifies.
 
 
 % ── Collapse figure ───────────────────────────────────────────────────────
@@ -936,7 +951,8 @@ YM & 1.760 & 1.787 & $+$0.027 & $-$0.002 \\
 \subsection{Estimator comparison}
 \label{sec:results:estimators}
 
-Table~\ref{tab:three_way} compares $\alphah_{\mathrm{tip}}$,
+Figure~\ref{fig:three_estimators} and Table~\ref{tab:three_way} compare
+$\alphah_{\mathrm{tip}}$,
 $\alphah_{\mathrm{sf}}$, and $\tilde{\alpha}_{\mathrm{collapse}}$ for all eight markets.
 The comparison separates into two parts. The two regression-based estimators
 are broadly consistent: $\alphah_{\mathrm{sf}}$ exceeds
@@ -1142,6 +1158,7 @@ and the implied correction $\widehat{\Delta\alpha} = \alphah_{\mathrm{tip}}
 For reference the table is sorted by $\VRh_{60}$ in ascending order (strongest
 mean reversion first).
 
+Figure~\ref{fig:bias_correction} summarizes the correction across markets.
 The bias correction reduces $\alphah_{\mathrm{tip}}$ for all eight markets, and the markets with
 the smallest $\VRh_{60}$ (strongest net mean reversion) display the largest
 corrections.
@@ -1200,7 +1217,7 @@ well below the inter-estimator spread documented in Section~\ref{sec:results:est
 
 This paper has examined Lévy scaling in short-horizon futures returns across
 eight equity-index contracts spanning North America and Europe, using
-1-minute OHLCV data from the start of available data through January 2026.
+1-minute closing prices from the start of available data through January 2026.
 Six findings emerge.
 
 \textbf{(i) Baseline scaling.}
