@@ -64,6 +64,17 @@ A.~Chakraborti, I.~M. Toke, M.~Patriarca, and F.~Abergel, ``Econophysics
   review: {I}. {E}mpirical facts,'' \emph{Quantitative Finance}, vol.~11,
   no.~7, pp. 991--1012, 2011.
 
+\bibitem{Masoliver2021}
+M.~W{\k{a}}torek, J.~Kwapie{\'n}, and S.~Dro{\.z}d{\.z}, ``Financial return
+  distributions: past, present, and {COVID-19},'' \emph{Entropy}, vol.~23,
+  no.~7, p. 884, 2021.
+
+\bibitem{ContMiami2023}
+E.~Ratliff-Crain, C.~M. Van~Oort, J.~Bagrow, M.~T.~K. Koehler, and B.~F.
+  Tivnan, ``Revisiting {C}ont's stylized facts for modern stock markets,''
+  \emph{Quantitative Finance}, vol.~25, no.~9, pp. 1343--1373, 2025, preprint:
+  arXiv:2311.07738.
+
 \bibitem{Roll1984}
 R.~Roll, ``A simple implicit measure of the effective bid-ask spread in an
   efficient market,'' \emph{Journal of Finance}, vol.~39, no.~4, pp.
@@ -81,8 +92,8 @@ S.~Clinet and Y.~Potiron, ``Disentangling sources of high frequency market
 
 \bibitem{Yegon2025}
 \BIBentryALTinterwordspacing
-P.~Yegon, W.~B. Lindquist, and S.~T. Rachev, ``Asset pricing in the presence
-  of market microstructure noise,'' arXiv preprint arXiv:2511.00308, 2025.
+P.~Yegon, W.~B. Lindquist, and S.~T. Rachev, ``Asset pricing in the presence of
+  market microstructure noise,'' arXiv preprint arXiv:2511.00308, 2025.
   [Online]. Available: \url{https://arxiv.org/abs/2511.00308}
 \BIBentrySTDinterwordspacing
 
@@ -98,25 +109,14 @@ B.~V. Gnedenko and A.~N. Kolmogorov, \emph{Limit Distributions for Sums of
 
 \bibitem{Nolan2020}
 J.~P. Nolan, \emph{Univariate Stable Distributions: Models for Heavy Tailed
-  Data}.\hskip 1em plus 0.5em minus 0.4em\relax Cham: Springer International
-  Publishing, 2020.
+  Data}, ser. Springer Series in Operations Research and Financial
+  Engineering.\hskip 1em plus 0.5em minus 0.4em\relax Cham: Springer
+  International Publishing, 2020.
 
 \bibitem{Plerou1999}
 V.~Plerou, P.~Gopikrishnan, L.~A.~N. Amaral, M.~Meyer, and H.~E. Stanley,
   ``Scaling of the distribution of price fluctuations of individual
   companies,'' \emph{Physical Review E}, vol.~60, no.~6, pp. 6519--6529, 1999.
-
-\bibitem{Masoliver2021}
-\BIBentryALTinterwordspacing
-M.~W{\k{a}}torek, J.~Kwapie{\'n}, and S.~Dro{\.z}d{\.z}, ``Financial return
-  distributions: past, present, and {COVID-19},'' \emph{Entropy}, vol.~23,
-  no.~7, p. 884, 2021.
-\BIBentrySTDinterwordspacing
-
-\bibitem{ContMiami2023}
-E.~Ratliff-Crain, C.~M. Van Oort, J.~Bagrow, M.~T.~K. Koehler, and
-  B.~F. Tivnan, ``Revisiting {C}ont's stylized facts for modern stock
-  markets,'' \emph{Quantitative Finance}, vol.~25, no.~9, pp. 1343--1373, 2025.
 
 \bibitem{MuzyBacry1993}
 J.-F. Muzy, E.~Bacry, and A.~Arn{\'e}odo, ``Multifractal formalism for fractal
@@ -125,11 +125,9 @@ J.-F. Muzy, E.~Bacry, and A.~Arn{\'e}odo, ``Multifractal formalism for fractal
   875--884, 1993.
 
 \bibitem{Jiang2019}
-\BIBentryALTinterwordspacing
-Z.-Q. Jiang, W.-J. Xie, W.-X. Zhou, and D.~Sornette, ``Multifractal analysis
-  of financial markets: a review,'' \emph{Reports on Progress in Physics},
+Z.-Q. Jiang, W.-J. Xie, W.-X. Zhou, and D.~Sornette, ``Multifractal analysis of
+  financial markets: a review,'' \emph{Reports on Progress in Physics},
   vol.~82, no.~12, p. 125901, 2019.
-\BIBentrySTDinterwordspacing
 
 \bibitem{Saadaoui2024}
 F.~Sa{\^a}daoui and H.~Rabbouch, ``Structured multifractal scaling of the
@@ -139,8 +137,8 @@ F.~Sa{\^a}daoui and H.~Rabbouch, ``Structured multifractal scaling of the
 
 \bibitem{Masoudi2025}
 \BIBentryALTinterwordspacing
-O.~Masoudi, F.~Shahbazi, and M.~Sharifi, ``Complexity of financial time
-  series: multifractal and multiscale entropy analyses,'' arXiv preprint
+O.~Masoudi, F.~Shahbazi, and M.~Sharifi, ``Complexity of financial time series:
+  multifractal and multiscale entropy analyses,'' arXiv preprint
   arXiv:2507.23414, 2025. [Online]. Available:
   \url{https://arxiv.org/abs/2507.23414}
 \BIBentrySTDinterwordspacing
@@ -170,9 +168,9 @@ A.~W. Lo and A.~C. MacKinlay, ``Stock market prices do not follow random walks:
 \bibitem{Froseth2026}
 \BIBentryALTinterwordspacing
 A.~G. Fr{\o}seth, ``A spectral generalisation of the variance ratio:
-  eigenstructure of long-horizon portfolio covariance and a multi-memory
-  factor model of {U.S.} equity returns,'' arXiv preprint arXiv:2607.03858,
-  2026. [Online]. Available: \url{https://arxiv.org/abs/2607.03858}
+  eigenstructure of long-horizon portfolio covariance and a multi-memory factor
+  model of {U.S.} equity returns,'' arXiv preprint arXiv:2607.03858, 2026.
+  [Online]. Available: \url{https://arxiv.org/abs/2607.03858}
 \BIBentrySTDinterwordspacing
 
 \bibitem{Farmer2006}
