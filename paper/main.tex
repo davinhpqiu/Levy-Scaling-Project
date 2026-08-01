@@ -228,7 +228,7 @@ Three estimation strategies are commonly used in the literature.
 The \textit{peak scaling OLS} estimator, introduced by
 Mantegna and Stanley \cite{MantegnaStanley1994}, regresses $\log\Ph(0,\tau)$ on $\log\tau$ and
 recovers $\alphah_{\mathrm{tip}} = -1/\hat{m}$ from the slope $\hat{m}$.
-The estimator is semiparametric: it uses only the value of the distribution
+The estimator is semiparametric as it uses only the value of the distribution
 at the origin and makes no assumption about the shape elsewhere.
 
 The \textit{collapse quality} estimator, formulated here as an operational
@@ -263,13 +263,13 @@ These three semiparametric estimators are preferred over parametric
 maximum-likelihood (MLE) approaches for three reasons.
 First, the Lévy-stable density has no closed form expression for general
 $\alpha\in(1,2)$, requiring numerical characteristic-function inversion at
-each function evaluation; MLE is therefore computationally intensive and
+each function evaluation. MLE is therefore computationally intensive and
 numerically sensitive, particularly near $\alpha=2$ where the density
 converges to the Gaussian \cite{Nolan2020}.
 Second, MLE jointly estimates the full four-parameter stable vector
 $(\alpha,\beta,\gamma,\delta)$, introducing estimation uncertainty in the
 nuisance parameters $\beta$ (skewness) and $\delta$ (location) that
-propagates into the target parameter $\alpha$; the three semiparametric
+propagates into the target parameter $\alpha$. The three semiparametric
 methods focus entirely on the scaling exponent, treating shape and location
 as nuisances.
 Third, each of the three methods targets a geometrically distinct aspect of
@@ -339,13 +339,11 @@ log-peak regression
     + \mathrm{const}.
   \label{eq:corrected_peak}
 \end{equation}
-The resulting slope bias is
-$\mathrm{Cov}(\log\tau,\,-\tfrac12\log VR(\tau))/\mathrm{Var}(\log\tau)$,
-so its direction is governed by how $VR(\tau)$ varies with the aggregation
-horizon rather than by its level: a constant variance ratio, however far below
-unity, shifts only the intercept. In the estimated profiles $VR(\tau)$
+The direction of the resulting slope bias
+$\mathrm{Cov}(\log\tau,\,-\tfrac12\log VR(\tau))/\mathrm{Var}(\log\tau)$ is hence governed by how $VR(\tau)$ varies with the aggregation
+horizon rather than by its level. Note that a constant variance ratio, regardless of distance from unity, shifts only the intercept. In the estimated profiles $VR(\tau)$
 declines with $\tau$, so $-\tfrac12\log VR(\tau)$ is positively associated
-with $\log\tau$; omitting it makes the raw OLS slope less negative and biases
+with $\log\tau$. Omitting it hence makes the raw OLS slope less negative and biases
 $\alphah_{\mathrm{tip}}$ upward toward the Gaussian boundary.
 
 \textit{Remark (heuristic nature of the correction).}
@@ -353,8 +351,8 @@ The derivation above relies on the homogeneity property of the stable
 characteristic function, which holds exactly for a pure $\alpha$-stable
 law where the variance $\mathrm{Var}(\Delta P_\tau)$ is formally infinite.
 In our empirical setting the relevant model is a truncated Lévy flight (TLF),
-which has finite variance; the variance ratio $VR(\tau)$ is therefore
-well defined, but the stable homogeneity step is only approximate for TLF.
+which has finite variance. The variance ratio $VR(\tau)$ is therefore
+well defined but the stable homogeneity step is only approximate for TLF.
 The correction is best understood as a heuristic: the second-order moment
 variance ratio proxies for the scale distortion over the observable body of
 the distribution, not a rigorous stable-law result.
@@ -445,14 +443,14 @@ omitted from the file rather than recorded as zero-volume observations. This
 is further addressed in preprocessing (Section~\ref{sec:data:preprocessing}).
 
 To justify the use of 1-minute price changes as the elementary increment,
-Table~\ref{tab:sigma} reports, for each market, the standard deviation of
+Table~\ref{tab:sigma} reports for each market the standard deviation of
 1-minute price changes $\sigma_1$, the average effective bid-ask spread $s$,
 and the tick size $\Delta$ (the minimum quotable price increment).
 The relevant criterion concerns the \textit{bid-ask bounce}: when successive
 trades arrive alternately at the bid and the ask, they generate a spurious
 price change of one effective spread with no movement in the underlying price
 \cite{Roll1984}. Genuine price variation must therefore dominate the bounce
-amplitude, which requires $\sigma_1/s > 1$; below unity, a substantial
+amplitude which requires $\sigma_1/s > 1$; below unity, a substantial
 fraction of recorded increments would reflect the bounce rather than true
 price movement. The ratio exceeds 1 for all eight contracts, ranging from
 $1.11$ (FT) to $4.90$ (NQ), confirming that the 1-minute frequency is
@@ -531,8 +529,7 @@ underlying Equation~\eqref{eq:scaling} holds only approximately. At lags
 beyond one session every increment spans at least one overnight period, which
 is the intended meaning of a multi-day price change but makes the aggregation
 horizon a business-time rather than a calendar-time quantity. Excluding the
-shortest lags does not remove this feature, and it is retained as a limitation
-rather than corrected.
+shortest lags does not remove this feature, and it is retained as a limitation.
 
 \textit{Lag grid construction.} Price increments $\delta_\tau(t) = P(t) -
 P(t-\tau)$ are formed for each lag $\tau$ on two log-spaced grids. Following
@@ -566,7 +563,7 @@ typical 1-minute move,
              \max\!\left(\left\lfloor\varepsilon\,\frac{\sigma_1}{\Delta}\right\rceil,\,1\right),
   \label{eq:xmax}
 \end{equation}
-where $M$ is the decimal multiplier of Section~\ref{sec:data:preprocessing},
+where $M$ is the decimal multiplier of Section~\ref{sec:data:preprocessing}
 which converts the native-unit product $\Delta N_x$ into the integer units of
 the scaled price series, $\Delta$ is the contract tick size
 (Table~\ref{tab:sigma}), $\sigma_1$ is the standard deviation of 1-minute
@@ -612,7 +609,7 @@ Equation~\eqref{eq:tip_ols} over the full $\tau$ grid yields the slope
 $\hat{m}$ and the baseline estimate $\alphah_{\mathrm{tip}} = -1/\hat{m}$.
 Increments at a given lag overlap, so although the nominal count $M_\tau$
 falls only from $n$ to $n-\tau$ across the grid, a rough non-overlapping
-increment count is $n/\tau$: of order $40$ at the longest lag. The regression is unweighted, so the shortest and longest
+increment count is $n/\tau$ (of order $40$ at the longest lag). The regression is unweighted, so the shortest and longest
 lags contribute equally despite this disparity.
 The coefficient of determination $R^2$ is reported as a diagnostic for the
 power-law linearity assumption; a high $R^2$ is necessary but not sufficient
@@ -880,8 +877,7 @@ against $0.1$--$3.8\%$ elsewhere (Table~\ref{tab:markets}), and has the
 smallest $\sigma_1$ in absolute terms, yet once the
 histogram grid is calibrated to its tick size the peak scaling regression
 recovers a Lévy exponent consistent with the rest of the cross section.
-This illustrates that tick-relative histogram calibration, rather than any
-absolute price scale, is what makes the estimates comparable across markets
+This illustrates that tick-relative histogram calibration allows for comparable estimates across markets
 with very different contract specifications.
 
 
