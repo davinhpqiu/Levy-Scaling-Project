@@ -1086,12 +1086,10 @@ mean $|A|$ falls to between $0.09$ (NQ) and $0.33$ (PT), and the cross-market
 ordering is preserved; the asymmetry is therefore a persistent but moderate
 feature rather than an artefact of a single lag.
 
-In unreported checks the symmetrized collapse, in which the empirical PDF is
-replaced by $\Ph_{\mathrm{sym}}(x,\tau) = [\Ph(x,\tau)+\Ph(-x,\tau)]/2$,
-matches or marginally improves on the raw collapse for all markets.
-The improvement in collapse score is small, confirming that the asymmetric
-component of the distribution does not materially affect the self-similar
-scaling structure.
+Symmetrizing the empirical PDF, $\Ph_{\mathrm{sym}}(x,\tau) =
+[\Ph(x,\tau)+\Ph(-x,\tau)]/2$, leaves the rescaled curves visually
+indistinguishable from the raw collapse on the pilot market; the effect of
+symmetrization on the collapse score itself is not quantified here.
 There is mild but detectable asymmetry at short lags in several markets,
 consistent with bid-ask bounce asymmetry and short-term momentum in futures
 order flow; however, its magnitude is small enough that the symmetric Lévy
@@ -1173,8 +1171,8 @@ In further unreported checks, excluding the three shortest lags
 correction magnitudes, consistent with microstructure effects at very short
 horizons being modest; this check bears on discreteness and bounce, not on the
 session-index construction discussed in Section~\ref{sec:data:preprocessing}.
-A $K_{\max}$ sensitivity analysis on the pilot market (ES) leaves
-$\alphah_{\mathrm{corr}}$ stable across truncation choices,
+A $K_{\max}$ sensitivity analysis on the pilot market (ES) over
+$K_{\max}\in\{30,60,120,240\}$ leaves $\alphah_{\mathrm{corr}}$ stable,
 well below the inter-estimator spread documented in Section~\ref{sec:results:estimators}.
 
 % ── Bias correction figure ─────────────────────────────────────────────────
