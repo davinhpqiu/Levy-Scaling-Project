@@ -443,8 +443,8 @@ omitted from the file rather than recorded as zero-volume observations. This
 is further addressed in preprocessing (Section~\ref{sec:data:preprocessing}).
 
 To justify the use of 1-minute price changes as the elementary increment,
-Table~\ref{tab:sigma} reports for each market the standard deviation of
-1-minute price changes $\sigma_1$, the average effective bid-ask spread $s$,
+Table~\ref{tab:sigma} reports for each market the reference value of the
+1-minute price change scale $\sigma_1$, the average effective bid-ask spread $s$,
 and the tick size $\Delta$ (the minimum quotable price increment).
 The relevant criterion concerns the \textit{bid-ask bounce}: when successive
 trades arrive alternately at the bid and the ask, they generate a spurious
@@ -489,7 +489,9 @@ DA & 3.48 & 0.50 & 6.97 & 1.20 & 2.90 \\
 CF & 2.61 & 0.50 & 5.23 & 2.00 & 1.31 \\
 \hline
 \multicolumn{6}{l}{\small $\sigma_1$, $\Delta$ and $s$ in native contract price units (index points);}\\
-\multicolumn{6}{l}{\small $s$ is the average quoted bid-ask spread.}\\
+\multicolumn{6}{l}{\small $s$ is the average quoted bid-ask spread. $\sigma_1$ is the reference}\\
+\multicolumn{6}{l}{\small specification value used to calibrate the histogram grid; a whole-sample}\\
+\multicolumn{6}{l}{\small estimate differs, since point volatility grew with index levels.}\\
 \end{tabular}
 \label{tab:sigma}
 \end{center}
@@ -566,8 +568,8 @@ typical 1-minute move,
 where $M$ is the decimal multiplier of Section~\ref{sec:data:preprocessing}
 which converts the native-unit product $\Delta N_x$ into the integer units of
 the scaled price series, $\Delta$ is the contract tick size
-(Table~\ref{tab:sigma}), $\sigma_1$ is the standard deviation of 1-minute
-price changes, $\lfloor\cdot\rceil$
+(Table~\ref{tab:sigma}), $\sigma_1$ is the reference 1-minute price change
+scale changes, $\lfloor\cdot\rceil$
 denotes rounding to the nearest integer, and $\varepsilon$ is a dimensionless
 resolution parameter. The resulting bin width is
 $\Delta x = 2x_{\max}/N_x = 2M\Delta\max(\lfloor\varepsilon\sigma_1/\Delta\rceil,1)$,
@@ -939,7 +941,7 @@ Table~\ref{tab:three_way} compares $\alphah_{\mathrm{tip}}$,
 $\alphah_{\mathrm{sf}}$, and $\tilde{\alpha}_{\mathrm{collapse}}$ for all eight markets.
 The comparison separates into two parts. The two regression-based estimators
 are broadly consistent: $\alphah_{\mathrm{sf}}$ exceeds
-$\alphah_{\mathrm{tip}}$ by $0.082$--$0.153$ units (mean $0.119$), a gap
+$\alphah_{\mathrm{tip}}$ by $0.083$--$0.152$ units (mean $0.119$), a gap
 comparable to the $0.103$ cross-market spread of $\alphah_{\mathrm{tip}}$
 itself, so the two agree to within the variation they are being used to
 measure. The collapse criterion stands apart: it lies a further
@@ -1026,7 +1028,7 @@ populated tails of the rescaled densities.
 Second, the estimator choice is the dominant source of variation.
 For the same market, preprocessing, $\varepsilon$, and $N_\tau$, the mean
 estimated exponents across estimators differ by 0.23--0.36 units, of which
-roughly two thirds separates the collapse criterion from the two
+$62\%$ on average separates the collapse criterion from the two
 regression-based estimators.
 Even the narrower gap between the latter two exceeds the inter-market
 spread ($\alphah_{\mathrm{tip}}$ ranges from 1.72 to 1.82 across all eight
@@ -1087,9 +1089,14 @@ ordering is preserved; the asymmetry is therefore a persistent but moderate
 feature rather than an artefact of a single lag.
 
 Symmetrizing the empirical PDF, $\Ph_{\mathrm{sym}}(x,\tau) =
-[\Ph(x,\tau)+\Ph(-x,\tau)]/2$, leaves the rescaled curves visually
-indistinguishable from the raw collapse on the pilot market; the effect of
-symmetrization on the collapse score itself is not quantified here.
+[\Ph(x,\tau)+\Ph(-x,\tau)]/2$, has a substantial and inconsistent effect on
+the collapse criterion. At $\varepsilon=0.1$, $N_\tau=20$ it improves the
+collapse score in four of the eight markets and worsens it in the other four,
+with changes ranging from $-14.5\%$ (ER) to $+50.2\%$ (NQ), and it moves the
+minimizing exponent by up to $0.23$ units (CF). The asymmetric component of
+the distribution is therefore not negligible for this estimator, which
+reinforces the finding of Section~\ref{sec:results:estimators} that the
+collapse criterion is the least stable of the three.
 There is mild but detectable asymmetry at short lags in several markets,
 consistent with bid-ask bounce asymmetry and short-term momentum in futures
 order flow; however, its magnitude is small enough that the symmetric Lévy
@@ -1157,8 +1164,10 @@ $\widehat{\Delta\alpha} = 0.007$.
 Across the cross section $\widehat{\Delta\alpha}$ decreases with
 $\VRh_{60}$, with a Pearson correlation of $-0.98$ between the two
 quantities: the markets furthest from the martingale benchmark receive the
-largest corrections, and those closest to it the smallest. The ordering is
-not strictly monotone at the market level, as the four contracts with
+largest corrections, and those closest to it the smallest. The linear
+association is dominated by PT, the most strongly mean-reverting contract;
+the rank correlation is a weaker $-0.62$, and the ordering is
+not strictly monotone at the market level, as the five contracts with
 $\VRh_{60}$ between $0.949$ and $0.958$ are separated by less than
 $0.01$ in variance ratio and their corrections differ by under
 $0.002$ exponent units, which is within the estimation noise of
@@ -1218,7 +1227,7 @@ estimation at the 1-minute frequency.
 \textbf{(iii) Estimator comparison.}
 Of the three distinct estimators applied (tip scaling OLS, collapse quality
 minimization, and fractional order structure functions), the two
-regression-based methods are broadly consistent, differing by $0.082$--$0.153$
+regression-based methods are broadly consistent, differing by $0.083$--$0.152$
 units, whereas the collapse criterion sits a further $0.145$--$0.248$ units
 higher and exceeds the stable-law boundary in every market.
 The systematic ordering $\alphah_{\mathrm{tip}}<\alphah_{\mathrm{sf}}<
@@ -1244,9 +1253,10 @@ in aggregate.
 At the lag where each market is most symmetric the ratio falls to between
 $0.09$ (NQ) and $0.33$ (PT), so the asymmetry is moderate but persistent
 across the lag grid rather than confined to the shortest lags.
-Symmetrizing the PDFs prior to collapse matching produces at most a marginal
-improvement in collapse score, confirming that the symmetric Lévy approximation
-is a reasonable first-order description.
+Symmetrizing the PDFs before collapse matching changes the collapse score by
+$-14.5\%$ to $+50.2\%$ across markets and shifts the minimizing exponent by up
+to $0.23$ units, so the symmetric approximation is adequate for the two
+regression-based estimators but not for the collapse criterion.
 
 \textbf{(vi) Bias correction.}
 Seven of the eight markets exhibit negative first-order autocorrelation; ER
