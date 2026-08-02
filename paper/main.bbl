@@ -21,11 +21,6 @@
 \providecommand{\BIBdecl}{\relax}
 \BIBdecl
 
-\bibitem{Bachelier1900}
-L.~Bachelier, ``Th{\'e}orie de la sp{\'e}culation,'' \emph{Annales
-  Scientifiques de l'{\'E}cole Normale Sup{\'e}rieure}, vol.~17, pp. 21--86,
-  1900.
-
 \bibitem{Mandelbrot1963}
 B.~B. Mandelbrot, ``The variation of certain speculative prices,''
   \emph{Journal of Business}, vol.~36, no.~4, pp. 394--419, 1963.
@@ -143,11 +138,6 @@ O.~Masoudi, F.~Shahbazi, and M.~Sharifi, ``Complexity of financial time series:
   \url{https://arxiv.org/abs/2507.23414}
 \BIBentrySTDinterwordspacing
 
-\bibitem{Uchaikin2003}
-V.~V. Uchaikin and V.~M. Zolotarev, \emph{Chance and Stability: Stable
-  Distributions and Their Applications}.\hskip 1em plus 0.5em minus 0.4em\relax
-  Utrecht: VSP, 1999.
-
 \bibitem{Mandelbrot1997}
 \BIBentryALTinterwordspacing
 B.~B. Mandelbrot, A.~J. Fisher, and L.~E. Calvet, ``A multifractal model of
@@ -187,16 +177,26 @@ A.~Deep, C.~Monico, W.~B. Lindquist, S.~T. Rachev, and F.~J. Fabozzi, ``Binary
   \url{https://arxiv.org/abs/2507.16701}
 \BIBentrySTDinterwordspacing
 
+\bibitem{Ardia2024}
+D.~Ardia, E.~Guidotti, and T.~A. Kroencke, ``Efficient estimation of bid--ask
+  spreads from open, high, low, and close prices,'' \emph{Journal of Financial
+  Economics}, vol. 161, p. 103916, 2024.
+
+\bibitem{Shaik2026}
+M.~Shaik and M.~Bairaria, ``Bid-ask spread estimators: current state, gaps, and
+  future research agendas,'' \emph{Journal of Economic Surveys}, vol.~40,
+  no.~3, pp. 1463--1482, 2026.
+
 \bibitem{CuratoLillo2015}
 G.~Curato and F.~Lillo, ``How tick size affects the high frequency scaling of
   stock return distributions,'' in \emph{Financial Econometrics and Empirical
   Market Microstructure}, A.~K. Bera, S.~Ivliev, and F.~Lillo, Eds.\hskip 1em
   plus 0.5em minus 0.4em\relax Cham: Springer, 2015, pp. 55--76.
 
-\bibitem{WoodMcInishOrd1985}
-R.~A. Wood, T.~H. McInish, and J.~K. Ord, ``An investigation of transactions
-  data for {NYSE} stocks,'' \emph{Journal of Finance}, vol.~40, no.~3, pp.
-  723--739, 1985.
+\bibitem{Norden2026}
+L.~L. Nord{\'e}n, C.~Qu, and C.~Xu, ``Tick size, lot size, and liquidity in
+  futures trading,'' \emph{Journal of Futures Markets}, vol.~46, no.~1, pp.
+  43--55, 2026.
 
 \bibitem{AndersenBollerslev1997}
 T.~G. Andersen and T.~Bollerslev, ``Intraday periodicity and volatility
@@ -212,6 +212,10 @@ F.~Liang, L.~Du, and Z.~Huang, ``Option pricing with overnight and intraday
 C.~Zhang, Y.~Zhang, M.~Cucuringu, and Z.~Qian, ``Volatility forecasting with
   machine learning and intraday commonality,'' \emph{Journal of Financial
   Econometrics}, vol.~22, no.~2, pp. 492--530, 2024.
+
+\bibitem{Hua2025}
+L.~Hua, ``Major issues in high-frequency financial data analysis: A survey of
+  solutions,'' \emph{Mathematics}, vol.~13, no.~3, p. 347, 2025.
 
 \bibitem{Vlasiuk2025}
 \BIBentryALTinterwordspacing

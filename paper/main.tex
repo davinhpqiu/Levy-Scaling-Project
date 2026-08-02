@@ -63,8 +63,8 @@ variance ratio, intraday returns, self-similarity.
 % ══════════════════════════════════════════════════════════════════════════════
 
 The distributional properties of short-horizon price changes have been a
-central concern of financial economics and econophysics since at least
-Bachelier \cite{Bachelier1900}. The Gaussian random-walk model, which predicts
+central concern of financial economics and econophysics for over a century.
+The Gaussian random-walk model, which predicts
 normally distributed increments and variance scaling linearly with the holding
 period, is a natural first approximation but a poor empirical description of
 intraday returns. High-frequency data reveal distributions with heavy tails,
@@ -253,7 +253,7 @@ $S_q(\tau) = \Etau[|\Delta P_\tau|^q] \propto \tau^{q/\alpha}$ for $q <
 slope $q/\alphah_q$; the median across moment orders
 $q\in\{0.25,0.5,0.75,1.0,1.25,1.5\}$ gives $\alphah_{\mathrm{sf}}$.
 Fractional orders $q\in(0,1)$ downweight outliers and converge reliably on
-moderate samples \cite{Uchaikin2003}, while $q\in(1,\alpha)$ are
+moderate samples \cite{Nolan2020}, while $q\in(1,\alpha)$ are
 sensitive to the tail. Systematic concavity of the empirical scaling exponent
 $\hat\zeta(q) = q/\alphah_q$ would signal multifractal corrections beyond
 simple Lévy scaling \cite{Mandelbrot1997,MuzyBacry1993}.
@@ -457,7 +457,9 @@ and the tick size $\Delta$ (the minimum quotable price increment).
 The relevant criterion concerns the \textit{bid-ask bounce}: when successive
 trades arrive alternately at the bid and the ask, they generate a spurious
 price change of one effective spread with no movement in the underlying price
-\cite{Roll1984}. Genuine price variation must therefore dominate the bounce
+\cite{Roll1984}; estimating that spread from discretely observed prices
+remains an active problem \cite{Ardia2024,Shaik2026}. Genuine price variation
+must therefore dominate the bounce
 amplitude which requires $\sigma_1/s > 1$; below unity, a substantial
 fraction of recorded increments would reflect the bounce rather than true
 price movement. The ratio exceeds 1 for all eight contracts, ranging from
@@ -471,7 +473,9 @@ the histogram grid used throughout Section~\ref{sec:methodology}, where the
 bin width is defined as a multiple of $\Delta$. It is also relevant to the
 scaling analysis itself. Curato and Lillo \cite{CuratoLillo2015} show that
 when the tick-to-price ratio is large, price discreteness induces clustering
-in the return distribution that distorts its high-frequency scaling. This
+in the return distribution that distorts its high-frequency scaling;
+Nord{\'e}n et al.\ \cite{Norden2026} document the same tick and lot size
+constraints acting on liquidity in futures markets specifically. This
 effect attenuates as the observation scale increases and therefore acts
 on the lag dependence that the peak scaling estimator exploits. All eight
 contracts have 1-minute volatility exceeding one tick, with $\sigma_1/\Delta$
@@ -689,9 +693,11 @@ assumption rather than a test for multifractality.
 \label{sec:methodology:seasonality}
 
 Equity-index futures exhibit a well-documented U-shaped intraday volatility
-pattern \cite{WoodMcInishOrd1985,AndersenBollerslev1997,Chakraborti2011}, a
+pattern \cite{AndersenBollerslev1997,Chakraborti2011}, a
 feature that remains central to contemporary intraday volatility
-modelling \cite{Liang2023,Zhang2024}. The
+modelling \cite{Liang2023,Zhang2024}. Hua \cite{Hua2025} surveys intraday
+seasonality alongside nonstationarity and low signal-to-noise ratios as the
+principal obstacles in contemporary high-frequency data analysis. The
 seasonality model decomposes the 1-minute increment as $\delta_k =
 \hat\sigma_{m(k)}\cdot\tilde\delta_k$, where $m(k)\in\{1,\ldots,J\}$ is the
 minute-of-session, $J$ is the session length defined in
